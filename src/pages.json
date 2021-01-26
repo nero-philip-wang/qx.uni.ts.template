@@ -1,0 +1,23 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index"
+    },
+    {
+      "path": "pages/index/home"
+    },
+    {
+      "path": "pages/webview/index"
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "",
+    "navigationBarBackgroundColor": "#00B2B6",
+    "backgroundColor": "#FFFFFF"
+  },
+  "easycom": {
+    "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
+    "^qx-(.*)": "@/components/$1/index.vue"
+  }
+}
