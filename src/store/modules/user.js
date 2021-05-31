@@ -4,7 +4,7 @@ export default {
     userId: null,
     title: null,
     avatar: null,
-    tenantId: 10001000,
+    tenantId: 0,
     shopId: 100010001000,
     sessionInfo: null,
     isEmployee: true,
@@ -26,7 +26,7 @@ export default {
       state.userId = null
       state.title = null
       state.avatar = null
-      state.tenantId = 10001000
+      state.tenantId = 0
       state.shopId = 100010001000
       state.employee = {}
     },

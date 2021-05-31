@@ -18,10 +18,11 @@ function goto(url, { way, appid } = { way: 'push', appid: null }) {
   })
   const nav = navFunc[way]
 
-  if (url && url[0] !== '/') url = '/' + url
-  // 如果是http的链接
-  if (url.indexOf('http://') > -1 || url.indexOf('https://') > -1) url = webview + encodeURIComponent(url)
-
+  if (isNaN(url)) {
+    if (url && url[0] !== '/') url = '/' + url
+    // 如果是http的链接
+    if (url.indexOf('http://') > -1 || url.indexOf('https://') > -1) url = webview + encodeURIComponent(url)
+  }
   // 跳转小程序
   if (appid) {
     wx.navigateToMiniProgram({

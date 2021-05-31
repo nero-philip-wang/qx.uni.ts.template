@@ -1,19 +1,19 @@
 <template>
   <view class="wrapper">
-    <!-- <button class="button-info" open-type="getUserInfo" :disabled="isAuthed" @getuserinfo="getUserInfo">
-			<image class="avatar" :src="userInfo.avatarUrl" />
-			<view class="tip">{{ userInfo.nickName || '点击授权昵称及头像' }}</view>
-		</button> -->
-    <!-- <wux-select id="wux-select1" /> -->
-    <!-- <view class="attribution" @click="choseClick">
-			<view class="top">商户名称</view>
-			<view class="chose">
-				<input placeholder="请先选择再授权" v-model="inputVlaue" disabled="true"/>
-				<view class="koifont arrow">&#xe610;</view>
-			</view>
-		</view> -->
+    <button class="button-info" open-type="getUserInfo" :disabled="isAuthed" @getuserinfo="getUserInfo">
+      <image class="avatar" :src="userInfo.avatarUrl" />
+      <view class="tip">{{ userInfo.nickName || '点击授权昵称及头像' }}</view>
+    </button>
+    <!-- <wux-select id="wux-select1" />
+    <view class="attribution" @click="choseClick">
+      <view class="top">商户名称</view>
+      <view class="chose">
+        <input v-model="inputVlaue" placeholder="请先选择再授权" disabled="true" />
+        <view class="koifont arrow">&#xe610;</view>
+      </view>
+    </view> -->
     <block>
-      <!-- <view class="mobile" v-if="!inputVlaue">手机授权</view> -->
+      <view v-if="!inputVlaue" class="mobile">手机授权</view>
       <button class="button-mobile" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">手机授权</button>
     </block>
     <!--  v-if="date < 1608566400000" -->
@@ -63,7 +63,7 @@ export default {
     }
   },
   async onLoad(options) {
-	  // 如果没有 shaEncryptedData，那么赶紧获取
+    // 如果没有 shaEncryptedData，那么赶紧获取
     if (!(store.state.user.sessionInfo && store.state.user.sessionInfo.shaEncryptedData)) await loginByCode()
     this.href = options.href ? decodeURIComponent(options.href) : '/pages/index/index'
   },

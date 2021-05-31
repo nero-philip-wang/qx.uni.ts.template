@@ -1,23 +1,108 @@
 {
   "pages": [
     {
-      "path": "pages/index/index"
+      "path": "pages/user/index",
+      "style": {
+        "navigationBarTitleText": "个人中心"
+      }
+    },
+    {
+      "path": "pages/user/coupon",
+      "style": {
+        "navigationBarTitleText": "优惠券"
+      }
+    },
+    {
+      "path": "pages/user/rebate/index",
+      "style": {
+        "navigationBarTitleText": "我的返利"
+      }
+    },
+    {
+      "path": "pages/user/rebate/moneyLog",
+      "style": {
+        "navigationBarTitleText": "返利记录"
+      }
+    },
+    {
+      "path": "pages/user/rebate/withdraw",
+      "style": {
+        "navigationBarTitleText": "返利提现"
+      }
+    },
+    {
+      "path": "pages/order/list"
+    },
+    {
+      "path": "pages/order/detail"
+    },
+    {
+      "path": "pages/order/create"
+    },
+    {
+      "path": "pages/index/index/labor"
     },
     {
       "path": "pages/index/home"
     },
     {
       "path": "pages/webview/index"
+    },
+    {
+      "path": "pages/item/detail",
+      "style": {
+        "navigationBarTitleText": "商品详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/login"
+    },
+    {
+      "path": "pages/consignee/list",
+      "style": {
+        "navigationBarTitleText": "收货人列表"
+      }
+    },
+    {
+      "path": "pages/consignee/detail",
+      "style": {
+        "navigationBarTitleText": "编辑收货人"
+      }
     }
   ],
   "globalStyle": {
-    "navigationBarTextStyle": "white",
+    "navigationBarTextStyle": "black",
     "navigationBarTitleText": "",
-    "navigationBarBackgroundColor": "#00B2B6",
+    "navigationBarBackgroundColor": "#FFFFFF",
     "backgroundColor": "#FFFFFF"
   },
   "easycom": {
     "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
     "^qx-(.*)": "@/components/$1/index.vue"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "height": "50px",
+    "fontSize": "10px",
+    "iconWidth": "24px",
+    "spacing": "3px",
+    "list": [
+      {
+        "pagePath": "pages/index/index/labor",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/order/list",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/user/index",
+        "text": "我的"
+      }
+    ]
   }
 }

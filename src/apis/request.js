@@ -49,7 +49,7 @@ export const arequest = async (url, method = 'get', headers = {}, params = {}) =
     // 请求开始
     loadding = true
     uni.request({
-      url: process.env.VUE_APP_BASE_API + '/api/v1.0/' + url,
+      url: process.env.VUE_APP_BASE_API + 'api/v1.0/' + url,
       data: params,
       header: {
         AppId: tenant.appId,
@@ -92,6 +92,12 @@ export const request = async (
     TenantId: store.state.user.tenantId,
     ShopId: store.state.user.shopId || store.state.user.tenantId,
     Authorization: token,
+  }
+
+  for (var key in params) {
+    if (params[key] === undefined || params[key] === null) {
+      delete params[key]
+    }
   }
 
   var errMessage = null

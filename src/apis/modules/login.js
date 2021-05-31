@@ -11,7 +11,8 @@ export const tryLogin = async () => {
   if (token) return token
   // 如果没有保存 token
   // #ifdef MP-WEIXIN
-  else return await loginByCode()
+  // else return await loginByCode()
+  else ''
   // #endif
   // #ifdef H5
   //  else return ''
@@ -27,7 +28,7 @@ export const loginByCode = () => {
       setInterval(() => {
         // if (store.state.user.token) resolve(store.state.user.token)
         // if (++times > 20) reject(new Error('请求超时'))
-        if(!loading)resolve(store.state.user.token)
+        if (!loading) resolve(store.state.user.token)
       }, 200)
     } else if (tryed) {
       console.log('tryed')
