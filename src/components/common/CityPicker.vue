@@ -5,7 +5,7 @@
   </view>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { getarea } from '@/utils/address'
 
 export default {
   props: {
@@ -17,10 +17,10 @@ export default {
     return {
       show: false,
       addressTitle: '请选择地址',
+      areas: [],
     }
   },
   computed: {
-    ...mapGetters(['areas']),
     areaswithLevel() {
       return this.areas.map((a) => {
         if (this.level <= 1) return { ...a, children: null }
@@ -45,11 +45,10 @@ export default {
       } else return []
     },
   },
-  created() {
-    this.getarea()
+  async created() {
+    this.areas = await getarea()
   },
   methods: {
-    ...mapActions(['getarea']),
     confirm(selected) {
       var code = parseInt(selected[this.level - 1].value)
       var titles = selected.map((c) => c.label)

@@ -4,10 +4,10 @@
  * - 分享的聊天对话【chat】
  */
 import store from '@/store'
-import longEncoder from './longEncoder'
 import apis from '@/apis/'
 
 const homepage = 'pages/index/index'
+const transpage = 'pages/index/home'
 
 const share = {
   /**
@@ -31,24 +31,24 @@ const share = {
       case 1037: // 【可以通过home中转】小程序打开小程序
       case 1038: {
         // 【可以通过home中转】从另一个小程序返回
-        const params = info.referrerInfo.extraData
-        if (params.sourceId) store.commit('SET_SOURCE', params.sourceId)
-        if (params.token) store.commit('SET_TOKEN', params.token)
-        return {
-          sourceId: params.sourceId,
-          token: params.token,
-          path: decodeURIComponent(params.path),
-        }
+        // const params = info.referrerInfo.extraData
+        // if (params.sourceId) store.commit('SET_SOURCE', params.sourceId)
+        // if (params.token) store.commit('SET_TOKEN', params.token)
+        // return {
+        //   sourceId: params.sourceId,
+        //   token: params.token,
+        //   path: decodeURIComponent(params.path),
+        // }
+        return {}
       }
-      case 1047: // 【不可通过home中转】扫描小程序码
-      case 1048: // 【不可通过home中转】长按图片识别小程序码
+      case 1047: // 【通过home中转】扫描小程序码
+      case 1048: // 【通过home中转】长按图片识别小程序码
       case 1049: {
-        // 【不可通过home中转】扫描手机相册中选取的小程序码
-        const arr = longEncoder.decode(decodeURIComponent(info.query.scene))
-        console.log(arr)
-        const sourceId = arr[0].toString()
-        const id = arr[1].toString()
-        if (sourceId) store.commit('SET_SOURCE', sourceId)
+        // 【通过home中转】扫描手机相册中选取的小程序码
+        const scene = info.query.scene
+        // 通过 scene 兑换原始信息
+        const params = { scene }
+        if (sourceId) store.commit('SET_SOURCE', params.sId)
         return { id, sourceId }
       }
       default:
@@ -62,68 +62,70 @@ const share = {
   /**
    * 设置页面分享信息
    */
-  setInfo(
-    { title, imageUrl, page, id, sourceId, token } = { title: '', imageUrl: '', page: '', id: '', sourceId: '', token: false },
-    mode = 'chat'
-  ) {
-    let defaultInfo = {}
+  generateInfo({ title, imageUrl, page, id, sId, tId, tTitle } = { title: '', imageUrl: '', page: '', id: '', sId: '' }, mode = 'chat') {
     const pages = getCurrentPages()
     if (pages.length) {
+      // 设置默认分享信息
+      const defaultInfo = {}
       const currentPage = pages[pages.length <= 1 ? 0 : pages.length - 1]
       defaultInfo.page = currentPage ? currentPage.route : homepage
       defaultInfo.id = currentPage.options.id
+      defaultInfo.sId = store.state.user.sId
+      defaultInfo.tId = store.state.user.tId
+      defaultInfo.tTitle = store.state.user.tTitle
+
       if (!page) page = defaultInfo.page
-      if (!id) id = defaultInfo.id || 0
-      if (!sourceId) sourceId = store.state.user.userId || 0
-      if (token) token = store.state.user.token
+      if (!id) id = defaultInfo.id
+      if (!sId) sId = defaultInfo.sId
+      if (!tId) tId = defaultInfo.tId
+      if (!tTitle) tTitle = defaultInfo.tTitle
+
       if (mode == 'chat') {
-        let path = `pages/index/home?href=${page}&sourceId=${sourceId}`
-        if (id) path = path + `&id=${id}`
-        if (token) path = path + `&token=${token}`
+        // 分享到聊天
+        let path = `${transpage}?href=${page}`
+        if (sId) path = path + `&sId=${sId}`
+        if (tId) path = path + `&tId=${tId}`
+        if (tTitle) path = path + `&tTitle=${tTitle}`
+
         return {
           title: title || '',
           path: path || '',
           imageUrl: imageUrl || '',
         }
       } else if (mode == 'code') {
-        return {
-          page: page || homepage,
-          scene: longEncoder.encode([sourceId, id]),
-        }
+        // 生成二维码
+        return { transpage, page, id, sId, tId, tTitle }
       }
     }
   },
-  /**
-   * 全局混入的通用分享模块
-   */
-  common: {
-    onShow() {
-      // 设置默认的转发参数
-      this.setShare()
-    },
-    onShareAppMessage() {
-      return this.$u.mpShare
-    },
-    // #ifdef MP-WEIXIN
-    onShareTimeline() {
-      return this.$u.mpShare
-    },
-    // #endif
-    methods: {
-      /**
-       * 设置分享卡片信息
-       */
-      setShare() {
-        this.$u.mpShare = share.setInfo()
-      },
-      /**
-       * 获取分享的小程序码
-       */
-      async getWxaCode() {
-        let { page, scene } = share.setInfo({}, 'code')
-        return await apis.cloudapi.getUnlimited({ page, scene })
-      },
+}
+
+/**
+ * 全局混入的通用分享模块
+ */
+const common = {
+  onShow() {
+    // 设置默认的转发参数
+    // share.setInfo()
+  },
+  onShareAppMessage() {
+    return this.$u.mpShare
+  },
+  // #ifdef MP-WEIXIN
+  onShareTimeline() {
+    return this.$u.mpShare
+  },
+  // #endif
+  methods: {
+    /**
+     * 获取分享的小程序码
+     */
+    async getWxaCode() {
+      // 将参数发送到服务器并生成短连接的无限小程序码
+      const params = share.setInfo({}, 'code')
+      return await apis.cloudapi.getUnlimited(params)
     },
   },
 }
-export default share
+
+export default common

@@ -14,7 +14,7 @@ Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key])
 })
 Vue.use(uView) // uView
-Vue.mixin(mpShare.common)
+Vue.mixin(mpShare)
 
 Vue.config.productionTip = false
 App.mpType = 'app'

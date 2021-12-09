@@ -5,6 +5,7 @@
     <view>- 使用iconfont</view>
     <view class="icon-c">&#xe6e1;</view>
     <view>- goto跳转</view>
+
     <u-button @click="$goto('/pages/index/home')">内部</u-button>
     <u-button @click="$goto('/pages/index/home', { appid: 'wx0391827cea01adfe' })">小程序</u-button>
     <u-button @click="$goto('https://www.iconfont.cn/')">网页</u-button>
@@ -15,15 +16,19 @@
     <u-cell-item title="选择地址" :label="titles">
       <CityPicker v-model="titles" :level="2" />
     </u-cell-item>
+
+    <qx-tabbar />
   </view>
 </template>
 <script>
 import CityPicker from '@/components/common/CityPicker'
+import state from '@/store/easyState'
 
 export default {
   components: { CityPicker },
   data() {
     return {
+      state,
       titles: 0,
       wxacode: '',
       c: {

@@ -12,8 +12,8 @@ export default {
     utils.updateApp()
     // await tryLogin()
 
-    var info = wx.getLaunchOptionsSync()
-    if (info.path.indexOf('pages/index/home') == -1) share.getInfo()
+    // var info = wx.getLaunchOptionsSync()
+    // if (info.path.indexOf('pages/index/home') == -1) share.getInfo()
   },
   methods: {},
   onShow: function() {},
