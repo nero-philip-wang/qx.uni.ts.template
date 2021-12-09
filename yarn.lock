@@ -7623,11 +7623,6 @@ js-yaml@~3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-jsbi@^3.1.4:
-  version "3.2.5"
-  resolved "https://registry.npmmirror.com/jsbi/download/jsbi-3.2.5.tgz?cache=0&sync_timestamp=1636540861639&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fjsbi%2Fdownload%2Fjsbi-3.2.5.tgz#b37bb90e0e5c2814c1c2a1bcd8c729888a2e37d6"
-  integrity sha1-s3u5Dg5cKBTBwqG82McpiIouN9Y=
-
 jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.nlark.com/jsbn/download/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
@@ -9657,7 +9652,7 @@ postcss-colormin@^4.0.3:
 
 postcss-comment@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/postcss-comment/download/postcss-comment-2.0.0.tgz#6c8808e64cee25c33146518a8a82944b05f11e6f"
+  resolved "https://registry.nlark.com/postcss-comment/download/postcss-comment-2.0.0.tgz#6c8808e64cee25c33146518a8a82944b05f11e6f"
   integrity sha1-bIgI5kzuJcMxRlGKioKUSwXxHm8=
   dependencies:
     postcss "^6.0.0"
@@ -12531,9 +12526,9 @@ uuid@^3.3.2, uuid@^3.4.0:
   resolved "https://registry.npmmirror.com/uuid/download/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha1-sj5DWK+oogL+ehAK8fX4g/AgB+4=
 
-uview-ui@^1.7.8:
+uview-ui@^1.8.4:
   version "1.8.4"
-  resolved "https://registry.npm.taobao.org/uview-ui/download/uview-ui-1.8.4.tgz?cache=0&sync_timestamp=1616143802697&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fuview-ui%2Fdownload%2Fuview-ui-1.8.4.tgz#e32bbf2379421d319022e324e1cb7b5387d3bd44"
+  resolved "https://registry.npmmirror.com/uview-ui/download/uview-ui-1.8.4.tgz#e32bbf2379421d319022e324e1cb7b5387d3bd44"
   integrity sha1-4yu/I3lCHTGQIuMk4ct7U4fTvUQ=
 
 v8-compile-cache@^2.0.3, v8-compile-cache@^2.3.0:

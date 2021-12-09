@@ -87,6 +87,7 @@ const store = new Vuex.Store({
     isLogged() {
       return this.state.user.logged.token && this.state.user.logged.memberId
     },
+    tabbars: (state) => state.tabbar,
   },
   mutations: {
     SAVE_AREA(state, list) {

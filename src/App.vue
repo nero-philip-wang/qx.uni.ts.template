@@ -1,7 +1,7 @@
 <script>
 import utils from './utils'
 // import { tryLogin } from './apis/modules/login'
-import share from '@/utils/share/index'
+// import share from '@/utils/share/index'
 
 export default {
   data() {
