@@ -8,13 +8,29 @@
     },
     {
       "path": "pages/webview/index"
+    },
+    {
+      "path": "pages/cart/index",
+      "style": {
+        "navigationBarTitleText": "购物车"
+      }
     }
   ],
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/cart/index",
+        "text": "购物车"
+      }
+    ]
+  },
   "globalStyle": {
-    "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "",
-    "navigationBarBackgroundColor": "#00B2B6",
-    "backgroundColor": "#FFFFFF"
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#FFFFFF"
   },
   "easycom": {
     "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",

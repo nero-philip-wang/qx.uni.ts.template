@@ -1,4 +1,89 @@
-$u-type-primary: #00b2b6;
+$u-type-primary: #ca0007;
 $u-type-primary-light: #00b2b622;
 $u-type-primary-disabled: #00b2b688;
 $u-type-primary-dark: #00b2b6;
+
+$u-primary: #ca0007;
+.h-page {
+  height: 100vh;
+}
+.h-full {
+  height: 100%;
+}
+.h-b {
+  height: 88rpx;
+}
+.h-b-lg {
+  height: 104px;
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.text-price {
+  color: #ca0007;
+}
+
+.flex {
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-grow {
+  flex-grow: 1;
+}
+.place-items-center {
+  place-items: center;
+}
+
+.text-sm {
+  font-size: $uni-font-size-sm;
+}
+.text-base {
+  font-size: $uni-font-size-base;
+}
+.text-lg {
+  font-size: $uni-font-size-lg;
+}
+.bolder {
+  font-weight: bolder;
+}
+
+.m-20 {
+  margin: 20rpx;
+}
+.ml-16 {
+  margin-left: 16rpx;
+}
+.ml-8 {
+  margin-left: 8rpx;
+}
+.ml-4 {
+  margin-left: 4rpx;
+}
+.py-16 {
+  padding-top: 16rpx;
+  padding-bottom: 16rpx;
+}
+.px-16 {
+  padding-left: 16rpx;
+  padding-right: 16rpx;
+}
+.px-32 {
+  padding-left: 32rpx;
+  padding-right: 32rpx;
+}
+.pr-16 {
+  padding-right: 16rpx;
+}
+
+.lineh-full {
+  line-height: 100%;
+}
+
+.overflow-scroll {
+  overflow: scroll;
+}

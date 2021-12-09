@@ -7996,6 +7996,11 @@ linkify-it@^2.0.0:
   dependencies:
     uc.micro "^1.0.1"
 
+linq@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmmirror.com/linq/download/linq-4.0.0.tgz#a0aaa65b34e35afd886481392090d4c01e642852"
+  integrity sha1-oKqmWzTjWv2IZIE5IJDUwB5kKFI=
+
 lint-staged@^9.5.0:
   version "9.5.0"
   resolved "https://registry.npmmirror.com/lint-staged/download/lint-staged-9.5.0.tgz#290ec605252af646d9b74d73a0fa118362b05a33"
@@ -12526,10 +12531,10 @@ uuid@^3.3.2, uuid@^3.4.0:
   resolved "https://registry.npmmirror.com/uuid/download/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha1-sj5DWK+oogL+ehAK8fX4g/AgB+4=
 
-uview-ui@^1.8.4:
-  version "1.8.4"
-  resolved "https://registry.npmmirror.com/uview-ui/download/uview-ui-1.8.4.tgz#e32bbf2379421d319022e324e1cb7b5387d3bd44"
-  integrity sha1-4yu/I3lCHTGQIuMk4ct7U4fTvUQ=
+uview-ui@^2.0.10:
+  version "2.0.10"
+  resolved "https://registry.npmmirror.com/uview-ui/download/uview-ui-2.0.10.tgz#fe6ccc9c38141bc0203ee60fbf44dc635ad82c36"
+  integrity sha512-O6gonHabyjBqZrTNS9ejAyUrcdSoXJeVcGHFflG4DsDi2Pahrh+ydoB/lDq2tMIvt2W2veMyShXVMnmruEWkrA==
 
 v8-compile-cache@^2.0.3, v8-compile-cache@^2.3.0:
   version "2.3.0"

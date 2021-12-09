@@ -1,5 +1,6 @@
+import store from '@/store'
 const envVersion = process.env.VUE_APP_BASE_API === 'production' ? '' : 'trial'
-const tabUrlList = []
+const tabUrlList = store.getters.tabbars.map((c) => c.pagePath)
 const defaultPage = '/pages/index/index'
 const webview = '/pages/webview/index?src='
 const navFunc = { push: uni.navigateTo, replace: uni.redirectTo, reLaunch: uni.reLaunch }

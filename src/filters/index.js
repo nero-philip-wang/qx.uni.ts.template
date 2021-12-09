@@ -1,10 +1,10 @@
 import utils from '@/utils'
-import timeFormat from 'uview-ui/libs/function/timeFormat'
+import { timeFormat } from 'uview-ui/libs/function/index'
 
 export function yuan(value) {
   if (!value) return '0'
   try {
-    return  utils.toYuan(value)
+    return utils.toYuan(value)
   } catch (error) {
     return value
   }

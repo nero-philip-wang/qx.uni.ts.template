@@ -1,7 +1,7 @@
 <template>
   <view>
-    <u-cell-item arrow :title="title" :border-bottom="false" @click="showPicker"></u-cell-item>
-    <u-select v-model="show" :list="list" @confirm="confirm"></u-select>
+    <u-cell arrow :title="title" :border-bottom="false" @click="showPicker"></u-cell>
+    <u-picker v-model="show" :list="list" @confirm="confirm"></u-picker>
   </view>
 </template>
 

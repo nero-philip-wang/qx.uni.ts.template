@@ -9,6 +9,7 @@ export default {
   },
   computed: {},
   async onLaunch() {
+    uni.hideTabBar()
     utils.updateApp()
     // await tryLogin()
 

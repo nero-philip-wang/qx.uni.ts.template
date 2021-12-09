@@ -1,7 +1,7 @@
 <template>
   <view>
     <view class="u-line-1" @click="show = true">{{ addressTitle }}</view>
-    <u-select v-model="show" mode="mutil-column-auto" :list="areaswithLevel" :default-value="defaultvalue" @confirm="confirm"></u-select>
+    <u-picker v-model="show" mode="mutil-column-auto" :list="areaswithLevel" :default-value="defaultvalue" @confirm="confirm"></u-picker>
   </view>
 </template>
 <script>

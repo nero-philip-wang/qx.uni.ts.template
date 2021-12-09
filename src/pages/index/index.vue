@@ -13,9 +13,9 @@
     <u-button @click="$goto('https://www.iconfont.cn/', { way: 'reLaunch' })">替换网页</u-button>
     <view>- 二维码</view>
     <qx-qrcode text="https://www.iconfont.cn/" :options="{ color: '#1eb1ad' }" />
-    <u-cell-item title="选择地址" :label="titles">
+    <u-cell title="选择地址" :label="titles">
       <CityPicker v-model="titles" :level="2" />
-    </u-cell-item>
+    </u-cell>
 
     <qx-tabbar />
   </view>
@@ -91,6 +91,9 @@ export default {
     var data = await this.getWxaCode()
     this.painter.views[2].src = data
     this.c = this.painter
+  },
+  beforeCreate() {
+    uni.hideTabBar()
   },
   methods: {},
 }

@@ -1,39 +1,27 @@
 <template>
-  <u-tabbar
-    v-model="current"
-    :list="tabbars"
-    :border-top="true"
-    height="54px"
-    icon-size="48"
-    active-color="#00b2b6"
-    inactive-color="#cccccc"
-    @change="change"
-  ></u-tabbar>
+  <u-tabbar :value="value" :border="false" active-color="#ca0007" inactive-color="#cccccc" @change="change">
+    <u-tabbar-item v-for="(c, idx) in tabbars" :key="c.text" :text="c.text" icon="home" :name="idx"></u-tabbar-item>
+  </u-tabbar>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import goto from '@/utils/goto'
 
 export default {
   name: 'Tabbar',
   props: {
-    vaule: { type: Number, default: 0 },
+    value: { type: Number, default: 0 },
   },
   data() {
-    return {
-      current: 0,
-    }
+    return {}
   },
   computed: {
     ...mapGetters(['tabbars']),
   },
-  mounted() {
-    this.current = this.vaule
-  },
+  mounted() {},
   methods: {
     change(idx) {
-      uni.navigateTo({
-        url: this.tabbars[idx].pagePath,
-      })
+      goto(this.tabbars[idx].pagePath)
     },
   },
 }
