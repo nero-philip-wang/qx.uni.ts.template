@@ -5,11 +5,14 @@
         <u--text slot="right-icon" text="编辑" size="28rpx"></u--text>
       </u-cell>
     </div>
-    <div class="scroll flex-grow overflow-scroll py-16">
+    <scroll-view scroll-y class="scroll flex-grow overflow-scroll py-16" @scrolltolower="upCallback">
       <div v-for="(i, idx) in items" :key="i.itemId" :index="idx" :name="idx" :options="[{ text: '删除' }]">
         <CartItem show-checkbox editable :checked.sync="i.checked"> </CartItem>
       </div>
-    </div>
+      <div v-if="loading" class="text-center mt-8">
+        <u-loading-icon></u-loading-icon>
+      </div>
+    </scroll-view>
     <!-- 结算栏 -->
     <div class="checkoutbar bg-white">
       <u-cell>
@@ -34,7 +37,9 @@ import CartItem from './comp/cartItem.vue'
 import Enumerable from 'linq'
 
 export default {
-  components: { CartItem },
+  components: {
+    CartItem,
+  },
   props: {
     showTabbar: {
       type: Boolean,
@@ -51,8 +56,13 @@ export default {
         { checked: false, itemId: 3 },
         { checked: false, itemId: 4 },
         { checked: false, itemId: 5 },
+        { checked: false, itemId: 6 },
         { checked: false, itemId: 7 },
+        { checked: false, itemId: 8 },
+        { checked: false, itemId: 9 },
+        { checked: true, itemId: 10, price: 139 },
       ],
+      loading: 1, // 1 加载中 0 没有更多
     }
   },
   computed: {
@@ -70,6 +80,13 @@ export default {
       return Enumerable.from(this.items)
         .where((c) => c.checked)
         .sum((c) => c.price || 0)
+    },
+  },
+  methods: {
+    upCallback(page) {
+      setTimeout(() => {
+        this.loading = 0
+      }, 300)
     },
   },
 }
