@@ -1,9 +1,9 @@
-$u-type-primary: #ca0007;
+$u-type-primary: #f5222d;
 $u-type-primary-light: #00b2b622;
 $u-type-primary-disabled: #00b2b688;
 $u-type-primary-dark: #00b2b6;
 
-$u-primary: #ca0007;
+$u-primary: #f5222d;
 .h-page {
   height: 100vh;
 }
@@ -16,15 +16,66 @@ $u-primary: #ca0007;
 .h-b-lg {
   height: 104px;
 }
-
+.h-1 {
+  height: 1rpx;
+}
+.h-8 {
+  height: 8rpx;
+}
+.h-16 {
+  height: 16rpx;
+}
+.h-52 {
+  height: 50rpx;
+}
+.w-full {
+  width: 100%;
+}
+.w-52 {
+  width: 50rpx;
+}
+.block-center {
+  margin: 0 auto;
+}
 .bg-white {
   background-color: white;
+}
+.bg-primary {
+  background-color: #f5222d;
 }
 
 .text-price {
   color: #ca0007;
 }
+.text-primary {
+  color: #f5222d;
+}
 
+.text-white {
+  color: #ffffff;
+}
+.text-gray {
+  color: #9b9b9b;
+}
+.text-black-38 {
+  color: #383838;
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+
+.rounded {
+  border-radius: 16rpx;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
 .flex {
   display: flex;
 }
@@ -38,6 +89,12 @@ $u-primary: #ca0007;
 .place-items-center {
   place-items: center;
 }
+.justify-between {
+  justify-content: space-between;
+}
+.justify-center {
+  justify-content: center;
+}
 
 .text-sm {
   font-size: $uni-font-size-sm;
@@ -48,10 +105,46 @@ $u-primary: #ca0007;
 .text-lg {
   font-size: $uni-font-size-lg;
 }
+.text-xl {
+  font-size: 36rpx;
+}
 .bolder {
   font-weight: bolder;
 }
-
+.m-24 {
+  margin: 24rpx;
+}
+.mx-8 {
+  margin-left: 8rpx;
+  margin-right: 8rpx;
+}
+.mx-32 {
+  margin-left: 32rpx;
+  margin-right: 32rpx;
+}
+.mx-40 {
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+}
+.my-40 {
+  margin-top: 40rpx;
+  margin-bottom: 40rpx;
+}
+.mt-4 {
+  margin-top: 4rpx;
+}
+.mt-8 {
+  margin-top: 8rpx;
+}
+.mt-40 {
+  margin-top: 40rpx;
+}
+.mt-64 {
+  margin-top: 64rpx;
+}
+.mb-16 {
+  margin-bottom: 16rpx;
+}
 .m-20 {
   margin: 20rpx;
 }
@@ -75,6 +168,12 @@ $u-primary: #ca0007;
 .px-32 {
   padding-left: 32rpx;
   padding-right: 32rpx;
+}
+.p-32 {
+  padding: 32rpx;
+}
+.pt-64 {
+  padding-top: 64rpx;
 }
 .pr-16 {
   padding-right: 16rpx;

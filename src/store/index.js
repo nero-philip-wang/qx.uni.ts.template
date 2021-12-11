@@ -53,7 +53,7 @@ const store = new Vuex.Store({
         iconPath: 'star',
         selectedIconPath: 'star-fill',
         text: '我的',
-        pagePath: '/pages/salary/index',
+        pagePath: '/pages/my/index',
       },
     ],
     user: {
