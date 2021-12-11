@@ -70,26 +70,26 @@ export default {
               height: '300rpx',
             },
           },
-          //   {
-          //     type: 'qrcode',
-          //     text: 'https://www.baidu.com',
-          //     css: {
-          //       left: '380rpx',
-          //       top: '230rpx',
-          //       width: '200rpx',
-          //       height: '200rpx',
-          //       color: '#1989fa',
-          //       backgroundColor: 'rgba(25,137,250,.1)',
-          //       border: '20rpx solid rgba(25,137,250,.1)',
-          //     },
-          //   },
+          {
+            type: 'qrcode',
+            text: 'https://www.baidu.com',
+            css: {
+              left: '380rpx',
+              top: '230rpx',
+              width: '200rpx',
+              height: '200rpx',
+              color: '#1989fa',
+              backgroundColor: 'rgba(25,137,250,.1)',
+              border: '20rpx solid rgba(25,137,250,.1)',
+            },
+          },
         ],
       },
     }
   },
   async mounted() {
-    var data = await this.getWxaCode()
-    this.painter.views[2].src = data
+    // var data = await this.getWxaCode()
+    // this.painter.views[2].src = data
     this.c = this.painter
   },
   beforeCreate() {
