@@ -41,7 +41,7 @@ const store = new Vuex.Store({
         iconPath: 'star',
         selectedIconPath: 'star-fill',
         text: '分类',
-        pagePath: '/pages/member/index',
+        pagePath: '/pages/cata/index',
       },
       {
         iconPath: 'star',

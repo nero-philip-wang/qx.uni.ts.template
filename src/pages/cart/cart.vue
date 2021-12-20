@@ -5,7 +5,7 @@
         <u--text slot="right-icon" text="编辑" size="28rpx"></u--text>
       </u-cell>
     </div>
-    <scroll-view scroll-y class="scroll flex-grow overflow-scroll py-16" @scrolltolower="upCallback">
+    <scroll-view scroll-y scroll-with-animation class="scroll flex-grow overflow-scroll py-16" @scrolltolower="upCallback">
       <div v-for="(i, idx) in items" :key="i.itemId" :index="idx" :name="idx" :options="[{ text: '删除' }]">
         <CartItem show-checkbox editable :checked.sync="i.checked"> </CartItem>
       </div>

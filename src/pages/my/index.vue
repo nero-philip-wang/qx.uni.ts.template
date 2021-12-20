@@ -1,6 +1,13 @@
 <template>
   <div class="h-page flex">
-    <scroll-view scroll-y refresher-enabled class="flex-grow" :refresher-triggered="showTrigger" @refresherrefresh="refresh">
+    <scroll-view
+      scroll-y
+      refresher-enabled
+      scroll-with-animation
+      class="flex-grow"
+      :refresher-triggered="showTrigger"
+      @refresherrefresh="refresh"
+    >
       <div style="height:200rpx" class="pt-64">
         <!-- 头像 -->
         <div class="mx-40 text-white flex">

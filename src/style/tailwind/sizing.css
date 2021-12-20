@@ -1,0 +1,37 @@
+// height
+.h-page {
+  height: 100vh;
+}
+.h-full {
+  height: 100%;
+}
+// height - bar
+.h-b {
+  height: 88rpx;
+}
+.h-b-lg {
+  height: 104px;
+}
+.h-1 {
+  height: 1rpx;
+}
+.h-8 {
+  height: 8rpx;
+}
+.h-16 {
+  height: 16rpx;
+}
+.h-52 {
+  height: 50rpx;
+}
+
+// width
+.w-page {
+  width: 100vw;
+}
+.w-full {
+  width: 100%;
+}
+.w-52 {
+  width: 52rpx;
+}

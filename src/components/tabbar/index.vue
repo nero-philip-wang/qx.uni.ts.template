@@ -1,5 +1,5 @@
 <template>
-  <u-tabbar :value="value" :border="false" active-color="#ca0007" inactive-color="#cccccc" @change="change">
+  <u-tabbar :value="value" border active-color="#ca0007" inactive-color="#cccccc" @change="change">
     <u-tabbar-item v-for="(c, idx) in tabbars" :key="c.text" :text="c.text" icon="home" :name="idx"></u-tabbar-item>
   </u-tabbar>
 </template>

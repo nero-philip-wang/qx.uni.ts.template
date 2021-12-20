@@ -12,7 +12,6 @@
  * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
  */
 @import 'uview-ui/theme.scss';
-@import './style/reset-uviewui.scss';
 
 /* 颜色变量 */
 
@@ -87,3 +86,10 @@ $font3-color: #999999;
 $font4-color: #666666;
 $font5-color: #ff5b5b;
 $radius: 10rpx;
+
+$u-type-primary: #f5222d;
+$u-type-primary-light: #00b2b622;
+$u-type-primary-disabled: #00b2b688;
+$u-type-primary-dark: #00b2b6;
+
+$u-primary: #f5222d;
