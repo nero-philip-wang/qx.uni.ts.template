@@ -15,76 +15,84 @@
 /* pb */
 
 .m-24 {
-    margin: 24rpx;
-  }
-  .mx-8 {
-    margin-left: 8rpx;
-    margin-right: 8rpx;
-  }
-  .mx-32 {
-    margin-left: 32rpx;
-    margin-right: 32rpx;
-  }
-  .mx-40 {
-    margin-left: 40rpx;
-    margin-right: 40rpx;
-  }
-  .my-40 {
-    margin-top: 40rpx;
-    margin-bottom: 40rpx;
-  }
-  .mt-4 {
-    margin-top: 4rpx;
-  }
-  .mt-8 {
-    margin-top: 8rpx;
-  }
-  .mt-40 {
-    margin-top: 40rpx;
-  }
-  .mt-64 {
-    margin-top: 64rpx;
-  }
-  .mb-8 {
-    margin-bottom: 8rpx;
-  }
-  .mb-16 {
-    margin-bottom: 16rpx;
-  }
-  .m-20 {
-    margin: 20rpx;
-  }
-  .ml-16 {
-    margin-left: 16rpx;
-  }
-  .ml-8 {
-    margin-left: 8rpx;
-  }
-  .ml-4 {
-    margin-left: 4rpx;
-  }
-  .py-8 {
-    padding-top: 8rpx;
-    padding-bottom: 8rpx;
-  }
-  .py-16 {
-    padding-top: 16rpx;
-    padding-bottom: 16rpx;
-  }
-  .px-16 {
-    padding-left: 16rpx;
-    padding-right: 16rpx;
-  }
-  .px-32 {
-    padding-left: 32rpx;
-    padding-right: 32rpx;
-  }
-  .p-32 {
-    padding: 32rpx;
-  }
-  .pt-64 {
-    padding-top: 64rpx;
-  }
-  .pr-16 {
-    padding-right: 16rpx;
-  }
+  margin: 24rpx;
+}
+.mx-8 {
+  margin-left: 8rpx;
+  margin-right: 8rpx;
+}
+.mx-32 {
+  margin-left: 32rpx;
+  margin-right: 32rpx;
+}
+.mx-40 {
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+}
+.my-8 {
+  margin-top: 8rpx;
+  margin-bottom: 8rpx;
+}
+.my-32 {
+  margin-top: 32rpx;
+  margin-bottom: 32rpx;
+}
+.my-40 {
+  margin-top: 40rpx;
+  margin-bottom: 40rpx;
+}
+.mt-4 {
+  margin-top: 4rpx;
+}
+.mt-8 {
+  margin-top: 8rpx;
+}
+.mt-40 {
+  margin-top: 40rpx;
+}
+.mt-64 {
+  margin-top: 64rpx;
+}
+.mb-8 {
+  margin-bottom: 8rpx;
+}
+.mb-16 {
+  margin-bottom: 16rpx;
+}
+.m-20 {
+  margin: 20rpx;
+}
+.ml-16 {
+  margin-left: 16rpx;
+}
+.ml-8 {
+  margin-left: 8rpx;
+}
+.ml-4 {
+  margin-left: 4rpx;
+}
+.py-8 {
+  padding-top: 8rpx;
+  padding-bottom: 8rpx;
+}
+.py-16 {
+  padding-top: 16rpx;
+  padding-bottom: 16rpx;
+}
+.px-16 {
+  padding-left: 16rpx;
+  padding-right: 16rpx;
+}
+.px-32 {
+  padding-left: 32rpx;
+  padding-right: 32rpx;
+}
+.p-32 {
+  padding: 32rpx;
+}
+.pt-64 {
+  padding-top: 64rpx;
+}
+.pr-16 {
+  padding-right: 16rpx;
+}

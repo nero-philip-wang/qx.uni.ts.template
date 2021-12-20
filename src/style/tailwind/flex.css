@@ -1,22 +1,26 @@
 .flex {
-    display: flex;
-  }
-  .flex-col {
-    display: flex;
-    flex-direction: column;
-  }
-  .flex-grow {
-    flex-grow: 1;
-  }
-  /* 居中 */
-  .justify-between {
-    justify-content: space-between;
-  }
-  .justify-center {
-    justify-content: center;
-  }
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
 
-  /* y方向居中 */
-  .place-items-center {
-    place-items: center;
-  }
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-grow {
+  flex-grow: 1;
+}
+/* 居中 */
+.justify-between {
+  justify-content: space-between;
+}
+.justify-center {
+  justify-content: center;
+}
+
+/* y方向居中 */
+.place-items-center {
+  place-items: center;
+}

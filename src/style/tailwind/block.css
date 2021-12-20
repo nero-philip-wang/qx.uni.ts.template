@@ -26,3 +26,7 @@
 .rounded {
   border-radius: 16rpx;
 }
+
+.rounded-sm {
+  border-radius: 8rpx;
+}
