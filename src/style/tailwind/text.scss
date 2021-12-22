@@ -49,3 +49,12 @@
 .lineh-full {
   line-height: 100%;
 }
+.lineh-0 {
+  line-height: 0;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

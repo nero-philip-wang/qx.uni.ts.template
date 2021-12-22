@@ -23,6 +23,8 @@ page {
 /* box-sizing: border-box; */
 text[class*='icon-'],
 view[class*='icon-'],
+div[class*='icon-'],
+span[class*='icon-'],
 button[class*='icon-'] {
   font-family: 'linker-i-font';
   font-size: inherit;
