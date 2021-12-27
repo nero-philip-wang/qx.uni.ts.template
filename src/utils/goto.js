@@ -36,9 +36,9 @@ function goto(url, { way, appid } = { way: 'push', appid: null }) {
     // 一般页面
     if (isNaN(url)) {
       // 跳转到首页
-      if (url == defaultPage) uni.reLaunch({ url })
+      // if (url == defaultPage) uni.reLaunch({ url })
       // 底部tabbar
-      else if (isTabBar) uni.switchTab({ url })
+      if (isTabBar) uni.switchTab({ url })
       // 其他页面
       else nav({ url })
     }
