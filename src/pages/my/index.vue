@@ -34,7 +34,7 @@
 
       <div class="m-24 bg-white rounded">
         <u-cell-group :border="false">
-          <u-cell icon="car" icon-color="#5fcda2" title="地址管理" is-link></u-cell>
+          <u-cell icon="car" icon-color="#5fcda2" title="地址管理" is-link @click="$goto('pages/consignee/list')"></u-cell>
           <button open-type="contact" class="u-reset-button w-full text-left ">
             <u-cell icon="server-man" icon-color="#ee883b" title="联系客服" is-link></u-cell>
           </button>

@@ -2,8 +2,14 @@
   <div>
     <u-navbar safe-area-inset-top placeholder fixed bg-color="#F2F3F7">
       <div slot="left" class="pl-8 py-16 flex text-sm">
-        <span class="icon-c mr-16"> &#xe6ac; 南京</span>
-        <u-search placeholder="请输入关键字" :show-action="false" bg-color="#f8f8f8" disabled></u-search>
+        <span class="icon-c mr-16" @click="$goto('pages/index/tenant')"> &#xe6ac; 南京</span>
+        <u-search
+          placeholder="请输入关键字"
+          :show-action="false"
+          bg-color="#f8f8f8"
+          disabled
+          @click="$goto('pages/item/search')"
+        ></u-search>
       </div>
     </u-navbar>
 

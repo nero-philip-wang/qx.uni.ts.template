@@ -48,14 +48,16 @@ export const arequest = async (url, method = 'get', headers = {}, params = {}) =
 
     // 请求开始
     loadding = true
+    console.log(store.state)
     uni.request({
-      url: process.env.VUE_APP_BASE_API + '/api/v1.0/' + url,
+      url: process.env.VUE_APP_BASE_API + 'api/v1.0/' + url,
       data: params,
       header: {
         AppId: tenant.appId,
         Nonce: nonce,
         Stamp: stamp,
         Sign: sign,
+        TenantId: store.state.user.tId,
         'Accept-Language': 'zh-CN',
         ...headers,
       },
@@ -89,9 +91,15 @@ export const request = async (
 ) => {
   var token = await tryLogin()
   var headers = {
-    TenantId: store.state.user.tenantId,
+    TenantId: store.state.user.tId,
     ShopId: store.state.user.shopId || store.state.user.tenantId,
     Authorization: token,
+  }
+
+  for (var key in params) {
+    if (params[key] === undefined || params[key] === null) {
+      delete params[key]
+    }
   }
 
   var errMessage = null
@@ -125,7 +133,8 @@ export const request = async (
         }
     }
   } catch (error) {
-    errMessage = error.message || '网络不佳 请重试'
+    if (error.message == 'ok' || error.message == 'Ok') errMessage = '网络不佳 请重试'
+    else errMessage = '网络不佳 请重试' || error.message
   } finally {
     if (errMessage) {
       if (showError) {
@@ -134,6 +143,8 @@ export const request = async (
           showCancel: false,
           content: errMessage,
         })
+        // eslint-disable-next-line no-unsafe-finally
+        throw new Error(errMessage)
       } else {
         // eslint-disable-next-line no-unsafe-finally
         throw new Error(errMessage)

@@ -1,6 +1,6 @@
 const config = {
   '1000': {
-    appId: 'wx7f9bc7a6a52b872e',
+    appId: 'wx129b199af409f294',
     key: '--',
     tenantId: 10001000,
     title: '--',

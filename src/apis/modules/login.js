@@ -5,20 +5,22 @@ var loading = false
 var tryed = false
 
 export const tryLogin = async () => {
-  const token = store.state.user.token
-
+  const token = store.state.user.logged.token
   // 如果有保存过 token
   if (token) return token
   // 如果没有保存 token
   // #ifdef MP-WEIXIN
+  // 朋友圈
+  else if (wx.getLaunchOptionsSync().scene == 1154) return ''
   else return await loginByCode()
+  // else ''
   // #endif
   // #ifdef H5
   //  else return ''
   // #endif
 }
 
-export const loginByCode = () => {
+export const loginByCode = (force = false) => {
   return new Promise((resolve, reject) => {
     // 如果上一个请求还在进行中，那么等待上一个请求的结果,等到20次没有结果就失败
     var times = 0
@@ -27,9 +29,9 @@ export const loginByCode = () => {
       setInterval(() => {
         // if (store.state.user.token) resolve(store.state.user.token)
         // if (++times > 20) reject(new Error('请求超时'))
-        if(!loading)resolve(store.state.user.token)
+        if (!loading) resolve(store.state.user.token)
       }, 200)
-    } else if (tryed) {
+    } else if (tryed && force == false) {
       console.log('tryed')
       resolve('')
     } else {
@@ -41,7 +43,7 @@ export const loginByCode = () => {
           if (res.code) {
             try {
               var rt = await arequest(
-                'linker/Sign/TrySignInByOAuth',
+                'mall/users/oauth',
                 'post',
                 {},
                 {
@@ -51,25 +53,18 @@ export const loginByCode = () => {
                 }
               )
               var reponse = rt.data.data
-              var employee = reponse && reponse.extra && reponse.extra.employee
-              if (rt.data.code === 200) {
-                // 如果获取到了店员信息
-                if (employee) {
-                  var info = {
-                    token: 'Bearer ' + reponse.token,
-                    userId: reponse.user.id,
-                    title: reponse.user.nickName,
-                    avatar: reponse.user.avatar,
-                    tenantId: employee.departmentId > 99999999 ? parseInt(employee.departmentId / 10000) : employee.departmentId,
-                    shopId: employee.departmentId,
-                    employee: employee,
-                  }
-                  store.commit('SET_USERINFO', info)
-                  resolve(info.token)
+              var member = reponse && reponse.member
+              if (rt.data.message === 'ok') {
+                // 如果获取到了会员信息
+                if (member) {
+                  store.commit('SET_USERINFO', member)
+                  store.commit('SET_OPENID', reponse.openId)
+                  var str_token = 'Bearer ' + reponse.token
+                  store.commit('SET_TOKEN', str_token)
+                  resolve(str_token)
                 } else {
                   // 如果是首次登录，保存sessionkey等信息
-                  store.commit('SET_SESSIONINFO', reponse)
-                  reject(rt)
+                  reject(reponse)
                 }
               } else {
                 // 如果名下没有工作的店铺
@@ -93,8 +88,24 @@ export const loginByCode = () => {
 }
 
 // 手机授权登录
-export const TryBindByMobile = (data) => {
-  return arequest('linker/Sign/TryBindByMobile', 'POST', {}, data)
+export const TryBindByMobile = async (data) => {
+  var rt = await arequest('mall/users/oauth/sign', 'POST', {}, { ...data, sid: store.getters.sid })
+  var reponse = rt.data.data
+  var member = reponse && reponse.member
+  if (rt.data.message === 'ok') {
+    // 如果获取到了会员信息
+    if (member) {
+      store.commit('SET_USERINFO', member)
+      store.commit('SET_OPENID', reponse.openId)
+      store.commit('SET_TOKEN', 'Bearer ' + reponse.token)
+      return reponse.token
+    } else {
+      // 如果是首次登录，保存sessionkey等信息
+      throw reponse
+    }
+  } else {
+    throw reponse
+  }
 }
 
 // 获取用户加盐

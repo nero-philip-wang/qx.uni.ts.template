@@ -10,6 +10,12 @@
       "path": "pages/index/home"
     },
     {
+      "path": "pages/index/tenant",
+      "style": {
+        "navigationBarTitleText": "选择城市"
+      }
+    },
+    {
       "path": "pages/webview/index"
     },
     {
@@ -28,6 +34,24 @@
       "path": "pages/cata/index",
       "style": {
         "navigationBarTitleText": "分类"
+      }
+    },
+    {
+      "path": "pages/item/search",
+      "style": {
+        "navigationBarTitleText": "搜索"
+      }
+    },
+    {
+      "path": "pages/consignee/list",
+      "style": {
+        "navigationBarTitleText": "收货人列表"
+      }
+    },
+    {
+      "path": "pages/consignee/detail",
+      "style": {
+        "navigationBarTitleText": "编辑收货人"
       }
     }
   ],

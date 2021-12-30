@@ -19,3 +19,9 @@ export function datef(datestring, fmt = 'yyyy-mm-dd') {
   var date = Date.parse(datestring)
   return timeFormat(date, fmt)
 }
+
+/** 使用oss的图片处理后缀 */
+export function thumbnail(url, stylename = '!t360') {
+  if (url && url.indexOf('s.re4.top') != -1 && /(jpg|png|bmp)/.test(url)) return `${url}${stylename}`
+  else return url
+}

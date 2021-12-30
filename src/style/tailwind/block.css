@@ -11,6 +11,9 @@
 .absolute {
   position: absolute;
 }
+.fixed {
+  position: fixed;
+}
 
 .block-center {
   margin: 0 auto;
@@ -29,4 +32,8 @@
 
 .rounded-sm {
   border-radius: 8rpx;
+}
+
+.bt-1 {
+  border-top: solid 1px #f0f0f0;
 }

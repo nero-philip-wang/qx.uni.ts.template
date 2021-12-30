@@ -87,22 +87,26 @@ const store = new Vuex.Store({
       state.area = list
     },
     SET_USERINFO(state, { token, userId, title, avatar, tenantId, shopId, employee }) {
-      state.token = token
-      state.userId = userId
-      state.title = title
-      state.avatar = avatar
-      state.tenantId = tenantId
-      state.shopId = shopId
-      state.employee = employee
+      state.user.logged.token = token
+      state.user.logged.userId = userId
+      state.user.logged.title = title
+      state.user.logged.avatar = avatar
+      state.user.logged.tenantId = tenantId
+      state.user.logged.shopId = shopId
+      state.user.logged.employee = employee
     },
     RESET_USERINFO(state) {
-      state.token = null
-      state.userId = null
-      state.title = null
-      state.avatar = null
-      state.tenantId = 10001000
-      state.shopId = 100010001000
-      state.employee = {}
+      state.user.logged = {
+        token: null,
+        memberId: null,
+        userId: null,
+        title: null,
+        avatar: null,
+        openId: null,
+      }
+    },
+    SET_TOKEN(state, token) {
+      state.user.logged.token = token
     },
     SET_SESSIONINFO(state, info) {
       state.sessionInfo = info
