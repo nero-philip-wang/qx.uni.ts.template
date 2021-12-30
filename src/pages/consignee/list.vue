@@ -10,7 +10,10 @@
           <span class="text-gray">{{ item.mobile }}</span>
           <span v-if="item.is_default" class="tag">默认</span>
         </div>
-        <div class="text-gray address my-8">{{ item.address }}</div>
+        <div class="text-gray address my-16">
+          <span> {{ item.address }} </span>
+          <span v-if="item.room" class="ml-4"> @{{ item.room }} </span>
+        </div>
         <div class="bt-1 flex-re" @click.stop.prevent>
           <div class="p-16" @click="showDelModal(index)">
             删除
