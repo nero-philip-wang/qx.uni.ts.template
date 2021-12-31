@@ -100,6 +100,7 @@ function trimEnd(str, char) {
 
 /** 分到元 */
 function toYuan(v) {
+  if (isNaN(parseInt(v))) return v
   var yuan = (v / 100).toFixed(2)
   yuan = trimEnd(yuan, '0')
   yuan = trimEnd(yuan, '.')

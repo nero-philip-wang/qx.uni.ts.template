@@ -48,7 +48,6 @@ export const arequest = async (url, method = 'get', headers = {}, params = {}) =
 
     // 请求开始
     loadding = true
-    console.log(store.state)
     uni.request({
       url: process.env.VUE_APP_BASE_API + 'api/v1.0/' + url,
       data: params,

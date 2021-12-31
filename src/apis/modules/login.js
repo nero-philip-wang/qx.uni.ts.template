@@ -4,6 +4,7 @@ import { arequest, goLogin } from '../request'
 var loading = false
 var tryed = false
 
+export const reset = () => (tryed = false)
 export const tryLogin = async () => {
   const token = store.state.user.logged.token
   // 如果有保存过 token
@@ -52,16 +53,17 @@ export const loginByCode = (force = false) => {
                   code: res.code,
                 }
               )
-              var reponse = rt.data.data
-              var member = reponse && reponse.member
-              if (rt.data.message === 'ok') {
+              var reponse = rt.data.data || null
+              var { member } = reponse || {}
+              if (reponse) {
                 // 如果获取到了会员信息
                 if (member) {
-                  store.commit('SET_USERINFO', member)
-                  store.commit('SET_OPENID', reponse.openId)
-                  var str_token = 'Bearer ' + reponse.token
-                  store.commit('SET_TOKEN', str_token)
-                  resolve(str_token)
+                  store.commit('SET_USERINFO', {
+                    ...member,
+                    token: 'Bearer ' + reponse.token,
+                    openId: reponse.openId,
+                  })
+                  resolve(member)
                 } else {
                   // 如果是首次登录，保存sessionkey等信息
                   reject(reponse)
@@ -95,9 +97,11 @@ export const TryBindByMobile = async (data) => {
   if (rt.data.message === 'ok') {
     // 如果获取到了会员信息
     if (member) {
-      store.commit('SET_USERINFO', member)
-      store.commit('SET_OPENID', reponse.openId)
-      store.commit('SET_TOKEN', 'Bearer ' + reponse.token)
+      store.commit('SET_USERINFO', {
+        ...member,
+        token: 'Bearer ' + reponse.token,
+        openId: reponse.openId,
+      })
       return reponse.token
     } else {
       // 如果是首次登录，保存sessionkey等信息

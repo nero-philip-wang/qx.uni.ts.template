@@ -60,25 +60,28 @@ const store = new Vuex.Store({
       /** 已登录用户 */
       logged: {
         token: null,
-        memberId: null,
-        userId: null,
-        title: null,
-        avatar: null,
         openId: null,
+        id: null,
+        userId: null,
+        nickname: null,
+        avatar: null,
       },
       /** 未登录信息 */
       logging: {},
       /** 商户id */
       tId: 1000,
       /** 商户名称 */
-      tTitle: '',
+      tTitle: '海口',
       /** 分销人id */
       sId: null,
     },
   }),
   getters: {
-    isLogged() {
-      return this.state.user.logged.token && this.state.user.logged.memberId
+    isLogged: (state) => {
+      return state.user.logged.token && state.user.logged.id
+    },
+    token: (state) => {
+      return state.user.logged.token
     },
     tabbars: (state) => state.tabbar,
   },
@@ -86,19 +89,20 @@ const store = new Vuex.Store({
     SAVE_AREA(state, list) {
       state.area = list
     },
-    SET_USERINFO(state, { token, userId, title, avatar, tenantId, shopId, employee }) {
-      state.user.logged.token = token
-      state.user.logged.userId = userId
-      state.user.logged.title = title
-      state.user.logged.avatar = avatar
-      state.user.logged.tenantId = tenantId
-      state.user.logged.shopId = shopId
-      state.user.logged.employee = employee
+    SET_USERINFO(state, { token, openId, id, userId, nickname, avatar }) {
+      state.user.logged = {
+        token,
+        openId,
+        id,
+        userId,
+        nickname,
+        avatar,
+      }
     },
     RESET_USERINFO(state) {
       state.user.logged = {
         token: null,
-        memberId: null,
+        id: null,
         userId: null,
         title: null,
         avatar: null,
@@ -107,6 +111,13 @@ const store = new Vuex.Store({
     },
     SET_TOKEN(state, token) {
       state.user.logged.token = token
+    },
+    SET_TENANT(state, { t, area }) {
+      if (state.user.tId != t) {
+        state.user.tId = t
+        state.user.tTitle = area
+        store.commit('RESET_USERINFO')
+      }
     },
     SET_SESSIONINFO(state, info) {
       state.sessionInfo = info

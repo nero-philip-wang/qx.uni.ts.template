@@ -23,6 +23,7 @@
 <script>
 import { tenant } from '@/apis/modules/home'
 import store from '@/store'
+import { tryLogin, reset } from '@/apis/modules/login'
 
 export default {
   data() {
@@ -39,9 +40,11 @@ export default {
       var list = await tenant()
       this.tenants = list
     },
-    change(tenant) {
+    async change(tenant) {
       store.commit('SET_TENANT', { t: tenant.id, area: tenant.area })
-      this.$goto('/pages/index/index', { way: 'reLaunch' })
+      reset()
+      await tryLogin()
+      uni.reLaunch({ url: '/pages/index/index' })
     },
   },
 }

@@ -2,7 +2,7 @@
   <div>
     <u-navbar safe-area-inset-top placeholder fixed bg-color="#F2F3F7">
       <div slot="left" class="pl-8 py-16 flex text-sm">
-        <span class="icon-c mr-16" @click="$goto('pages/index/tenant')"> &#xe6ac; 南京</span>
+        <span class="icon-c mr-16" @click="$goto('pages/index/tenant')"> &#xe6ac; {{ tTitle }}</span>
         <u-search
           placeholder="请输入关键字"
           :show-action="false"
@@ -77,6 +77,7 @@ import horizontalList from './comp/horizontalList.vue'
 import flow from './comp/flow.vue'
 import { section } from './comp/meta'
 import item from '../cart/comp/cartItem.vue'
+import store from '@/store/'
 
 var p2 = section()
 p2.list.push(...p2.list)
@@ -95,6 +96,11 @@ export default {
       p: { ...section(), height: '320rpx' },
       p2,
     }
+  },
+  computed: {
+    tTitle() {
+      return store.state.user.tTitle
+    },
   },
   async mounted() {},
   beforeCreate() {

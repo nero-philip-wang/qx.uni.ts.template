@@ -1,6 +1,6 @@
 <script>
 import utils from './utils'
-// import { tryLogin } from './apis/modules/login'
+import { tryLogin } from './apis/modules/login'
 // import share from '@/utils/share/index'
 
 export default {
@@ -11,7 +11,7 @@ export default {
   async onLaunch() {
     uni.hideTabBar()
     utils.updateApp()
-    // await tryLogin()
+    await tryLogin()
 
     // var info = wx.getLaunchOptionsSync()
     // if (info.path.indexOf('pages/index/home') == -1) share.getInfo()

@@ -28,15 +28,18 @@
       <!-- 订单 -->
       <Card :title="structofOrder.title" :more="structofOrder.more" :more-href="structofOrder.moreHref" :items="structofOrder.items" />
 
-      <div class="m-24 bg-white rounded">
-        <u-swiper :list="list1" :height="structofBanner.height"></u-swiper>
+      <div class="m-24 bg-white rounded overflow-hidden">
+        <banner :params="list1" />
       </div>
 
       <div class="m-24 bg-white rounded">
         <u-cell-group :border="false">
           <u-cell icon="car" icon-color="#5fcda2" title="地址管理" is-link @click="$goto('pages/consignee/list')"></u-cell>
-          <button open-type="contact" class="u-reset-button w-full text-left ">
-            <u-cell icon="server-man" icon-color="#ee883b" title="联系客服" is-link></u-cell>
+          <button open-type="contact" class="u-reset-button w-full text-left">
+            <u-cell icon="kefu-ermai" icon-color="#ee883b" title="联系客服" is-link></u-cell>
+          </button>
+          <button open-type="contact" class="u-reset-button w-full text-left" send-message-title="售后咨询">
+            <u-cell icon="bag" icon-color="#ee883b" title="售后咨询" is-link></u-cell>
           </button>
         </u-cell-group>
       </div>
@@ -47,9 +50,19 @@
 
 <script>
 import Card from './comp/card.vue'
+import store from '@/store'
+import { all } from '@/apis/modules/asset'
+import { count } from '@/apis/modules/order'
+import Enumerable from 'linq'
+import { toYuan } from '@/utils/index'
+import banner from '../index/comp/banner.vue'
+import { section } from '../index/comp/meta'
+
+var list1 = section()
+list1.height = '160rpx'
 
 export default {
-  components: { Card },
+  components: { Card, banner },
   data() {
     return {
       showTrigger: false,
@@ -58,9 +71,9 @@ export default {
         more: '查看全部',
         moreHref: '',
         items: [
-          { title: '待支付', badge: '1', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
+          { title: '待支付', badge: '0', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
           { title: '待发货', badge: '0', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
-          { title: '待收货', badge: '3', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
+          { title: '待收货', badge: '0', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
           { title: '待评价', badge: '0', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
         ],
       },
@@ -70,35 +83,49 @@ export default {
         items: [
           { title: '余额', value: '1', href: '' },
           // { title: '积分', value: '0', href: '' },
-          { title: '卡券', value: '3', href: '' },
+          { title: '卡券', value: '查看', href: '' },
           { title: '返利', value: '0', href: '' },
         ],
       },
-      list1: [
-        'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-        'https://cdn.uviewui.com/uview/swiper/swiper2.png',
-        'https://cdn.uviewui.com/uview/swiper/swiper3.png',
-      ],
+      list1,
       structofBanner: {
         height: '160rpx',
       },
-      member: {
-        logged: false,
-        nickname: '未登录',
-        desc: '',
-        avatar: '-',
-      },
     }
+  },
+  computed: {
+    member() {
+      console.log(store.state)
+      return store.getters.isLogged
+        ? store.state.user.logged
+        : {
+            nickname: '未登录',
+            desc: '',
+            avatar: '-',
+          }
+    },
+    isLogged() {
+      return store.getters.isLogged
+    },
   },
   beforeCreate() {
     uni.hideTabBar()
   },
+  onLoad() {
+    this.refresh()
+  },
   methods: {
-    refresh() {
+    async refresh() {
       this.showTrigger = true
-      setTimeout(() => {
-        this.showTrigger = false
-      }, 800)
+      var assets = await all()
+      this.structofAsset.items[0].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 23)?.balance ?? '未开通')
+      this.structofAsset.items[2].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 21)?.balance ?? '未开通')
+      var number = await count()
+      this.structofOrder.items[0].value = number.waitForPaying
+      this.structofOrder.items[1].value = number.waitForWarehouseout
+      this.structofOrder.items[2].value = number.waitForReceiving
+      this.structofOrder.items[3].value = number.over
+      this.showTrigger = false
     },
   },
 }
