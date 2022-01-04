@@ -43,6 +43,12 @@
       }
     },
     {
+      "path": "pages/item/list",
+      "style": {
+        "navigationBarTitleText": "搜索"
+      }
+    },
+    {
       "path": "pages/consignee/list",
       "style": {
         "navigationBarTitleText": "收货人列表"

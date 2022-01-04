@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white pb-32">
     <div class="py-32 px-64">
-      <u-search v-model="keyword" placeholder="请输入搜索关键字" @search="search" @custom="search"></u-search>
+      <u-search v-model="keyword" focus clearabled placeholder="请输入搜索关键字" @search="search" @custom="search"></u-search>
     </div>
 
     <div class="px-64">
@@ -65,7 +65,7 @@ export default {
       }
       store.commit('SET_HISTORY', this.keyword) // 保存关键字到历史记录
 
-      this.$goto('/pages/list/result?keywords=' + keyword)
+      this.$goto('/pages/item/list?keyword=' + keyword)
     },
     // 清除历史搜索
     delHistory() {
