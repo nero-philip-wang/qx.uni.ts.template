@@ -75,6 +75,7 @@ const store = new Vuex.Store({
       /** 分销人id */
       sId: null,
     },
+    searchHistory: [],
   }),
   getters: {
     isLogged: (state) => {
@@ -121,6 +122,21 @@ const store = new Vuex.Store({
     },
     SET_SESSIONINFO(state, info) {
       state.sessionInfo = info
+    },
+    SET_HISTORY(state, keyword) {
+      var list = state.searchHistory
+      const index = list.findIndex((item) => item === keyword)
+      if (index > -1) {
+        list.splice(index, 1)
+      }
+      list.unshift(keyword)
+      // 只保存30条记录
+      if (list.length > 30) {
+        list.length = 30
+      }
+    },
+    RESET_HISTORY(state) {
+      state.searchHistory = []
     },
   },
   // modules,
