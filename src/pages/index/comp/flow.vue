@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mx-16 my-8 flex">
+    <div v-if="params.title" class="mx-16 my-8 flex">
       <span>{{ params.title }}</span>
       <span class="text-sm flex-grow ml-16 pt-8 text-gray">{{ params.subtitle }}</span>
       <span class="text-sm pt-8 text-gray">{{ params.moreTip }} ></span>

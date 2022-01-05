@@ -81,10 +81,10 @@ export default {
         title: '我的资产',
         moreHref: '',
         items: [
-          { title: '余额', value: '1', href: '' },
+          { title: '储值', value: '1', href: '/pages/my/balance' },
           // { title: '积分', value: '0', href: '' },
-          { title: '卡券', value: '查看', href: '' },
-          { title: '返利', value: '0', href: '' },
+          { title: '卡券', value: '查看', href: '/pages/my/coupon' },
+          { title: '返利', value: '0', href: '/pages/my/wallet' },
         ],
       },
       list1,
