@@ -43,6 +43,12 @@
       }
     },
     {
+      "path": "pages/my/coupon",
+      "style": {
+        "navigationBarTitleText": "优惠券"
+      }
+    },
+    {
       "path": "pages/cata/index",
       "style": {
         "navigationBarTitleText": "分类"
