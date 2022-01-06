@@ -1,10 +1,9 @@
 <template>
   <div class="app">
     <div class="bg-white">
-      <u-tabs v-model="argvs.status" :list="tabs" line-color="#e30e15"></u-tabs>
+      <u-tabs :list="tabs" line-color="#e30e15" @change="(item) => (argvs.status = item.index)"></u-tabs>
     </div>
-
-    <listview v-model="list" loadmore-enabled :request="search" :argvs="argvs">
+    <listview v-model="list" height="calc(100vh - 88rpx)" loadmore-enabled :request="search" :argvs="argvs">
       <div v-for="(item, index) in list" :key="index" class="mx-32 my-24 bg-white" :class="{ disabled: navCurrent !== 0 }">
         <!-- 上半 -->
         <div class="pt-32 px-40 pb-24 flex">
@@ -63,7 +62,7 @@ export default {
   data() {
     return {
       tabs: [{ name: '可用' }, { name: '已使用' }, { name: '已过期' }],
-      argvs: { status: null },
+      argvs: { status: 0 },
       list: [], // 订单列表
     }
   },

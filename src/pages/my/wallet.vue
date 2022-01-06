@@ -11,23 +11,21 @@
     </div>
 
     <div class="bg-white">
-      <u-tabs :list="tabs" line-color="#e30e15"></u-tabs>
-      <div>
-        <listview v-model="list" loadmore-enabled :argvs="argvs" :request="getrecord">
-          <div v-for="c in list" :key="c.id" class="item flex place-items-center ml-32">
-            <u-avatar v-if="c.direction" bg-color="#FFF7E6" color="#FFC069" icon="red-packet-fill" size="56rpx"></u-avatar>
-            <u-avatar v-else icon="bag-fill" bg-color="#EDFAE0" color="#95DD64" size="56rpx"></u-avatar>
-            <div class="ml-40 flex-grow">
-              <div class="text-base">{{ c.remark }}</div>
-              <div class="text-sm text-gray">{{ c.creationTime | timef }}</div>
-            </div>
-            <div class="text-right mr-32">
-              <div class="text-base">{{ c.value > 0 ? '+' : '' }}{{ c.value | yuan }}</div>
-              <div class="text-sm text-gray">余额 {{ c.balance | yuan }}</div>
-            </div>
+      <u-tabs :list="tabs" line-color="#e30e15" @change="(item) => (argvs.direction = item.value)"></u-tabs>
+      <listview v-model="list" height="calc(100vh - 232rpx - 88rpx)" loadmore-enabled :argvs="argvs" :request="getrecord">
+        <div v-for="c in list" :key="c.id" class="item flex place-items-center ml-32">
+          <u-avatar v-if="c.direction" bg-color="#FFF7E6" color="#FFC069" icon="red-packet-fill" size="56rpx"></u-avatar>
+          <u-avatar v-else icon="bag-fill" bg-color="#EDFAE0" color="#95DD64" size="56rpx"></u-avatar>
+          <div class="ml-40 flex-grow">
+            <div class="text-base">{{ c.remark }}</div>
+            <div class="text-sm text-gray">{{ c.creationTime | timef }}</div>
           </div>
-        </listview>
-      </div>
+          <div class="text-right mr-32">
+            <div class="text-base">{{ c.value > 0 ? '+' : '' }}{{ c.value | yuan }}</div>
+            <div class="text-sm text-gray">余额 {{ c.balance | yuan }}</div>
+          </div>
+        </div>
+      </listview>
     </div>
   </div>
 </template>
@@ -54,10 +52,14 @@ export default {
   },
   data() {
     return {
-      tabs: [{ name: '全部' }, { name: '已获取' }, { name: '已消耗' }],
+      tabs: [
+        { name: '全部', value: null },
+        { name: '已获取', value: 1 },
+        { name: '已消耗', value: 0 },
+      ],
       balance: 0,
       list: [],
-      argvs: { type },
+      argvs: { type, direction: null },
     }
   },
   async created() {

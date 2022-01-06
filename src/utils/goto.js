@@ -15,13 +15,16 @@ const navFunc = { push: uni.navigateTo, replace: uni.redirectTo, reLaunch: uni.r
  */
 function goto(url, { way, appid } = { way: 'push', appid: null }) {
   const isTabBar = tabUrlList.some((item) => {
-    return url.toLocaleLowerCase().indexOf(item) > -1
+    return (url + '').toLocaleLowerCase().indexOf(item) > -1
   })
   const nav = navFunc[way]
 
-  if (url && url[0] !== '/') url = '/' + url
-  // 如果是http的链接
-  if (url.indexOf('http://') > -1 || url.indexOf('https://') > -1) url = webview + encodeURIComponent(url)
+  // 如果不是数字
+  if (isNaN(url)) {
+    if (url && url[0] !== '/') url = '/' + url
+    // 如果是http的链接
+    if (url.indexOf('http://') > -1 || url.indexOf('https://') > -1) url = webview + encodeURIComponent(url)
+  }
 
   // 跳转小程序
   if (appid) {

@@ -1,10 +1,10 @@
 <template>
   <div class="h-page flex-col">
     <div class="px-16 py-16">
-      <u-search placeholder="请输入关键字" :show-action="false" bg-color="#fff" disabled></u-search>
+      <u-search placeholder="请输入关键字" :show-action="false" bg-color="#fff" disabled @click="$goto('pages/item/search')"></u-search>
     </div>
-    <div class="flex-grow flex overflow-hidden">
-      <scroll-view scroll-y scroll-with-animation style="width:180rpx">
+    <div class="flex-grow flex">
+      <scroll-view scroll-y scroll-with-animation class="cata">
         <div
           v-for="(item, i) in cata"
           :key="item.code"
@@ -15,65 +15,52 @@
           {{ item.title }}
         </div>
       </scroll-view>
-      <scroll-view
-        scroll-y
-        scroll-with-animation
-        class="h-full bg-white"
-        style="width:570rpx"
-        @scrolltolower="loadItems(cata[selectedLv1].code, true)"
-      >
-        <item v-for="c in items" :key="c.id" small is-item :value="c"></item>
-      </scroll-view>
+
+      <div class="flex-grow">
+        <listview v-model="items" loadmore-enabled :argvs="argvs" height="calc(100vh - 96rpx - 100rpx)" :request="getItem" manual>
+          <div v-for="c in items" :key="c.id" class="bg-white rounded-sm overflow-hidden mb-16 mx-12">
+            <item is-item :value="c"></item>
+          </div>
+        </listview>
+      </div>
     </div>
     <qx-tabbar value="1" />
   </div>
 </template>
 <script>
+import listview from '@/components/listview'
 import item from '../cart/comp/cartItem.vue'
 import { catalog, item as getItem } from '@/apis/modules/home'
 
 export default {
-  components: { item },
+  components: { item, listview },
   data() {
     return {
       selectedLv1: 0,
       cata: [],
       items: [],
-      paging: {
-        take: 7,
-        skip: 0,
-        hasNext: true,
-      },
+      argvs: { catalogCode: 9999 },
     }
   },
   async created() {
     this.cata = await catalog()
-    await this.loadItems(this.cata && this.cata[0] && this.cata[0].code)
+    this.argvs.catalogCode = this.cata && this.cata[0] && this.cata[0].code
   },
   methods: {
+    getItem,
     async swichMenu(item, idx) {
       if (idx == this.selectedLv1) return
       this.selectedLv1 = idx
-      await this.loadItems(item.code)
-    },
-    async loadItems(code, keepCurrent) {
-      if (!keepCurrent) {
-        this.paging = { take: 7, skip: 0, hasNext: true }
-        this.items = await getItem({ catalogCode: code, ...this.paging })
-        if (this.items.length < this.paging.take) this.paging.hasNext = false
-      } else if (this.paging.hasNext) {
-        this.paging.skip += this.paging.take
-        var list = await getItem({ catalogCode: code, ...this.paging })
-        if (list.length < this.paging.take) this.paging.hasNext = false
-        this.items = [...this.items, ...list]
-      }
+      this.argvs.catalogCode = item.code
     },
   },
 }
 </script>
 <style scoped>
-.h-page {
-  /* background: #f8f8f7; */
+.cata {
+  width: 180rpx;
+  height: calc(100vh - 96rpx - 100rpx);
+  background: #f8f8f7;
 }
 .lv1_item {
   height: 100rpx;
@@ -82,7 +69,6 @@ export default {
   text-align: center;
   padding: 36rpx 0;
   border-left: #f5f5f5 solid 8rpx;
-  background: #f8f8f7;
   color: #969799;
 }
 .lv1_item.active {

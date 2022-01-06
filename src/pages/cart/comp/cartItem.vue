@@ -7,7 +7,7 @@
       </u-checkbox-group>
     </div>
     <!-- 图片 -->
-    <div>
+    <div class="rounded-sm overflow-hidden">
       <u--image show-loading :src="value.cover | thumbnail" :width="height" :height="height"></u--image>
     </div>
     <!-- 右侧文本 -->

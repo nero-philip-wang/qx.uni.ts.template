@@ -7,15 +7,20 @@
     enable-back-to-top
     @scrolltolower="loadmore"
   >
-    <slot :data="value"></slot>
-    <u-loadmore v-if="loadmoreEnabled" :status="hasNext ? loading : nomore" />
+    <slot v-if="value && value.length" :data="value"></slot>
+    <div v-else-if="!hasNext" class="my-32">
+      <u-empty mode="data" text="没有更多数据"></u-empty>
+    </div>
+    <div v-if="(value && value.length) || hasNext" class="my-24">
+      <u-loadmore v-if="loadmoreEnabled" :status="hasNext ? loading : nomore" />
+    </div>
   </scroll-view>
 </template>
 <script>
 var loading = 'loading'
 var nomore = 'nomore'
 var paging = {
-  take: 12,
+  take: 10,
   skip: 0,
 }
 
@@ -45,6 +50,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    manual: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -62,9 +71,16 @@ export default {
         if (!v) this.hasNext = false
       },
     },
+    argvs: {
+      deep: true,
+      async handler(v) {
+        this.hasNext = true
+        await this.loadmore()
+      },
+    },
   },
-  async created() {
-    await this.loadmore()
+  async mounted() {
+    if (!this.manual) await this.loadmore()
   },
   methods: {
     async loadmore() {
@@ -73,6 +89,7 @@ export default {
 
       this.$emit('loadmore')
       if (this.request) {
+        // debugger
         if (JSON.stringify(this.oldargvs) != JSON.stringify(this.argvs)) {
           // 参数改变，重置分页
           this.paging = { ...paging }

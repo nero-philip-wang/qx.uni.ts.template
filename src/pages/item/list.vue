@@ -1,20 +1,20 @@
 <template>
-  <div class="flex flex-col h-page">
-    <div class="bg-white py-16 px-48">
-      <u-search v-model="argvs.keywords" :show-action="false" disabled placeholder="请输入搜索关键字" @click="$goto('-1')"></u-search>
+  <div>
+    <div class="bg-white py-16 px-48 mb-24">
+      <u-search v-model="argvs.keywords" :show-action="false" disabled placeholder="请输入搜索关键字" @click="$goto(-1)"></u-search>
     </div>
     <listview
-      v-if="list.length || loading"
       v-model="list"
       loadmore-enabled
       :argvs="argvs"
-      height="100%"
+      height="calc(100vh - 64rpx - 32rpx - 24rpx)"
       :request="getItem"
       class="flex-grow mt-16"
     >
-      <item v-for="c in list" :key="c.id" small is-item :value="c"></item>
+      <div v-for="c in list" :key="c.id" class="bg-white rounded-sm overflow-hidden my-16 mx-12">
+        <item is-item :value="c"></item>
+      </div>
     </listview>
-    <u-empty v-else mode="search" />
   </div>
 </template>
 
@@ -27,7 +27,6 @@ export default {
   components: { listview, item },
   data() {
     return {
-      loading: true,
       list: [],
       argvs: {
         keywords: '',
