@@ -24,6 +24,13 @@
   justify-content: center;
 }
 
+.flex-end {
+  align-items: flex-end;
+}
+.align-center {
+  align-items: center;
+}
+
 /* y方向居中 */
 .place-items-center {
   place-items: center;

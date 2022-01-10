@@ -1,5 +1,5 @@
 <template>
-  <div class="flex px-32 py-16 place-items-center bg-white" style="z-index:100">
+  <div class="flex px-32 py-16 place-items-center bg-white" style="z-index:100" @click="$goto('/pages/item/detail?id=' + value.id)">
     <!-- 勾选 -->
     <div v-if="showCheckbox" class="flex place-items-center pr-16" :style="{ height }" @click="checkedTriggle">
       <u-checkbox-group v-model="checkedValue" @change="checkedTriggle">

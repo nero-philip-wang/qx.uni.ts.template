@@ -12531,10 +12531,10 @@ uuid@^3.3.2, uuid@^3.4.0:
   resolved "https://registry.npmmirror.com/uuid/download/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha1-sj5DWK+oogL+ehAK8fX4g/AgB+4=
 
-uview-ui@^2.0.17:
-  version "2.0.17"
-  resolved "https://registry.npmmirror.com/uview-ui/download/uview-ui-2.0.17.tgz#11af3f3f667248f0852871f2c9ba08eb7430b5aa"
-  integrity sha512-2EuLNwkMO25Aj9m5yntrMDolduHG+sk7BrfYiNXjZw75JEdBC4EX+YQGqBhx11bsVyp/eN2EFLR5cLGy7TLcDg==
+uview-ui@^2.0.19:
+  version "2.0.19"
+  resolved "https://registry.npmmirror.com/uview-ui/download/uview-ui-2.0.19.tgz#52637b782ebda3d6a8d5b10de12c760e8bbae8e1"
+  integrity sha512-ddZiaP7R9wsUxMzAuhuXgh5OswgCm2lKuulTqjnRXFr0uUWsgL1iBifU3GbOwpwP0LtTHKJOo9rYv1LP0WXmzA==
 
 v8-compile-cache@^2.0.3, v8-compile-cache@^2.3.0:
   version "2.3.0"

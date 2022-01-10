@@ -26,10 +26,12 @@
   background-color: #f5222d;
 }
 
+.rounded-full {
+  border-radius: 9999rpx;
+}
 .rounded {
   border-radius: 16rpx;
 }
-
 .rounded-sm {
   border-radius: 8rpx;
 }
