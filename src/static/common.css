@@ -31,6 +31,8 @@ button[class*='icon-'] {
   font-style: normal;
 }
 
+div,
+span,
 view,
 scroll-view,
 swiper,
