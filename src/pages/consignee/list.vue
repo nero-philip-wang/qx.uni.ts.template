@@ -36,6 +36,7 @@
 <script>
 import { search, del } from '@/apis/modules/consignee'
 // import { setConsignee } from '@/apis/modules/billing'
+import easyState from '@/store/easyState'
 
 export default {
   data() {
@@ -61,6 +62,7 @@ export default {
     // 选择地址
     onSelect(item) {
       if (this.isChooseMode) {
+        easyState.address = item
         // setConsignee(item)
         this.$goto(-1)
       } else {

@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="text-lg my-16 mx-32">
-      <span class="text-black-38">已取消</span>
+      <span class="text-black-38">{{ data.status | orderstatus }}</span>
       <span class="text-gray ml-4 text-lg">></span>
     </div>
     <!-- 物流信息 -->
@@ -20,7 +20,7 @@
         <div class="flex-grow">
           <div>工龄</div>
           <div class="u-main-color">
-            {{ ((Date.now() - Date.parse(data.provider.entryTime)) / 1000 / 3600 / 24 / 30).toFixed(1) }}个月
+            {{ ((Date.now() - Date.parse(data.provider.entryTime)) / 1000 / 3600 / 24 / 30 || 12).toFixed(1) }}个月
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
     <div v-if="data.items && data.items.length" class="rounded-sm my-16 bg-white">
       <product-list v-for="item in data.items" :key="item.id" small :value="item"></product-list>
       <!-- 价格信息 -->
-      <div class="text-black-38 text-base lineh-180p px-32 py-16">
+      <div class="text-black-38 text-base lineh-200p px-32 py-16">
         <div class="flex">
           <text class=" flex-grow">商品金额</text>
           <text>￥{{ data.itemAmount || 0 | yuan }}</text>

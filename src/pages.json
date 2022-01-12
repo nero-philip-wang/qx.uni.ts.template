@@ -86,6 +86,12 @@
       }
     },
     {
+      "path": "pages/order/create",
+      "style": {
+        "navigationBarTitleText": "结算"
+      }
+    },
+    {
       "path": "pages/order/list",
       "style": {
         "navigationBarTitleText": "订单列表"

@@ -6,7 +6,12 @@
       </u-sticky>
     </div>
     <listview v-model="list" loadmore-enabled :request="search" :argvs="argvs" height="calc(100vh - 88rpx)">
-      <div v-for="order in list" :key="order.id" class="bg-white rounded-sm mx-24 my-16 text-base">
+      <div
+        v-for="order in list"
+        :key="order.id"
+        class="bg-white rounded-sm mx-24 my-16 text-base"
+        @click="$goto('pages/order/detail?id=' + order.id)"
+      >
         <div class="header flex bb-1 px-24 pt-20 pb-12">
           <span class="flex-grow text-sm text-gray"> {{ order.creationTime | timef }}</span>
           <span class="text-primary">{{ order.status | orderstatus }}</span>
