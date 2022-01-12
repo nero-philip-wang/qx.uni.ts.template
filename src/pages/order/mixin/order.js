@@ -2,6 +2,24 @@ import { cancel, getpay, apay, minpay } from '@/apis/modules/billing'
 import { receipt } from '@/apis/modules/order.js'
 
 export default {
+  filters: {
+    orderstatus: (status) => {
+      switch (status) {
+        case 1:
+          return '待支付'
+        case 2:
+          return '待派单'
+        case 3:
+          return '待上门'
+        case 4:
+          return '待评价'
+        case 5:
+          return '已完成'
+        case -1:
+          return '已取消'
+      }
+    },
+  },
   methods: {
     gopay(order) {
       this.$goto(`/pages/order/pay?orderId=${order.id}&amount=${order.unPaidAmount}`)
