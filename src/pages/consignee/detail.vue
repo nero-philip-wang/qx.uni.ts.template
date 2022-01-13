@@ -36,8 +36,9 @@
 </template>
 
 <script>
-import { get, create, update } from '@/apis/modules/consignee'
-import file from './pca-code.json'
+import { get, create, update, pca } from '@/apis/modules/consignee'
+// import file from './pca-code.json'
+var file = []
 
 var rules = {
   name: {
@@ -90,6 +91,8 @@ export default {
     if (this.id) {
       this.data = await get(options.id)
     }
+    // 获取省市县
+    file = pca()
   },
   methods: {
     async submit() {

@@ -11,3 +11,6 @@ export const update = (dto) => request('mall/consignees/' + dto.id, 'put', dto)
 export const del = (id) => {
   return request('mall/consignees/' + id, 'delete')
 }
+
+const pcaurl = 'http://s.re4.top/asset/pca-code.json'
+export const pca = () => request(pcaurl, 'get')

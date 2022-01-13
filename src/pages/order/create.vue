@@ -18,7 +18,7 @@
       <!-- 选择时间 -->
       <div class="py-8">
         <u-cell-group :border="false">
-          <u-cell title="上门时间" :border="false" :value="selectDate ? selectDate : ''"> </u-cell>
+          <u-cell title="上门时间" :border="false" :value="selectDate ? selectDate : ''" is-link @click="showTime = true"> </u-cell>
         </u-cell-group>
       </div>
     </div>
@@ -74,6 +74,7 @@
       </div>
     </bottomBar>
 
+    <timePicker v-model="selectDate" :show.sync="showTime" />
     <!-- 优惠券弹窗 -->
     <coupon-select ref="couponSelect" :list="order.coupons" @confirm="onCheckCoupon"></coupon-select>
   </div>
@@ -82,6 +83,7 @@
 <script>
 import productList from '../cart/comp/cartItem.vue'
 import couponSelect from './components/coupon-select.vue'
+import timePicker from './comp/time-picker.vue'
 // import timeSelector from '@/components/xiujun-time-selector/index.vue'
 import { mapState } from 'vuex'
 import { settle, create, setItems } from '@/apis/modules/billing'
@@ -95,6 +97,7 @@ export default {
     couponSelect,
     bottomBar,
     // timeSelector,
+    timePicker,
   },
   mixins: [OrderMixin],
   data() {
@@ -110,7 +113,7 @@ export default {
       payTotal: 0, // 支付价格
       fullReductionMoney: 0, // 满减金额
       showTime: false,
-      selectDate: '',
+      selectDate: null,
       selectedCoupons: [],
       order: {},
       inputs: {
