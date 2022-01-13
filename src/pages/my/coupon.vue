@@ -4,51 +4,7 @@
       <u-tabs :list="tabs" line-color="#e30e15" @change="(item) => (argvs.status = item.index)"></u-tabs>
     </div>
     <listview v-model="list" height="calc(100vh - 88rpx)" loadmore-enabled :request="search" :argvs="argvs">
-      <div v-for="(item, index) in list" :key="index" class="mx-32 my-24 bg-white" :class="{ disabled: navCurrent !== 0 }">
-        <!-- 上半 -->
-        <div class="pt-32 px-40 pb-24 flex">
-          <div class="left pt-8">
-            <div class="text-lg truncate">{{ item.title }} </div>
-            <div class="text-gray text-sm mt-16">{{ item.startTime | datef }} - {{ item.endTime | datef }} </div>
-          </div>
-          <div class="right">
-            <div class="text-price">
-              <span v-if="item.minus">{{ item.minus | yuan }}元</span>
-              <span v-else-if="item.discount == 0">
-                免费
-              </span>
-              <span v-else>
-                {{ (item.discount * 10).toFixed(1).endsWith('.0') ? (item.discount * 10).toFixed(0) : (item.discount * 10).toFixed(1) }} 折
-              </span>
-            </div>
-            <div class="text-gray text-sm mt-16">
-              <span v-if="item.quantityCondition">满{{ item.quantityCondition }}件可用</span>
-              <span v-else>满{{ item.amountCondition || 0 | yuan }}元可用</span>
-            </div>
-          </div>
-        </div>
-        <!-- 分隔 -->
-        <div class="divider flex">
-          <div class="rounded hole"></div>
-          <div class="flex-grow border"></div>
-          <div class="rounded hole"></div>
-        </div>
-        <!-- 下半 -->
-        <div class="px-40 p-24 flex">
-          <div class="text-gray desc" @click="trigger(item)">
-            <div class="flex text-base">
-              <span class="mr-16">使用说明</span>
-              <u-icon name="arrow-down" size="28rpx"></u-icon>
-            </div>
-            <div v-show="item.image" class="text-sm mt-16">
-              {{ item.description || '无' }}
-            </div>
-          </div>
-
-          <div v-if="item.isAllItems" class="text-gray text-base">全场商品可用</div>
-          <div v-else class="text-gray text-base">部分商品可用</div>
-        </div>
-      </div>
+      <coupon v-for="(item, index) in list" :key="index" :item="item"> </coupon>
     </listview>
   </div>
 </template>
@@ -56,9 +12,10 @@
 <script>
 import { search } from '@/apis/modules/coupon'
 import listview from '@/components/listview'
+import coupon from './comp/coupon-card.vue'
 
 export default {
-  components: { listview },
+  components: { listview, coupon },
   data() {
     return {
       tabs: [{ name: '可用' }, { name: '已使用' }, { name: '已过期' }],

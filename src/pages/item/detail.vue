@@ -122,6 +122,7 @@ import sku from './comp/sku' // 页面头
 import { get as getitem } from '@/apis/modules/item'
 import { setItems } from '@/apis/modules/billing'
 import { mapMutations, mapState, mapGetters } from 'vuex'
+import easyState from '@/store/easyState'
 
 export default {
   components: {
@@ -150,7 +151,7 @@ export default {
       tenantId: (state) => state.user.tenantId,
       area: (state) => state.user.tenantArea,
     }),
-    ...mapGetters(['showRebate']),
+    ...mapGetters(['showRebate', 'isLogged']),
   },
   onLoad(options) {
     this.id = options.id
@@ -240,20 +241,19 @@ export default {
     },
     // 立即购买
     buyNow(selected) {
-      console.log(selected)
       // 万一什么都没选中
       if (!selected) {
         return
       }
       // 判断用户登录状态
-      if (!this.userId) {
+      if (!this.isLogged) {
         this.$goto('pages/login/login')
         return
       }
       // 保存到store
-      setItems([{ ...selected, spu: this.data }])
+      easyState.items = [{ ...selected, spu: this.data, itemId: selected.id }]
       // 跳转结算
-      this.hidePopup('skuPopup')
+      this.showSku = false
       this.$goto('/pages/order/create')
     },
     // 设置当前选择sku

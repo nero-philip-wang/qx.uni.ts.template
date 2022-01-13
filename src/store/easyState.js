@@ -8,7 +8,7 @@ const store = Object.assign(
       a: '请下载最新版',
     },
     address: null,
-    items: null,
+    items: [],
   }
 )
 export default store

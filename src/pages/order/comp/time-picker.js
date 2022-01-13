@@ -60,7 +60,6 @@ export default {
       }
       buff.push({ title: getDate(t), children: timeofday })
     }
-    console.log(buff)
     return buff
   },
 }

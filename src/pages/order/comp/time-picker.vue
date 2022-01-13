@@ -1,5 +1,5 @@
 <template>
-  <page-container :show="show" position="bottom" @afterleave="$emit('update:show', false)">
+  <div v-if="show">
     <div class="py-16 text-center text-bold">
       选择预计上门时间
     </div>
@@ -29,7 +29,7 @@
         </div>
       </scroll-view>
     </div>
-  </page-container>
+  </div>
 </template>
 
 <script>

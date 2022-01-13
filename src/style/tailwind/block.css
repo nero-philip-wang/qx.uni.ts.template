@@ -25,6 +25,9 @@
 .bg-primary {
   background-color: #f5222d;
 }
+.bg-f0 {
+  background-color: #f0f0f0;
+}
 
 .rounded-full {
   border-radius: 9999rpx;

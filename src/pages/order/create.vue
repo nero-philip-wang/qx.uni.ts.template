@@ -38,10 +38,21 @@
           <text class=" flex-grow">订单促销</text>
           <text>-￥{{ -order.promotionDiscount || 0 | yuan }}</text>
         </div>
-        <div class="flex">
+        <div class="flex" @click="showCoupon = true">
           <u-tag text="券" size="mini" type="error"></u-tag>
           <text class="flex-grow">优惠券</text>
-          <text>-￥{{ -order.couponDiscount || 0 | yuan }}</text>
+
+          <text v-if="order.coupons && order.coupons.length > 0" class="price red" style="font-weight: normal;">
+            可用{{ order.coupons.length }}张
+          </text>
+          <text
+            v-if="!(order.coupons && order.coupons.length > 0) && !(order.selectedCoupons && order.selectedCoupons.length > 0)"
+            class="price disabled"
+          >
+            暂无可用
+          </text>
+
+          <text v-if="order.couponDiscount">-￥{{ -order.couponDiscount || 0 | yuan }}</text>
         </div>
 
         <div class="flex">
@@ -69,24 +80,34 @@
           <span class="text-price text-bold">￥{{ order.orderAmount || 0 | yuan }}</span>
         </div>
         <div class="">
-          <u-button :custom-style="{ padding: '0 40rpx' }" shape="circle" size="small" type="primary" text="提交订单"></u-button>
+          <u-button
+            :disabled="!order.id"
+            :custom-style="{ padding: '0 40rpx' }"
+            shape="circle"
+            size="small"
+            type="primary"
+            text="提交订单"
+            @click="createOrder"
+          ></u-button>
         </div>
       </div>
     </bottomBar>
 
-    <timePicker v-model="selectDate" :show.sync="showTime" />
-    <!-- 优惠券弹窗 -->
-    <coupon-select ref="couponSelect" :list="order.coupons" @confirm="onCheckCoupon"></coupon-select>
+    <page-container :show="showTime || showCoupon" position="bottom" @afterleave=";(showTime = false), (showCoupon = false)">
+      <timePicker v-model="selectDate" :show.sync="showTime" />
+      <!-- 优惠券弹窗 -->
+      <couponPicker :show.sync="showCoupon" :data="order.coupons" />
+    </page-container>
   </div>
 </template>
 
 <script>
 import productList from '../cart/comp/cartItem.vue'
-import couponSelect from './components/coupon-select.vue'
 import timePicker from './comp/time-picker.vue'
-// import timeSelector from '@/components/xiujun-time-selector/index.vue'
+import couponPicker from './comp/coupon-picker.vue'
+
 import { mapState } from 'vuex'
-import { settle, create, setItems } from '@/apis/modules/billing'
+import { settle, create } from '@/apis/modules/billing'
 import OrderMixin from './mixin/order.js'
 import bottomBar from './comp/bottom-bar.vue'
 import easyState from '@/store/easyState'
@@ -94,9 +115,8 @@ import easyState from '@/store/easyState'
 export default {
   components: {
     productList,
-    couponSelect,
     bottomBar,
-    // timeSelector,
+    couponPicker,
     timePicker,
   },
   mixins: [OrderMixin],
@@ -114,10 +134,12 @@ export default {
       fullReductionMoney: 0, // 满减金额
       showTime: false,
       selectDate: null,
+      showCoupon: false,
       selectedCoupons: [],
       order: {},
       inputs: {
         consignee: {},
+        items: [],
       },
     }
   },
@@ -144,6 +166,9 @@ export default {
     selectDate() {
       this.trySettle()
     },
+    inputs() {
+      this.trySettle()
+    },
   },
   onLoad(options) {
     // if (options.type === 'cart') {
@@ -155,68 +180,139 @@ export default {
   },
   onShow() {
     this.inputs.consignee = Object.assign({}, easyState.address)
-    this.inputs.items = Object.assign({}, easyState.items)
-    console.log(this.inputs)
-    // var hasItem = this.inOrder.items && this.inOrder.items.length
-    // // 非空购物车就结算
-    // if (hasItem) this.trySettle()
-    // // 空购物车就放弃并返回前一页
-    // else this.$goto(-1)
+    this.inputs.items = [...easyState.items]
+    // this.inputs.consignee = {
+    //   id: '4',
+    //   userId: null,
+    //   memberId: '4',
+    //   name: '戴超',
+    //   mobile: '17092559564',
+    //   postCode: 460105,
+    //   address: '海南省 海口市 秀英区 海港北路 海口港轮渡码头',
+    //   room: '2075',
+    //   position: { y: 20.022045, x: 110.28318, srid: 4326 },
+    //   idNumber: null,
+    //   isDefault: false,
+    // }
+
+    // this.inputs.items = [
+    //   {
+    //     id: '131',
+    //     title: '焕新套餐 ',
+    //     tenantId: '1000',
+    //     code: null,
+    //     barCode: null,
+    //     cover: 'https://s.re4.top/upload/unimall/item/covers/ABBC63uXjBQ=.jpg',
+    //     spuAttr: {},
+    //     weight: 0,
+    //     retailPrice: 59900,
+    //     cost: null,
+    //     stockQuantity: 9733,
+    //     quantity: 1,
+    //     spu: {
+    //       rebate: {
+    //         details: { rate: 0.07, amountCondition: 1 },
+    //         id: '1',
+    //         type: 1,
+    //         title: '笔笔返',
+    //         subTitle: '笔笔返',
+    //         description: null,
+    //         cover: null,
+    //         image: null,
+    //         start: '2021-07-01T19:40:45+08:00',
+    //         end: '2022-07-31T19:40:56+08:00',
+    //         enabled: true,
+    //         isHot: false,
+    //         sort: 100,
+    //         isAllItems: true,
+    //         includeItems: [],
+    //       },
+    //       rating: { all: 2, rating: '100%' },
+    //       id: '151',
+    //       freightTemplate: {
+    //         id: '1',
+    //         enabledDeliveryType: 15,
+    //         title: '海口默认',
+    //         isFree: false,
+    //         details: [{ id: '1', deliveryType: 15, areas: [4601], fee: 0, freeCondition: 0, canDeliver: true }],
+    //       },
+    //       title: '焕新套餐',
+    //       subTitle: null,
+    //       description: '1月10号到1月31号大扫除火热预订中',
+    //       tags: [],
+    //       specifications: [],
+    //       type: 3,
+    //       canAddCart: false,
+    //       covers: ['https://s.re4.top/upload/unimall/item/covers/ABBC63uXjBQ=.jpg'],
+    //       cover: 'https://s.re4.top/upload/unimall/item/covers/ABBC63uXjBQ=.jpg',
+    //       video: null,
+    //       content: ['https://s.re4.top/upload/unimall/item/content/ABDCRu9vcxQ=.jpg'],
+    //       brand: null,
+    //       origin: null,
+    //       catalogCode: 2,
+    //       tenantId: '1000',
+    //       status: true,
+    //       markingPrice: 98800,
+    //       minRetailPrice: 59900,
+    //       freightTemplateId: '1',
+    //       unit: null,
+    //       sort: 8888,
+    //       skus: [
+    //         {
+    //           id: '131',
+    //           title: '焕新套餐 ',
+    //           tenantId: '1000',
+    //           code: null,
+    //           barCode: null,
+    //           cover: 'https://s.re4.top/upload/unimall/item/covers/ABBC63uXjBQ=.jpg',
+    //           spuAttr: {},
+    //           weight: 0,
+    //           retailPrice: 59900,
+    //           cost: null,
+    //           stockQuantity: 9733,
+    //         },
+    //       ],
+    //     },
+    //     itemId: '131',
+    //   },
+    // ]
+
+    var hasItem = this.inputs.items && this.inputs.items.length
+    // 非空购物车就结算
+    if (hasItem) this.trySettle()
+    // 空购物车就放弃并返回前一页
+    else this.$goto(-1)
   },
   methods: {
     async trySettle() {
-      var needDate = !(this.inOrder.items && this.inOrder.items[0].spu.type == 3) || this.selectDate
-      if (this.inOrder.consignee && this.inOrder.consignee.mobile && needDate) {
+      var needDate = !(this.inputs.items && this.inputs.items[0].spu.type == 3) || this.selectDate
+      if (this.inputs.consignee && this.inputs.consignee.mobile && needDate) {
         try {
           this.order = await settle({
-            ...this.inOrder,
-            buyerRemark: this.selectDate,
+            ...this.inputs,
+            buyerRemark: `${this.selectDate} ${this.remarks}`,
             selectedCoupons: this.selectedCoupons,
           })
-          console.log(this.order, 'order')
+          console.log(this.order, '结算成功')
         } catch (error) {
-          console.log(error, 'error')
+          this.order = {}
+          console.log(error, '结算失败')
         }
       }
     },
     // 创建订单
     async createOrder() {
       if (this.order && this.order.id && this.order.items) {
-        this.order.buyerRemark = this.selectDate + '   ' + this.remarks
-        await create(this.order)
-        this.gopay(this.order)
-        setItems([])
+        try {
+          await create(this.order)
+          this.gopay(this.order)
+          easyState.items = []
+        } catch (error) {
+          uni.showToast({ title: '订单创建繁忙，请稍后再试', icon: 'none', position: 'bottom', duration: 2000, mask: true })
+        }
       } else {
         uni.showToast({ title: '请选择上门时间和地址', icon: 'none', position: 'bottom', duration: 2000, mask: true })
       }
-      // this.$util.throttle(async () => {
-      //   if (!this.addr._id) {
-      //     this.$util.msg('请选择收货地址')
-      //     return
-      //   }
-      //   this.isLoading = true
-      //   const data = this.getCreateData()
-      //   const operation = this.createType === 'cart' ? 'addByCart' : 'addBuyNow'
-      //   const res = await this.$request('order', operation, data)
-      //   this.isLoading = false
-      //   console.log(JSON.parse(JSON.stringify(res)))
-      //   if (res.status === 1) {
-      //     if (this.createType === 'cart') {
-      //       uni.$emit('refreshCart') // 刷新购物车
-      //       this.$store.dispatch('getCartCount') // 刷新购物车数量个
-      //     }
-      //     uni.redirectTo({
-      //       url:
-      //         '/pages/wallet/pay?data=' +
-      //         JSON.stringify({
-      //           sourcePage: 'createOrder',
-      //           ...res.data,
-      //         }),
-      //     })
-      //   } else {
-      //     this.$util.msg(res.msg)
-      //   }
-      // })
     },
     // 获取创建订单参数
     getCreateData() {
