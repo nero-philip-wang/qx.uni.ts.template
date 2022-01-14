@@ -4,7 +4,10 @@
       选择优惠券
     </div>
     <scroll-view scroll-y class="dialog">
-      <coupon v-for="(item, index) in list" :key="index" :item="item" checkable :checked.sync="item.checked"> </coupon>
+      <coupon v-for="(item, index) in selected" :key="index" :item="item" checkable :checked.sync="item.checked" @update:checked="change">
+      </coupon>
+      <coupon v-for="(item, index) in list" :key="index" :item="item" checkable :checked.sync="item.checked" @update:checked="change">
+      </coupon>
     </scroll-view>
   </div>
 </template>
@@ -23,9 +26,15 @@ export default {
       type: Array,
       default: () => [],
     },
+    value: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
-    return {}
+    return {
+      selected: [],
+    }
   },
   computed: {
     list() {
@@ -38,7 +47,16 @@ export default {
       } else return []
     },
   },
-  methods: {},
+  methods: {
+    change() {
+      this.selected = [...this.selected, ...this.data].filter((c) => c.checked)
+
+      this.$emit(
+        'input',
+        this.selected.map((c) => c.id)
+      )
+    },
+  },
 }
 </script>
 

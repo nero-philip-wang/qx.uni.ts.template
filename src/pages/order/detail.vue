@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="text-lg my-16 mx-32">
-      <span class="text-black-38">{{ data.status | orderstatus }}</span>
+      <span class="text-gray">{{ data.status | orderstatus }}</span>
       <span class="text-gray ml-4 text-lg">></span>
     </div>
     <!-- 物流信息 -->
@@ -43,12 +43,12 @@
           <text class=" flex-grow">商品金额</text>
           <text>￥{{ data.itemAmount || 0 | yuan }}</text>
         </div>
-        <div class="flex">
+        <div class="flex align-center">
           <u-tag text="促" size="mini" type="warning"></u-tag>
           <text class=" flex-grow">订单促销</text>
           <text>-￥{{ -data.promotionDiscount || 0 | yuan }}</text>
         </div>
-        <div class="flex">
+        <div class="flex align-center">
           <u-tag text="券" size="mini" type="error"></u-tag>
           <text class="flex-grow">优惠券</text>
           <text>-￥{{ -data.couponDiscount || 0 | yuan }}</text>
