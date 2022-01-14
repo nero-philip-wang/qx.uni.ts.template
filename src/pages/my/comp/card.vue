@@ -9,9 +9,10 @@
       <template v-for="c in items">
         <div :key="c.title" class="flex-grow" @click="c.href && $goto(c.href)">
           <!-- 数值或图片 -->
-          <div v-if="c.icon" class="text-xl text-primary mb-16 bolder relative w-52 block-center">
+          <div v-if="c.icon" class="text-xl text-primary mb-16 relative w-52 block-center">
             <u-badge type="primary" absolute :offset="[-10, -15]" :value="c.badge"></u-badge>
-            <image mode="aspectFill" class="w-52 h-52" :src="c.icon" />
+            <div v-if="c.icon && c.icon.includes('qx-')" class="qxfont w-52 h-52 text-icon" :class="c.icon"></div>
+            <image v-else mode="aspectFill" class="w-52 h-52" :src="c.icon" />
           </div>
           <div v-else class="text-xl text-primary mb-16 bolder">{{ c.value || 0 }}</div>
           <!-- 项目名称 -->
@@ -55,3 +56,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.text-icon {
+  font-size: 48rpx;
+}
+</style>

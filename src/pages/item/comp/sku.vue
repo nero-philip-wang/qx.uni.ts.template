@@ -163,11 +163,11 @@ export default {
     border-color: #e0e0e0;
   }
   &.active {
-    color: $base-color;
-    background-color: rgba($base-color, 0.03);
+    color: $uni-color-primary;
+    background-color: rgba($uni-color-primary, 0.03);
 
     &:after {
-      border-color: rgba($base-color, 0.5);
+      border-color: rgba($uni-color-primary, 0.5);
     }
   }
   &.disabled {

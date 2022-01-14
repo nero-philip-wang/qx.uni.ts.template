@@ -17,10 +17,10 @@
 
     <div class="flex-grow pl-32 pr-16 flex">
       <div class="pr-24 btn">
-        <u-button plain type="primary" text="加入购物车"></u-button>
+        <u-button plain type="primary" text="加入购物车" :custom-style="{ height: '72rpx', borderRadius: '0' }"></u-button>
       </div>
       <div class="btn">
-        <u-button type="primary" text="立即购买"></u-button>
+        <u-button type="primary" text="立即购买" :custom-style="{ height: '72rpx', borderRadius: '0' }"></u-button>
       </div>
     </div>
   </div>

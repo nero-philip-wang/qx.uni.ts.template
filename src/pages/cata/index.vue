@@ -56,7 +56,7 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 .cata {
   width: 180rpx;
   height: calc(100vh - 96rpx - 100rpx);
@@ -72,7 +72,7 @@ export default {
   color: #969799;
 }
 .lv1_item.active {
-  border-left: #b50006 solid 8rpx;
+  border-left: $u-primary-dark solid 8rpx;
   background: #ffffff;
   color: #1b1b1b;
 }

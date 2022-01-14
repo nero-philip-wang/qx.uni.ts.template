@@ -20,7 +20,7 @@
           </div>
         </div>
 
-        <div class="bg-primary absolute" style="height:330rpx;width:100%;top:0;left:0;z-index:-1"></div>
+        <div class="bg-primary absolute"></div>
       </div>
 
       <!-- 资产 -->
@@ -69,12 +69,12 @@ export default {
       structofOrder: {
         title: '我的订单',
         more: '查看全部',
-        moreHref: '',
+        moreHref: '/pages/order/list',
         items: [
-          { title: '待支付', badge: '0', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
-          { title: '待发货', badge: '0', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
-          { title: '待收货', badge: '0', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
-          { title: '待评价', badge: '0', icon: 'https://cdn.uviewui.com/uview/album/1.jpg', href: '' },
+          { title: '待支付', badge: '0', icon: 'qx-daifukuan', href: '/pages/order/list?status=1' },
+          { title: '待发货', badge: '0', icon: 'qx-daifahuo', href: '/pages/order/list?status=2' },
+          { title: '待收货', badge: '0', icon: 'qx-daishouhuo', href: '/pages/order/list?status=3' },
+          { title: '待评价', badge: '0', icon: 'qx-yiwancheng', href: '/pages/order/list?status=4' },
         ],
       },
       structofAsset: {
@@ -130,3 +130,13 @@ export default {
   },
 }
 </script>
+<style scoped>
+.bg-primary {
+  height: 330rpx;
+  width: 140%;
+  top: 0;
+  left: -20%;
+  z-index: -1;
+  border-radius: 0 0 50% 50%;
+}
+</style>

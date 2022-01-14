@@ -8,9 +8,8 @@ import goto from './utils/goto' // goto
 
 Vue.prototype.$goto = goto // goto
 Vue.prototype.$store = store // store
-Vue.prototype.$style = {
-  textPriceColor: '#ca0007',
-}
+
+uni.$u.props.checkbox.activeColor = '#34bc98'
 
 // 寄存器全局实用程序过滤器
 Object.keys(filters).forEach((key) => {

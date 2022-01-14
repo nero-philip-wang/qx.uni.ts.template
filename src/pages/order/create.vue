@@ -168,7 +168,6 @@ export default {
         try {
           this.order = await settle({
             ...this.inputs,
-            buyerRemark: `${this.selectDate} ${this.inputs.buyerRemark}`,
           })
           console.log(this.order, '结算成功')
         } catch (error) {
@@ -181,7 +180,7 @@ export default {
     async createOrder() {
       if (this.order && this.order.id && this.order.items) {
         try {
-          await create(this.order)
+          await create({ ...this.order, buyerRemark: `${this.selectDate} ${this.inputs.buyerRemark}` })
           this.gopay(this.order)
           easyState.items = []
         } catch (error) {
