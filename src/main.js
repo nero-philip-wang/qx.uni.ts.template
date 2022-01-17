@@ -9,7 +9,12 @@ import goto from './utils/goto' // goto
 Vue.prototype.$goto = goto // goto
 Vue.prototype.$store = store // store
 
-uni.$u.props.checkbox.activeColor = '#34bc98'
+const primaryColor = '#34bc98'
+uni.$u.props.checkbox.activeColor = primaryColor
+uni.$u.props.tabbar.activeColor = primaryColor
+uni.$u.props.tabs.lineColor = primaryColor
+uni.$u.props.scrollList.indicatorActiveColor = primaryColor
+uni.$u.props.tabs.lineWidth = '50rpx'
 
 // 寄存器全局实用程序过滤器
 Object.keys(filters).forEach((key) => {

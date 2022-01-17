@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="bg-white">
-      <u-tabs :list="tabs" line-color="#e30e15" @change="(item) => (argvs.status = item.index)"></u-tabs>
+      <u-tabs :list="tabs" @change="(item) => (argvs.status = item.index)"></u-tabs>
     </div>
     <listview v-model="list" height="calc(100vh - 88rpx)" loadmore-enabled :request="search" :argvs="argvs">
       <coupon v-for="(item, index) in list" :key="index" :item="item"> </coupon>

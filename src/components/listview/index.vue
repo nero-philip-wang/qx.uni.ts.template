@@ -61,7 +61,7 @@ export default {
       nomore,
       hasNext: true,
       paging: { ...paging },
-      oldargvs: {},
+      oldargvs: null,
     }
   },
   watch: {

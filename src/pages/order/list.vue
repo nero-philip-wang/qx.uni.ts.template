@@ -5,7 +5,7 @@
         <u-tabs :list="navs" :current="navCurrent" @change="onNavBarChange"></u-tabs>
       </u-sticky>
     </div>
-    <listview v-model="list" loadmore-enabled :request="search" :argvs="argvs" height="calc(100vh - 88rpx)">
+    <listview v-model="list" loadmore-enabled :request="search" :argvs="argvs" height="calc(100vh - 88rpx)" manual>
       <div
         v-for="order in list"
         :key="order.id"
@@ -17,17 +17,14 @@
           <span class="text-primary">{{ order.status | orderstatus }}</span>
         </div>
         <div class="item  px-24">
-          <cartItem small />
+          <cartItem v-for="item in order.items || []" :key="item.id" small disabled-link :value="item" />
         </div>
         <div class="text-right py-16 px-24 bb-1">
           <span>共{{ orderItemCount(order) }}件 总价 </span>
           <span class="text-price text-bold">￥{{ order.orderAmount | yuan }}</span>
         </div>
-        <div class="opt flex px-24 py-16">
-          <div class="flex-grow"></div>
-          <div>
-            <u-button :custom-style="{ padding: '0 30rpx' }" text="确认收货" size="small" shape="circle" type="primary"></u-button>
-          </div>
+        <div v-if="order.status > 0" class="opt px-24 py-16" @click.stop.prevent>
+          <orderBar :order="order" />
         </div>
       </div>
     </listview>
@@ -39,9 +36,10 @@ import { search } from '@/apis/modules/order.js'
 import orderbiz from './mixin/order.js'
 import listview from '@/components/listview'
 import cartItem from '../cart/comp/cartItem.vue'
+import orderBar from './mixin/order-bar.vue'
 
 export default {
-  components: { listview, cartItem },
+  components: { listview, cartItem, orderBar },
   mixins: [orderbiz],
   data() {
     return {
@@ -52,7 +50,7 @@ export default {
     }
   },
   onLoad(options) {
-    this.navCounts = options.status
+    this.navCurrent = options.status
     this.argvs.status = options.status == 0 ? null : options.status
   },
   methods: {

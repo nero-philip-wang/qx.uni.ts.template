@@ -16,10 +16,10 @@
         </div>
       </scroll-view>
 
-      <div class="flex-grow">
+      <div class="right">
         <listview v-model="items" loadmore-enabled :argvs="argvs" height="calc(100vh - 96rpx - 100rpx)" :request="getItem" manual>
           <div v-for="c in items" :key="c.id" class="bg-white rounded-sm overflow-hidden mb-16 mx-12">
-            <item is-item :value="c"></item>
+            <item is-item :value="c" small></item>
           </div>
         </listview>
       </div>
@@ -61,6 +61,9 @@ export default {
   width: 180rpx;
   height: calc(100vh - 96rpx - 100rpx);
   background: #f8f8f7;
+}
+.right {
+  width: 570rpx;
 }
 .lv1_item {
   height: 100rpx;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="placehold"></div>
-    <div class="bar">
+    <div class="bar flex-col justify-center">
       <slot></slot>
     </div>
   </div>

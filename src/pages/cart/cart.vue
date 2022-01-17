@@ -6,9 +6,13 @@
       </u-cell>
     </div>
     <scroll-view scroll-y scroll-with-animation class="scroll flex-grow overflow-scroll py-16" @scrolltolower="upCallback">
-      <div v-for="(i, idx) in items" :key="i.itemId" :index="idx" :name="idx" :options="[{ text: '删除' }]">
-        <CartItem show-checkbox editable :checked.sync="i.checked"> </CartItem>
-      </div>
+      <u-swipe-action>
+        <div v-for="(i, idx) in items" :key="i.itemId" :index="idx" :name="idx" :options="[{ text: '删除' }]">
+          <u-swipe-action-item :options="[{ text: '删除' }]">
+            <CartItem show-checkbox editable :checked.sync="i.checked"> </CartItem>
+          </u-swipe-action-item>
+        </div>
+      </u-swipe-action>
       <div v-if="loading" class="text-center mt-8">
         <u-loading-icon></u-loading-icon>
       </div>

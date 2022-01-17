@@ -92,72 +92,9 @@
         <text class="text-black-38">{{ data.buyerRemark }}</text>
       </div>
     </div>
-
-    <div class="fixed py-16 flex">
-      <button class="ml-32 text-center u-reset-button" open-type="contact" show-message-card>
-        <u-button shape="circle" plain size="small" text="客服"></u-button>
-      </button>
-      <!-- <div
-          v-if="data.status === 4 || data.status === 10 || data.status === 11 || data.status === 14"
-          class="btn center round"
-          @click="deleteOrder(data)"
-        >
-          <text>删除订单</text>
-        </div> -->
-      <div class="flex-grow"></div>
-      <div v-if="data.status === 1" class="btn center round" @click="cancel(data)">
-        <u-button shape="circle" type="primary" plain size="small" text="取消订单"></u-button>
-      </div>
-      <div v-if="data.status === 1" class="btn center" @click="gopay(data)">
-        <u-button shape="circle" type="primary" size="small" text="立即支付"></u-button>
-      </div>
-      <!-- #ifdef MP -->
-      <!-- <button type="default" open-type="contact">
-          <div v-if="data.status === 1" class="btn center round" @click="cancelOrder(item)">
-            <text>联系客服</text>
-          </div>
-        </button> -->
-      <!-- #endif -->
-      <!-- #ifndef H5 -->
-      <!-- <div v-if="data.status === 1" class="btn center round" @click="showRefundAction(data)">
-          <text>申请退款</text>
-        </div> -->
-      <!-- #endif -->
-      <!-- <div v-if="data.status===1" class="btn center round" @click="$goto('zizhufahuo?id='+data._id)">
-					<text>自助发货</text>
-				</div> -->
-      <!-- <div v-if="data.status === 2" class="btn center round" @click="$gotoExpress(data)">
-          <text>查看物流</text>
-        </div>
-        <div v-if="data.status === 2" class="btn center" @click="confirmReceipt(data)">
-          <text>确认收货</text>
-        </div>
-        <div v-if="data.status === 3" class="btn center" @click="rate(data)">
-          <text>立即评价</text>
-        </div> -->
-      <div v-if="data.status === 3" class="btn center" @click="confirmReceipt(data)">
-        <u-button shape="circle" type="primary" size="small" text="确认服务"></u-button>
-      </div>
-      <div v-if="data.status === 4" class="btn center" @click="gotoComment(data.id)">
-        <u-button shape="circle" type="primary" size="small" text="立即评价"></u-button>
-      </div>
-      <div class="mr-32"></div>
-    </div>
-
-    <!-- 时间轴 -->
-    <!-- <uni-popup v-if="data.timeline" ref="timelinePopup">
-      <div class="timeline-content">
-        <scroll-div class="timeline-scroll" scroll-y="true">
-          <mix-timeline :list="data.timeline"></mix-timeline>
-        </scroll-div>
-        <text class="mix-icon icon-guanbi1" @click="hidePopup('timelinePopup')"></text>
-      </div>
-    </uni-popup> -->
-
-    <!-- <mix-loading v-if="isLoading"></mix-loading> -->
-
-    <!-- <mix-modal ref="mixModal" title="订单提示" :text="modalText" @onConfirm="onModalConfirm"></mix-modal> -->
-    <!-- <mix-action-sheet ref="mixActionSheet" @onConfirm="refund"></mix-action-sheet> -->
+    <bottomBar>
+      <orderBar :order="data" />
+    </bottomBar>
   </div>
 </template>
 
@@ -166,10 +103,14 @@ import { get } from '@/apis/modules/order.js'
 import { get as getEmployee } from '@/apis/modules/employee.js'
 import OrderMixin from './mixin/order.js'
 import productList from '../cart/comp/cartItem.vue'
+import bottomBar from './comp/bottom-bar.vue'
+import orderBar from './mixin/order-bar.vue'
 
 export default {
   components: {
     productList,
+    bottomBar,
+    orderBar,
   },
   mixins: [OrderMixin],
   data() {
