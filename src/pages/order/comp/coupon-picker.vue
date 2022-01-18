@@ -6,7 +6,14 @@
     <scroll-view scroll-y class="dialog">
       <coupon v-for="(item, index) in selected" :key="index" :item="item" checkable :checked.sync="item.checked" @update:checked="change">
       </coupon>
-      <coupon v-for="(item, index) in list" :key="index" :item="item" checkable :checked.sync="item.checked" @update:checked="change">
+      <coupon
+        v-for="(item, index) in list.filter((c) => !c.checked)"
+        :key="index"
+        :item="item"
+        checkable
+        :checked.sync="item.checked"
+        @update:checked="change"
+      >
       </coupon>
     </scroll-view>
   </div>

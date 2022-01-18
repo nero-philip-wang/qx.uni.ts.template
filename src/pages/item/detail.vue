@@ -46,9 +46,9 @@
       <div class="bg-white mt-16">
         <u-cell-group :border="false">
           <u-cell is-link @click="showSku = true">
-            <span slot="title" class="text-gray">规格</span>
+            <span slot="title" class="text-gray">购买</span>
           </u-cell>
-          <u-cell is-link :value="data.freightTemplateId ? '满99免运费' : '免运费'">
+          <u-cell :value="data.freightTemplateId ? '满99免运费' : '免运费'">
             <span slot="title" class="text-gray">运费</span>
           </u-cell>
           <u-cell is-link>
@@ -74,12 +74,12 @@
     <!-- 评价 -->
     <div id="rating" class="relative bg-white mt-24 pb-32">
       <u-cell-group :border="false" is-link>
-        <u-cell>
+        <u-cell is-link>
           <div slot="title">
             <span class="text-base text-bold mr-16">评价</span>
-            <span class="text-gray text-sm"> 100+ </span>
+            <span class="text-gray text-sm"> {{ data.rating.all || '0' }}+ </span>
           </div>
-          <div slot="value" class="text-gray text-sm"> 好评度 98% </div>
+          <div slot="value" class="text-gray text-sm"> 好评度 {{ data.rating.rating || '100%' }}</div>
         </u-cell>
       </u-cell-group>
       <div class="mx-32 my-24">
@@ -98,11 +98,12 @@
     </div>
 
     <!-- 底部操作菜单 -->
-    <tabbar />
+    <tabbar :show-cart="showCart" @addtocart="showSku = true" @buynow="showSku = true" />
     <!-- 规格面板 -->
     <sku
       v-if="data.id"
       ref="skuPopup"
+      :show-cart="showCart"
       :show.sync="showSku"
       :info-data="data"
       :quantity.sync="quantity"
@@ -152,6 +153,9 @@ export default {
       area: (state) => state.user.tenantArea,
     }),
     ...mapGetters(['showRebate', 'isLogged']),
+    showCart() {
+      return this.data.type != 3
+    },
   },
   onLoad(options) {
     this.id = options.id
@@ -189,14 +193,13 @@ export default {
     ...mapMutations(['ADD_HISTORY']),
     async loadData() {
       const res = await getitem(this.id)
-      // if (!res.status) {
-      //   uni.showToast({ title: '产品不存在或已下架' })
-      //   setTimeout(() => {
-      //     uni.navigateBack()
-      //   }, 1000)
-      //   return
-      // }
-      // data.content = data.content.replace(/img src="/g, 'img style="display:block;width:100%;height:auto" src="')
+      if (!res.status) {
+        uni.showToast({ title: '产品不存在或已下架' })
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 1000)
+        return
+      }
       // 加工规格
       res.specifications.forEach((item) => {
         item.values = item.values.map((c) => ({ ...c, checked: false }))
@@ -207,7 +210,7 @@ export default {
         this.calcAnchor() // 计算锚点参数
       })
       // 添加浏览历史
-      this.ADD_HISTORY({ id: res.id, cover: res.covers[0] })
+      // this.ADD_HISTORY({ id: res.id, cover: res.covers[0] })
     },
     // 加载评价
     async loadRating() {

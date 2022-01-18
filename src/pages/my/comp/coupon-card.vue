@@ -1,7 +1,7 @@
 <template>
   <div class="mx-32 my-24 bg-white" :class="{ disabled: navCurrent !== 0 }">
     <!-- 上半 -->
-    <div class="pt-32 px-40 pb-24 flex">
+    <div class="pt-16 pb-8 px-40 flex align-center">
       <div class="left pt-8">
         <div class="text-lg truncate">{{ item.title }} </div>
         <div class="text-gray text-sm mt-16">{{ item.startTime | datef }} - {{ item.endTime | datef }} </div>
@@ -21,7 +21,7 @@
           <span v-else>满{{ item.amountCondition || 0 | yuan }}元可用</span>
         </div>
       </div>
-      <div v-if="checkable" class="pt-40 pl-20">
+      <div v-if="checkable" class="pt-32 pl-20">
         <u-checkbox-group v-model="isChecked" shape="circle">
           <u-checkbox shape="circle" :name="0" />
         </u-checkbox-group>
@@ -34,7 +34,7 @@
       <div class="rounded hole"></div>
     </div>
     <!-- 下半 -->
-    <div class="px-40 p-24 flex">
+    <div class="px-40 pt-4 pb-16 flex">
       <div class="text-gray desc" @click="trigger(item)">
         <div class="flex text-base">
           <span class="mr-16">使用说明</span>

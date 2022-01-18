@@ -3,10 +3,15 @@
     <div class="bg-white">
       <!-- 头部反馈区 -->
       <div class="flex mx-32 mt-32 mb-16">
-        <image class="pic" :src="currentSku.cover || infoData.covers[0]" mode="aspectFill"></image>
+        <image
+          class="pic"
+          :src="currentSku.cover || infoData.covers[0]"
+          mode="aspectFill"
+          @click="previewImage(currentSku.cover || infoData.covers[0])"
+        ></image>
         <div class="ml-20">
           <div class="mb-20 text-bold text-lg text-price">￥{{ currentSku.retailPrice || infoData.minRetailPrice | yuan }}</div>
-          <div class="mb-20 text-gray text-sm">库存：{{ currentSku.stock || infoData.stock || '-' }}</div>
+          <div class="mb-20 text-gray text-sm">库存：{{ (currentSku.stockQuantity || infoData.stockQuantity) | stock }}</div>
           <div v-if="infoData.skus.length > 0" class="attr-wrap row">
             <span class="text-sm">规格：{{ attrStringify(currentSku.spuAttr) || '' }}</span>
           </div>
@@ -33,7 +38,7 @@
         <div class="flex align-center pr-32">
           <div class="ml-40 py-16 text-black-1b text-base text-bold">数量</div>
           <div class="flex-grow"></div>
-          <u-number-box v-model="buyNumber" :min="1" :max="currentSku.stock || 999"></u-number-box>
+          <u-number-box v-model="buyNumber" :min="1" :max="Math.min(currentSku.stockQuantity || 999, 999)"></u-number-box>
         </div>
       </scroll-div>
       <!-- 确认区域 -->
@@ -47,11 +52,22 @@
 
         <div v-else class="pl-32 pr-16 flex">
           <div class="flex-grow"></div>
-          <div class="pr-24 btn">
-            <u-button plain type="primary" text="加入购物车" @click="confirm('cart')"></u-button>
+          <div v-if="showCart" class="pr-24 btn">
+            <u-button
+              plain
+              type="primary"
+              text="加入购物车"
+              :custom-style="{ height: '72rpx', borderRadius: '0' }"
+              @click="confirm('cart')"
+            ></u-button>
           </div>
-          <div class="btn">
-            <u-button type="primary" text="立即购买" @click="confirm('buy')"></u-button>
+          <div class="btn" :class="{ one: !showCart }">
+            <u-button
+              type="primary"
+              text="立即购买"
+              :custom-style="{ height: '72rpx', borderRadius: '0' }"
+              @click="confirm('buy')"
+            ></u-button>
           </div>
         </div>
       </div>
@@ -71,6 +87,11 @@ export default {
     show: {
       type: Boolean,
       default: false,
+    },
+    showCart: {
+      type: Boolean,
+      // eslint-disable-next-line vue/no-boolean-default
+      default: true,
     },
   },
   data() {
@@ -95,6 +116,12 @@ export default {
     },
   },
   methods: {
+    previewImage(url) {
+      uni.previewImage({
+        current: url,
+        urls: [url],
+      })
+    },
     // 显示当前的规格
     attrStringify(attr) {
       var s = ''
@@ -177,5 +204,8 @@ export default {
 
 .btn {
   width: 200rpx;
+}
+.btn.one {
+  width: 420rpx;
 }
 </style>

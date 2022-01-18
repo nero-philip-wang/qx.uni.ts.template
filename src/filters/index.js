@@ -25,3 +25,11 @@ export function thumbnail(url, stylename = '!t360') {
   if (url && url.indexOf('s.re4.top') != -1 && /(jpg|png|bmp)/.test(url)) return `${url}${stylename}`
   else return url
 }
+
+export function stock(stockQuantity) {
+  if (stockQuantity <= 0) return '库存不足'
+  else if (stockQuantity <= 10) return '库存紧张'
+  else if (stockQuantity <= 100) return stockQuantity
+  else if (stockQuantity > 100) return '库存充足'
+  else return '-'
+}

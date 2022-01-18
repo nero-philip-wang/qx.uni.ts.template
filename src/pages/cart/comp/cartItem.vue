@@ -89,6 +89,9 @@ export default {
     height() {
       return this.small ? '160rpx' : '175rpx'
     },
+    id() {
+      return this.value.id || this.value.itemId
+    },
   },
   watch: {
     checked: {
@@ -97,7 +100,6 @@ export default {
         this.checkedValue = this.checked ? [''] : []
       },
     },
-    id: () => this.value.id || this.value.itemId,
   },
   methods: {
     checkedTriggle() {

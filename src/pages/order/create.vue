@@ -25,7 +25,7 @@
 
     <div class="my-16 bg-white rounded-sm overflow-hidden">
       <div class="item bb-1">
-        <product-list :list="inOrder.items"></product-list>
+        <cartItem v-for="item in inputs.items" :key="item.id" :value="item" disabled-link></cartItem>
       </div>
       <!-- 价格信息 -->
       <div class="text-black-38 text-base lineh-200p px-32 py-16">
@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import productList from '../cart/comp/cartItem.vue'
+import cartItem from '../cart/comp/cartItem.vue'
 import timePicker from './comp/time-picker.vue'
 import couponPicker from './comp/coupon-picker.vue'
 import bottomBar from './comp/bottom-bar.vue'
@@ -109,7 +109,7 @@ import easyState from '@/store/easyState'
 
 export default {
   components: {
-    productList,
+    cartItem,
     bottomBar,
     couponPicker,
     timePicker,
