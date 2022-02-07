@@ -16,7 +16,7 @@
       </div>
 
       <!-- 选择时间 -->
-      <div class="py-8">
+      <div v-if="orderNeedTime" class="py-8">
         <u-cell-group :border="false">
           <u-cell title="上门时间" :border="false" :value="selectDate ? selectDate : ''" is-link @click="showTime = true"> </u-cell>
         </u-cell-group>
@@ -127,10 +127,15 @@ export default {
         items: [],
         selectedCoupons: [],
         buyerRemark: '',
+        source: '',
       },
     }
   },
-  computed: {},
+  computed: {
+    orderNeedTime() {
+      return this.inputs.items.length && this.inputs.items[0].spu && this.inputs.items[0].spu.type == 3
+    },
+  },
   watch: {
     selectDate() {
       this.trySettle()
@@ -143,12 +148,12 @@ export default {
     },
   },
   onLoad(options) {
-    // if (options.type === 'cart') {
-    //   // 购物车结算
-    //   this.createType = 'cart'
-    // } else {
-    //   this.createType = 'buyNow'
-    // }
+    if (options.type === 'cart') {
+      // 购物车结算
+      this.inputs.source = '购物车'
+    } else {
+      this.inputs.source = '商品详情'
+    }
   },
   onShow() {
     this.inputs.consignee = Object.assign({}, easyState.address)

@@ -26,10 +26,15 @@
       <!-- 价格数量 -->
       <div class="flex lineh-full mt-8">
         <span class="text-sm text-price text-bold ml-8"> ¥</span>
-        <span class="text-lg text-price text-bold ml-4">{{ value.minRetailPrice | yuan }}</span>
+        <span class="text-lg text-price text-bold ml-4">{{ value.minRetailPrice || value.price | yuan }}</span>
         <span class="flex-grow"></span>
         <div v-if="editable" class="b-1 rounded-sm overflow-hidden" @click.stop.prevent>
-          <u-number-box v-model="value.quantity" button-size="48rpx" bg-color="#fff">
+          <u-number-box
+            v-model="value.quantity"
+            button-size="48rpx"
+            bg-color="#fff"
+            @change="({ value }) => $emit('update:quantity', value)"
+          >
             <div slot="minus" class="minus br-1 p-8">
               <u-icon name="minus" size="32rpx"></u-icon>
             </div>

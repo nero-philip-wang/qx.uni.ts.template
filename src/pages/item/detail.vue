@@ -98,7 +98,7 @@
     </div>
 
     <!-- 底部操作菜单 -->
-    <tabbar :show-cart="showCart" @addtocart="showSku = true" @buynow="showSku = true" />
+    <tabbar :count="count" :show-cart="showCart" @addtocart="showSku = true" @buynow="showSku = true" />
     <!-- 规格面板 -->
     <sku
       v-if="data.id"
@@ -122,6 +122,7 @@ import sku from './comp/sku' // 页面头
 
 import { get as getitem } from '@/apis/modules/item'
 import { setItems } from '@/apis/modules/billing'
+import { count, add } from '@/apis/modules/cart'
 import { mapMutations, mapState, mapGetters } from 'vuex'
 import easyState from '@/store/easyState'
 
@@ -144,6 +145,7 @@ export default {
       quantity: 1,
       id: null,
       showSku: false,
+      count: 0,
     }
   },
   computed: {
@@ -163,6 +165,7 @@ export default {
   onShow() {
     this.loadData()
     this.loadRating() // 加载评价
+    this.loadCart()
   },
   onPageScroll(e) {
     this.scrollTop = e.scrollTop
@@ -219,28 +222,23 @@ export default {
         this.calcAnchor() // 计算锚点参数
       })
     },
+    async loadCart() {
+      this.count = await count()
+    },
     // 加入购物车
-    addToCart() {
-      this.$util.throttle(async () => {
-        const data = this.getConfirmData()
-        if (!data) {
-          return
-        }
-        const res = {} /* await this.$request('cart', 'add', data, {
-          showLoading: true,
-          login: true,
-        }) */
-        if (!res) {
-          return
-        }
-        this.log(res)
-        this.$util.msg(res.msg)
-        if (res.status === 1) {
-          this.hidePopup('skuPopup')
-          this.$store.dispatch('getCartCount') // 更新购物车数量
-          uni.$emit('refreshCart') // 更新购物车
-        }
-      })
+    async addToCart(selected) {
+      var item = { ...selected }
+      item.itemId = selected.id
+      item.itemSpuId = this.data.id
+      item.price = selected.retailPrice
+      try {
+        await add(item)
+        this.count = easyState.cartCount
+        this.showSku = false
+        uni.showToast({ title: '已加入购物车', icon: 'success' })
+      } catch (error) {
+        uni.showToast({ title: '加入购物车失败', icon: 'error' })
+      }
     },
     // 立即购买
     buyNow(selected) {

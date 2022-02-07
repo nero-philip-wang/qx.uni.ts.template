@@ -1,11 +1,12 @@
 <template>
   <div class="flex fixed place-items-center">
-    <div class="icon flex-col align-center text-center" @click="$goto('pages/index/index',{way:'reLaunch'})">
+    <div class="icon flex-col align-center text-center" @click="$goto('pages/index/index', { way: 'reLaunch' })">
       <u-icon name="home" size="48rpx" />
       <span class="text-sm">首页</span>
     </div>
 
-    <div class="icon flex-col align-center text-center" @click="$goto('pages/cart/cart')">
+    <div class="icon flex-col align-center text-center relative" @click="$goto('pages/cart/cart')">
+      <u-badge max="99" :value="count" absolute :offset="[-5, -5]"></u-badge>
       <u-icon name="shopping-cart" size="48rpx" />
       <span class="text-sm">购物车</span>
     </div>
@@ -39,6 +40,10 @@ export default {
       type: Boolean,
       // eslint-disable-next-line vue/no-boolean-default
       default: true,
+    },
+    count: {
+      type: Number,
+      default: 0,
     },
   },
 }

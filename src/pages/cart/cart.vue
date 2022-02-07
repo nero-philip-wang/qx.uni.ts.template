@@ -5,18 +5,25 @@
         <u--text slot="right-icon" text="编辑" size="28rpx"></u--text>
       </u-cell>
     </div>
-    <scroll-view scroll-y scroll-with-animation class="scroll flex-grow overflow-scroll py-16" @scrolltolower="upCallback">
-      <u-swipe-action>
-        <div v-for="(i, idx) in items" :key="i.itemId" :index="idx" :name="idx" :options="[{ text: '删除' }]">
-          <u-swipe-action-item :options="[{ text: '删除' }]">
-            <CartItem show-checkbox editable :checked.sync="i.checked"> </CartItem>
-          </u-swipe-action-item>
-        </div>
-      </u-swipe-action>
-      <div v-if="loading" class="text-center mt-8">
-        <u-loading-icon></u-loading-icon>
-      </div>
-    </scroll-view>
+    <div class="scroll flex-grow overflow-scroll py-16">
+      <listview v-model="items" loadmore-enabled :request="search" height="100%" :argvs="argvs">
+        <u-swipe-action>
+          <div v-for="(i, idx) in items" :key="i.itemId" :index="idx" :name="idx" :options="[{ text: '删除' }]">
+            <u-swipe-action-item :options="[{ text: '删除' }]" @click="del(i, idx)">
+              <CartItem
+                show-checkbox
+                editable
+                :checked.sync="i.checked"
+                :value="i"
+                :quantity.sync="i.quantity"
+                @update:quantity="update(i)"
+              >
+              </CartItem>
+            </u-swipe-action-item>
+          </div>
+        </u-swipe-action>
+      </listview>
+    </div>
     <!-- 结算栏 -->
     <div class="checkoutbar bg-white">
       <u-cell>
@@ -30,7 +37,7 @@
           <span class="text-sm text-price ml-8"> ¥</span>
           <span class="text-lg text-price ml-4">{{ itemAmount | yuan }}</span>
         </div>
-        <u-button slot="right-icon" type="primary" :custom-style="{ height: '72rpx', borderRadius: '0' }">去结算</u-button>
+        <u-button slot="right-icon" type="primary" :custom-style="{ height: '72rpx', borderRadius: '0' }" @click="buy">去结算</u-button>
       </u-cell>
     </div>
     <qx-tabbar v-if="showTabbar" :value="2" />
@@ -39,34 +46,29 @@
 <script>
 import CartItem from './comp/cartItem.vue'
 import Enumerable from 'linq'
+import { get, updateQuantity, del } from '@/apis/modules/cart'
+import listview from '@/components/listview'
+import state from '@/store/easyState'
 
 export default {
   components: {
     CartItem,
+    listview,
   },
   props: {
     showTabbar: {
       type: Boolean,
       default: false,
     },
+    refresh: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
       total: 250,
-      textPriceColor: '#ca0007',
-      items: [
-        { checked: true, itemId: 1, price: 12939 },
-        { checked: false, itemId: 2 },
-        { checked: false, itemId: 3 },
-        { checked: false, itemId: 4 },
-        { checked: false, itemId: 5 },
-        { checked: false, itemId: 6 },
-        { checked: false, itemId: 7 },
-        { checked: false, itemId: 8 },
-        { checked: false, itemId: 9 },
-        { checked: true, itemId: 10, price: 139 },
-      ],
-      loading: 1, // 1 加载中 0 没有更多
+      items: [],
     }
   },
   computed: {
@@ -83,14 +85,41 @@ export default {
     itemAmount() {
       return Enumerable.from(this.items)
         .where((c) => c.checked)
-        .sum((c) => c.price || 0)
+        .sum((c) => (c.price || 0) * c.quantity)
+    },
+    argvs() {
+      return { refresh: this.refresh }
     },
   },
   methods: {
-    upCallback(page) {
-      setTimeout(() => {
-        this.loading = 0
-      }, 300)
+    async search({ take, skip }) {
+      var list = await get(skip, take)
+      list = list.map((c) => ({ ...c, checked: false, key: c.id, id: c.itemSpuId }))
+      return list
+    },
+    update(item) {
+      this.$u.debounce(async () => {
+        await updateQuantity(item.key, item.quantity)
+      }, 500)
+    },
+    async del(item, idx) {
+      try {
+        await del(item.key)
+        uni.showToast({ title: '已删除', icon: 'success' })
+        this.items.splice(idx, 1)
+      } catch (error) {
+        uni.showToast({ title: '删除失败,请刷新页面重试', icon: 'error' })
+      }
+    },
+    buy() {
+      state.items = this.items
+        .filter((c) => c.checked)
+        .map((c) => ({
+          ...c,
+          itemId: c.id,
+          spu: { type: c.type },
+        }))
+      this.$goto('/pages/order/create?type=cart')
     },
   },
 }

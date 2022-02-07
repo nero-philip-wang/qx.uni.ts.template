@@ -9,6 +9,7 @@ const store = Object.assign(
     },
     address: null,
     items: [],
+    cartCount: 0,
   }
 )
 export default store
