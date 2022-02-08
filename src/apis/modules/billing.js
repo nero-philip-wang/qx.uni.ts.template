@@ -41,7 +41,7 @@ export const apay = (id, data) => {
 }
 
 export const minpay = (id, data) => {
-  return request(`mall/billing/${id}/mixpay?openId=${store.state.user.openId}`, 'post', data)
+  return request(`mall/billing/${id}/mixpay?openId=${store.state.user.logged.openId}`, 'post', data)
 }
 
 export const cancel = (id) => {

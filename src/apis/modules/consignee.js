@@ -13,4 +13,18 @@ export const del = (id) => {
 }
 
 const pcaurl = 'http://s.re4.top/asset/pca-code.json'
-export const pca = () => request(pcaurl, 'get')
+export const pca = () => {
+  return new Promise((resolve, reject) => {
+    uni.request({
+      url: pcaurl,
+      method: 'get',
+      success: async (rt) => {
+        resolve(rt.data)
+      },
+      fail: (rt) => {
+        reject(rt)
+      },
+      complete: () => {},
+    })
+  })
+}

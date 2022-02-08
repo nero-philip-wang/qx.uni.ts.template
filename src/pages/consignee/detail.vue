@@ -92,7 +92,7 @@ export default {
       this.data = await get(options.id)
     }
     // 获取省市县
-    file = pca()
+    file = await pca()
   },
   methods: {
     async submit() {
@@ -112,7 +112,7 @@ export default {
     chooseAddress() {
       uni.chooseLocation({
         success: (res) => {
-          const p = ['省', '区', '市', '州', '县', '旗', '盟']
+          const p = ['省', '区', '市', '自治州', '县', '旗', '盟']
           p.forEach((element) => {
             res.address = res.address.replace(new RegExp(`(${element})`, 'g'), '$1 ')
           })
@@ -121,13 +121,14 @@ export default {
             var node = file
             var pca = res.address.split(' ')
             for (let i = 0; i < 3; i++) {
-              if (i < 2) node = node.filter((c) => c.name == pca[i])[0].children
-              else node = node.filter((c) => c.name == pca[i])[0].code
+              if (i < 2) node = node.filter((c) => c.label == pca[i])[0].children
+              else node = node.filter((c) => c.label == pca[i])[0].value
             }
             this.data.postCode = node
             this.data.position = { x: res.longitude, y: res.latitude }
             this.data.address = `${res.address} ${res.name}`
           } catch (error) {
+            // throw error
             this.data.address = ' '
           }
         },

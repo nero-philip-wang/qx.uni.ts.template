@@ -10,13 +10,13 @@
     >
       <div style="height:200rpx" class="pt-64">
         <!-- 头像 -->
-        <div class="mx-40 text-white flex">
+        <div class="mx-40 text-white flex" @click="!isLogged && $goto('/pages/login/login')">
           <div class="mx-32">
             <u-avatar :src="member.avatar" size="110rpx"></u-avatar>
           </div>
           <div class="flex-grow flex-col justify-center">
             <div class="text-white text-xl">{{ member.nickname }}</div>
-            <div class="text-white text-sm">{{ member.desc }}</div>
+            <div class="text-white text-sm">{{ member.desc || '' }}</div>
           </div>
         </div>
 

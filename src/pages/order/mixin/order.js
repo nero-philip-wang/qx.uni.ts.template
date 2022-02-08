@@ -69,7 +69,7 @@ export default {
         var payparams = await minpay(orderId, data)
         if (payparams == '已支付') {
           uni.showToast({ title: '支付成功' })
-          $goto('/pages/order/detail?id=' + order.id, { way: 'replace' })
+          $goto('/pages/order/detail?id=' + orderId, { way: 'replace' })
           return
         }
         payparams = JSON.parse(payparams)

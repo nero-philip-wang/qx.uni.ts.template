@@ -11,8 +11,9 @@ export default {
   async onLaunch() {
     uni.hideTabBar()
     utils.updateApp()
-    await tryLogin()
-
+    try {
+      await tryLogin()
+    } catch (error) {}
     // var info = wx.getLaunchOptionsSync()
     // if (info.path.indexOf('pages/index/home') == -1) share.getInfo()
   },

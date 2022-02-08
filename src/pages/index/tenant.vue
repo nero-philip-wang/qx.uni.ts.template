@@ -43,7 +43,9 @@ export default {
     async change(tenant) {
       store.commit('SET_TENANT', { t: tenant.id, area: tenant.area })
       reset()
-      await tryLogin()
+      try {
+        await tryLogin()
+      } catch (error) {}
       uni.reLaunch({ url: '/pages/index/index' })
     },
   },
