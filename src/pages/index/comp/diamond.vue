@@ -2,7 +2,7 @@
   <div class="py-16 flex flex-wrap">
     <div v-for="(item, index) in params.list" :key="index" class="my-8 text-center" :style="{ minWidth }">
       <image class="icon rounded-sm" mode="aspectFill" :src="item.src"></image>
-      <div class="text-sm"> 九妹{{ index }} </div>
+      <div class="text-sm"> {{ item.title }} </div>
     </div>
   </div>
 </template>

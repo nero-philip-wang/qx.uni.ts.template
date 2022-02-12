@@ -13,22 +13,18 @@
       </div>
     </u-navbar>
 
-    <div class="m-24 bg-white rounded">
-      <banner :params="p" />
+    <div v-if="page.length">
+      <div v-for="(p, idx) in page" :key="idx" :class="p.name == 'flow' ? 'm-24' : 'm-24 bg-white rounded'">
+        <banner v-if="p.name == 'banner'" :params="p" />
+        <diamond v-if="p.name == 'diamond'" :params="p" />
+        <horizontalList v-if="p.name == 'horizontalList'" :params="p" />
+        <flow v-if="p.name == 'flow'" :params="p" />
+      </div>
     </div>
-
-    <div class="m-24 bg-white rounded">
-      <diamond :params="p2" />
+    <div v-else class="m-24 p-16 bg-white rounded">
+      <u-skeleton rows="15" title loading></u-skeleton>
     </div>
-
-    <div class="m-24 bg-white rounded">
-      <horizontalList :params="p2" />
-    </div>
-
-    <div class="m-24">
-      <flow :params="p" />
-    </div>
-
+    <!-- 
     <u-tabs
       scrollable
       :list="[
@@ -65,7 +61,7 @@
       <div v-for="i in 8" :key="i" class="m-24 bg-white rounded">
         <item small is-item>{{ i }}</item>
       </div>
-    </scroll-view>
+    </scroll-view> -->
 
     <qx-tabbar />
   </div>
@@ -78,6 +74,7 @@ import flow from './comp/flow.vue'
 import { section } from './comp/meta'
 import item from '../cart/comp/cartItem.vue'
 import store from '@/store/'
+import { page } from '@/apis/modules/home'
 
 var p2 = section()
 p2.list.push(...p2.list)
@@ -93,8 +90,9 @@ export default {
   },
   data() {
     return {
-      p: { ...section(), height: '320rpx' },
-      p2,
+      // p: { ...section(), height: '320rpx' },
+      // p2,
+      page: [],
     }
   },
   computed: {
@@ -102,7 +100,10 @@ export default {
       return store.state.user.tTitle
     },
   },
-  async mounted() {},
+  async mounted() {
+    var res = await page()
+    this.page = res.content && JSON.parse(res.content)
+  },
   beforeCreate() {
     uni.hideTabBar()
   },
