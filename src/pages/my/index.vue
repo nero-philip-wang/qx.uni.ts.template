@@ -28,9 +28,9 @@
       <!-- 订单 -->
       <Card :title="structofOrder.title" :more="structofOrder.more" :more-href="structofOrder.moreHref" :items="structofOrder.items" />
 
-      <div class="m-24 bg-white rounded overflow-hidden">
+      <!-- <div class="m-24 bg-white rounded overflow-hidden">
         <banner :params="list1" />
-      </div>
+      </div> -->
 
       <div class="m-24 bg-white rounded">
         <u-cell-group :border="false">
@@ -41,6 +41,7 @@
           <button open-type="contact" class="u-reset-button w-full text-left" send-message-title="售后咨询">
             <u-cell icon="bag" icon-color="#ee883b" title="售后咨询" is-link></u-cell>
           </button>
+          <u-cell icon="car" icon-color="#5fcda2" title="退出登录" is-link @click="logout"></u-cell>
         </u-cell-group>
       </div>
     </scroll-view>

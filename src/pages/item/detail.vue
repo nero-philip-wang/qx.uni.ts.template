@@ -48,13 +48,13 @@
           <u-cell is-link @click="showSku = true">
             <span slot="title" class="text-gray">购买</span>
           </u-cell>
-          <u-cell :value="data.freightTemplateId ? '满99免运费' : '免运费'">
+          <u-cell :value="data.freightTemplateId ? data.freightTemplate.title : '免运费'">
             <span slot="title" class="text-gray">运费</span>
           </u-cell>
-          <u-cell is-link>
+          <u-cell v-if="hasRebate" is-link>
             <span slot="title" class="text-gray">返利</span>
             <button slot="value" open-type="share" class="u-reset-button">
-              <!-- <span> 分享立赚 {{ (data.rebate.details.rate * data.minRetailPrice) | yuan }} 元 </span> -->
+              <span> 分享立赚 {{ ((data.rebate && data.rebate.details.rate) * data.minRetailPrice) | yuan }} 元 </span>
             </button>
           </u-cell>
           <!-- <u-cell is-link>
@@ -122,6 +122,7 @@ import sku from './comp/sku' // 页面头
 
 import { get as getitem } from '@/apis/modules/item'
 import { setItems } from '@/apis/modules/billing'
+import { hasrebate } from '@/apis/modules/asset'
 import { count, add } from '@/apis/modules/cart'
 import { mapMutations, mapState, mapGetters } from 'vuex'
 import easyState from '@/store/easyState'
@@ -146,6 +147,7 @@ export default {
       id: null,
       showSku: false,
       count: 0,
+      hasRebate: false,
     }
   },
   computed: {
@@ -154,7 +156,7 @@ export default {
       tenantId: (state) => state.user.tenantId,
       area: (state) => state.user.tenantArea,
     }),
-    ...mapGetters(['showRebate', 'isLogged']),
+    ...mapGetters(['isLogged']),
     showCart() {
       return this.data.type != 3
     },
@@ -166,6 +168,7 @@ export default {
     this.loadData()
     this.loadRating() // 加载评价
     this.loadCart()
+    this.loadRebate()
   },
   onPageScroll(e) {
     this.scrollTop = e.scrollTop
@@ -193,7 +196,6 @@ export default {
         urls: this.data.covers,
       })
     },
-    ...mapMutations(['ADD_HISTORY']),
     async loadData() {
       const res = await getitem(this.id)
       if (!res.status) {
@@ -225,6 +227,9 @@ export default {
     async loadCart() {
       this.count = await count()
     },
+    async loadRebate() {
+      this.hasRebate = await hasrebate()
+    },
     // 加入购物车
     async addToCart(selected) {
       var item = { ...selected }
@@ -255,7 +260,10 @@ export default {
       easyState.items = [{ ...selected, spu: this.data, itemId: selected.id }]
       // 跳转结算
       this.showSku = false
-      this.$goto('/pages/order/create')
+      // 如果page-container没有关闭就进入下一页，就无法返回上一页
+      setTimeout(() => {
+        this.$goto('/pages/order/create')
+      }, 325)
     },
     // 设置当前选择sku
     setCurrentSku(data) {

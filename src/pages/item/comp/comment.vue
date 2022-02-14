@@ -2,7 +2,7 @@
   <view class="u-demo-block__content mb-16">
     <view class="album">
       <view class="album__avatar">
-        <image src="/static/uview/common/logo.png" mode="" style="width: 32px;height: 32px;"></image>
+        <image src="https://cdn.uviewui.com/uview/album/1.jpg" mode="" style="width: 32px;height: 32px;"></image>
       </view>
       <view class="album__content">
         <u--text text="uView UI" type="primary" bold size="17"></u--text>

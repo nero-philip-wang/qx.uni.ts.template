@@ -16,11 +16,11 @@ export const add = async (item) => {
 }
 
 export const del = async (id) => {
-  var count = request(`mall/cart/${id}`, 'delete')
+  var count = await request(`mall/cart/${id}`, 'delete')
   state.cartCount = count
 }
 
-export const updateQuantity = (id, quantity) => {
-  var count = request(`mall/cart/${id}`, 'post', quantity)
+export const updateQuantity = async (id, quantity) => {
+  var count = await request(`mall/cart/${id}`, 'post', quantity)
   state.cartCount = count
 }

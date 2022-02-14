@@ -1,9 +1,7 @@
 <template>
   <div class="flex-col h-page">
     <div class="bg-white">
-      <u-cell :title="`全部商品 (${total})`" :title-style="{ fontSize: '28rpx' }">
-        <u--text slot="right-icon" text="编辑" size="28rpx"></u--text>
-      </u-cell>
+      <u-cell :title="`全部商品 (${total})`" :title-style="{ fontSize: '28rpx' }"> </u-cell>
     </div>
     <div class="scroll flex-grow overflow-scroll py-16">
       <listview v-model="items" loadmore-enabled :request="search" height="100%" :argvs="argvs">
@@ -46,7 +44,7 @@
 <script>
 import CartItem from './comp/cartItem.vue'
 import Enumerable from 'linq'
-import { get, updateQuantity, del } from '@/apis/modules/cart'
+import { get, updateQuantity, del, count } from '@/apis/modules/cart'
 import listview from '@/components/listview'
 import state from '@/store/easyState'
 
@@ -67,7 +65,7 @@ export default {
   },
   data() {
     return {
-      total: 250,
+      total: 0,
       items: [],
     }
   },
@@ -91,6 +89,10 @@ export default {
       return { refresh: this.refresh }
     },
   },
+  async created() {
+    await count()
+    this.total = state.cartCount
+  },
   methods: {
     async search({ take, skip }) {
       var list = await get(skip, take)
@@ -100,11 +102,14 @@ export default {
     update(item) {
       this.$u.debounce(async () => {
         await updateQuantity(item.key, item.quantity)
+        this.total = state.cartCount
       }, 500)
     },
     async del(item, idx) {
       try {
         await del(item.key)
+        this.total = state.cartCount
+
         uni.showToast({ title: '已删除', icon: 'success' })
         this.items.splice(idx, 1)
       } catch (error) {
