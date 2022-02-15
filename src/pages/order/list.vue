@@ -2,7 +2,7 @@
   <view class="app">
     <div class="bg-white">
       <u-sticky>
-        <u-tabs :list="navs" :current="navCurrent" @change="onNavBarChange"></u-tabs>
+        <u-tabs :list="navs" :current="navCurrent" :scrollable="false" @change="onNavBarChange"></u-tabs>
       </u-sticky>
     </div>
     <listview v-model="list" loadmore-enabled :request="search" :argvs="argvs" height="calc(100vh - 88rpx)" manual>

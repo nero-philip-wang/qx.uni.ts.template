@@ -74,6 +74,12 @@
       }
     },
     {
+      "path": "pages/item/itemRating",
+      "style": {
+        "navigationBarTitleText": "评价"
+      }
+    },
+    {
       "path": "pages/item/list",
       "style": {
         "navigationBarTitleText": "搜索"

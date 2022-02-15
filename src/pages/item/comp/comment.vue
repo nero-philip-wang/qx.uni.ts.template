@@ -2,12 +2,19 @@
   <view class="u-demo-block__content mb-16">
     <view class="album">
       <view class="album__avatar">
-        <image src="https://cdn.uviewui.com/uview/album/1.jpg" mode="" style="width: 32px;height: 32px;"></image>
+        <image :src="data.avatar" mode="" style="width: 64rpx;height: 64rpx;"></image>
       </view>
       <view class="album__content">
-        <u--text text="uView UI" type="primary" bold size="17"></u--text>
-        <u--text margin="0 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
-        <u-album :urls="urls2" :max-count="3" :row-count="3"></u-album>
+        <u--text mode="name" :text="data.nickname" type="primary" bold size="17" format="encrypt"></u--text>
+        <u--text margin="0 0 8px 0" :text="data.content"></u--text>
+        <u-album
+          v-if="data.images && data.images.length"
+          :urls="data.images"
+          :max-count="3"
+          :row-count="3"
+          single-size="70"
+          multiple-size="70"
+        ></u-album>
       </view>
     </view>
   </view>
@@ -15,22 +22,14 @@
 
 <script>
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
-    return {
-      albumWidth: 0,
-      urls2: [
-        'https://cdn.uviewui.com/uview/album/1.jpg',
-        'https://cdn.uviewui.com/uview/album/2.jpg',
-        'https://cdn.uviewui.com/uview/album/3.jpg',
-        'https://cdn.uviewui.com/uview/album/4.jpg',
-        'https://cdn.uviewui.com/uview/album/5.jpg',
-        'https://cdn.uviewui.com/uview/album/6.jpg',
-        'https://cdn.uviewui.com/uview/album/7.jpg',
-        'https://cdn.uviewui.com/uview/album/8.jpg',
-        'https://cdn.uviewui.com/uview/album/9.jpg',
-        'https://cdn.uviewui.com/uview/album/10.jpg',
-      ],
-    }
+    return {}
   },
 }
 </script>

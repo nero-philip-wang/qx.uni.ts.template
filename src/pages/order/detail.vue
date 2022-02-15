@@ -1,6 +1,9 @@
 <template>
   <div class="app">
-    <div class="text-lg my-16 mx-32">
+    <div v-if="!loaded" class="m-32">
+      <u-skeleton rows="16" title loading></u-skeleton>
+    </div>
+    <div v-if="loaded" class="text-lg my-16 mx-32">
       <span class="text-gray">{{ data.status | orderstatus }}</span>
       <span class="text-gray ml-4 text-lg">></span>
     </div>
@@ -27,7 +30,7 @@
     </div>
 
     <!-- 地址 -->
-    <div class="rounded-sm my-16 p-24 bg-white flex">
+    <div v-if="loaded" class="rounded-sm my-16 p-24 bg-white flex">
       <u-icon size="40rpx" name="map"></u-icon>
       <div class="ml-24 text-base">
         <div class="addr">{{ data.consignee.address }} </div>
@@ -67,7 +70,7 @@
       </div>
     </div>
 
-    <div class="rounded-sm my-16 p-24 bg-white text-base lineh-200p">
+    <div v-if="loaded" class="rounded-sm my-16 p-24 bg-white text-base lineh-200p">
       <div class="flex">
         <text class="text-gray">订单编号：</text>
         <text class="text-black-38 flex-grow">{{ data.id || '' }}</text>
@@ -89,7 +92,7 @@
       </div>
       <div v-if="data.buyerRemark" class="flex">
         <text class="text-gray">订单备注：</text>
-        <text class="text-black-38">{{ data.buyerRemark }}</text>
+        <text class="text-black-38">{{ data.buyerRemark || '' }}</text>
       </div>
     </div>
     <bottomBar>

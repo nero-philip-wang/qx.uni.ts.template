@@ -122,10 +122,10 @@ export default {
       this.structofAsset.items[0].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 23)?.balance ?? '未开通')
       this.structofAsset.items[2].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 21)?.balance ?? '未开通')
       var number = await count()
-      this.structofOrder.items[0].value = number.waitForPaying
-      this.structofOrder.items[1].value = number.waitForWarehouseout
-      this.structofOrder.items[2].value = number.waitForReceiving
-      this.structofOrder.items[3].value = number.over
+      this.structofOrder.items[0].badge = number.waitForPaying
+      this.structofOrder.items[1].badge = number.waitForWarehouseout
+      this.structofOrder.items[2].badge = number.waitForReceiving
+      this.structofOrder.items[3].badge = number.over
       this.showTrigger = false
     },
   },

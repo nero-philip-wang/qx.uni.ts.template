@@ -2,10 +2,10 @@
   <div class="p-32">
     <u--form ref="form" label-width="120rpx" label-position="left" :model="data" :rules="rules">
       <u-form-item label="收货人" border-bottom prop="name">
-        <u--input v-model="data.name" border="none"></u--input>
+        <u--input v-model="data.name" border="none" placeholder="请输入收货人姓名"></u--input>
       </u-form-item>
       <u-form-item label="手机号" border-bottom prop="mobile">
-        <u--input v-model="data.mobile" border="none"></u--input>
+        <u--input v-model="data.mobile" border="none" placeholder="请输入收货人11位手机号"></u--input>
       </u-form-item>
       <u-form-item label="地址" border-bottom prop="address" @click="chooseAddress">
         <u--textarea
@@ -18,7 +18,7 @@
         ></u--textarea>
       </u-form-item>
       <u-form-item label="门牌号" border-bottom prop="room">
-        <u--input v-model="data.room" border="none"></u--input>
+        <u--input v-model="data.room" border="none" placeholder="请输入门牌号"></u--input>
       </u-form-item>
     </u--form>
 

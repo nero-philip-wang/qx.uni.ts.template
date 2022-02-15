@@ -74,7 +74,7 @@
     <!-- 评价 -->
     <div id="rating" class="relative bg-white mt-24 pb-32">
       <u-cell-group :border="false" is-link>
-        <u-cell is-link>
+        <u-cell is-link @click="$goto(`pages/item/itemRating?id=${id}`)">
           <div slot="title">
             <span class="text-base text-bold mr-16">评价</span>
             <span class="text-gray text-sm"> {{ data.rating.all || '0' }}+ </span>
@@ -84,8 +84,7 @@
       </u-cell-group>
       <div class="mx-32 my-24">
         <div class="text-gray text-sm mb-8">精选评论</div>
-        <comment />
-        <comment />
+        <comment v-for="c in ratingData" :key="c.id" :data="c" />
       </div>
     </div>
 
@@ -120,7 +119,7 @@ import comment from './comp/comment' // 页面头
 import tabbar from './comp/tabbar' // 页面头
 import sku from './comp/sku' // 页面头
 
-import { get as getitem } from '@/apis/modules/item'
+import { get as getitem, getRating } from '@/apis/modules/item'
 import { setItems } from '@/apis/modules/billing'
 import { hasrebate } from '@/apis/modules/asset'
 import { count, add } from '@/apis/modules/cart'
@@ -142,7 +141,7 @@ export default {
       data: {
         covers: [],
       },
-      ratingData: null, // 评价
+      ratingData: [], // 评价
       quantity: 1,
       id: null,
       showSku: false,
@@ -219,7 +218,7 @@ export default {
     },
     // 加载评价
     async loadRating() {
-      // this.ratingData = await getRating(this.id)
+      this.ratingData = await getRating(this.id, 0, 5)
       this.$nextTick(() => {
         this.calcAnchor() // 计算锚点参数
       })
