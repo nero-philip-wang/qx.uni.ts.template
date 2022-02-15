@@ -84,11 +84,9 @@
         <text class="text-gray">下单时间：</text>
         <text class="text-black-38">{{ data.creationTime | timef }}</text>
       </div>
-      <div v-if="data.pay_type" class="flex">
+      <div v-for="(c, idx) in data.orderPayments.filter((i) => i.hasPaid)" :key="idx" class="flex">
         <text class="text-gray">支付方式：</text>
-        <text class="text-black-38">{{
-          data.pay_type === 'wxpay' ? '微信支付' : data.pay_type === 'alipay' ? '支付宝支付' : '余额支付'
-        }}</text>
+        <text class="text-black-38">{{ c.type | payment }} (￥{{ c.amount | yuan }}) </text>
       </div>
       <div v-if="data.buyerRemark" class="flex">
         <text class="text-gray">订单备注：</text>

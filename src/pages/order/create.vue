@@ -185,7 +185,7 @@ export default {
     async createOrder() {
       if (this.order && this.order.id && this.order.items) {
         try {
-          await create({ ...this.order, buyerRemark: `${this.selectDate} ${this.inputs.buyerRemark}` })
+          await create({ ...this.order, buyerRemark: `${this.selectDate || ''} ${this.inputs.buyerRemark || ''}` })
           this.gopay(this.order)
           easyState.items = []
         } catch (error) {

@@ -116,6 +116,12 @@
       }
     },
     {
+      "path": "pages/order/comment",
+      "style": {
+        "navigationBarTitleText": "订单评价"
+      }
+    },
+    {
       "path": "pages/order/pay",
       "style": {
         "navigationBarTitleText": "收银台"

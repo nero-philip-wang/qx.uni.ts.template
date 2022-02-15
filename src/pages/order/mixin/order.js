@@ -20,6 +20,20 @@ export default {
           return '已取消'
       }
     },
+    payment: (type) => {
+      switch (type) {
+        case 10:
+          return '微信支付'
+        case 21:
+          return '储值'
+        case 22:
+          return '积分'
+        case 23:
+          return '钱包'
+        case 30:
+          return '现金'
+      }
+    },
   },
   methods: {
     gopay(order) {
