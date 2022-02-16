@@ -1,13 +1,13 @@
 <template>
-  <div class="mx-32 my-24 bg-white" :class="{ disabled: navCurrent !== 0 }">
+  <div class="mx-32 my-24 bg-white">
     <!-- 上半 -->
     <div class="pt-16 pb-8 px-40 flex align-center">
       <div class="left pt-8">
-        <div class="text-lg truncate">{{ item.title }} </div>
+        <div class="text-lg truncate" :class="{ 'text-gray': disabled }">{{ item.title }} </div>
         <div class="text-gray text-sm mt-16">{{ item.startTime | datef }} - {{ item.endTime | datef }} </div>
       </div>
       <div class="right text-center">
-        <div class="text-price">
+        <div :class="disabled ? 'text-gray' : 'text-price'">
           <span v-if="item.minus">{{ item.minus | yuan }}元</span>
           <span v-else-if="item.discount == 0">
             免费

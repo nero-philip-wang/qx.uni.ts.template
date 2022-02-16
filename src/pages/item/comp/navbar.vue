@@ -1,7 +1,7 @@
 <template>
   <div>
     <u-navbar fixed auto-back placeholder>
-      <u-tabs slot="center" :current="current" :list="list" @change="trigger"></u-tabs>
+      <u-tabs slot="center"  :scrollable="false" :current="current" :list="list" @change="trigger"></u-tabs>
     </u-navbar>
   </div>
 </template>

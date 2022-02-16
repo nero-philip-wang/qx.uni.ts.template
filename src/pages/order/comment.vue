@@ -20,15 +20,14 @@
         </view>
         <view class="upload-wrap">
           <u-upload
-            :before-upload="beforeupload"
-            :action="url"
-            :form-data="form"
+            multiple
             :max-size="5 * 1024 * 1024"
             :size-type="['compressed']"
-            max-count="5"
-            :file-list="fileList"
-            @on-uploaded="change"
-            @on-remove="(idx, list) => change(list)"
+            :max-count="9"
+            :name="index"
+            :file-list="item.images"
+            @afterRead="(e) => afterRead(index, e)"
+            @delete="(e) => deletePic(index, e)"
           ></u-upload>
         </view>
       </view>
@@ -45,6 +44,7 @@ import { gettoken } from '@/apis/modules/upload.js'
 import item from '../cart/comp/cartItem.vue'
 import store from '@/store'
 
+const URL = 'https://s.re4.top/'
 const getSuffix = function(filename) {
   const pos = filename.lastIndexOf('.')
   let suffix = ''
@@ -61,30 +61,25 @@ export default {
   data() {
     return {
       id: null,
-      data: {},
-      list: [],
+      list: [{ images: [] }],
       form: {},
-      url: 'https://s.re4.top',
       times: 0,
-      key: '',
-      urldic: {},
-      piclist: [],
+      imgs: [],
     }
   },
 
   async onLoad(options) {
     this.id = options.id
+    // 加载订单
     const data = await get(this.id)
-
-    // const data = JSON.parse(options.data)
     this.list = data.items.map((item) => {
       item.rating = 5
       item.content = ''
       item.images = []
-      return item
+      return Object.assign({}, item)
     })
-    this.data = data
-    var res = await gettoken('comment')
+    // 加载阿里云参数
+    var res = await gettoken('comment/test')
     this.form = {
       url: res.url,
       path: res.path,
@@ -94,18 +89,34 @@ export default {
     }
   },
   methods: {
-    async beforeupload(idx, files) {
-      var addition = `${++this.times}${getSuffix(files[idx].url)}`
-      this.form.key = `${this.form.path}${addition}`
-      this.urldic[files[idx].url] = this.form.url + addition
-      return true
+    afterRead(idx, event) {
+      this.list[idx].images.push(...event.file)
+      event.file.forEach(async (file) => {
+        var addition = `${++this.times}${getSuffix(file.url)}`
+        var [err] = await uni.uploadFile({
+          url: URL,
+          filePath: file.url,
+          formData: { ...this.form, key: `${this.form.path}${addition}` },
+          name: 'file',
+        })
+        var matched = this.list[idx].images.find((c) => c.url == file.url)
+        if (!err) {
+          matched.url = `${URL}${this.form.path}${addition}`
+        } else {
+          matched.thumb = `/static/img/fail.png`
+          matched.url = `/static/img/fail.png`
+        }
+      })
     },
-    change(lists) {
-      this.piclist = lists.map((c) => this.urldic[c.url])
+    deletePic(idx, event) {
+      this.list[idx].images.splice(event.index, 1)
     },
+
     async confirm() {
+      console.log(this.list)
+      debugger
       const data = {
-        orderId: this.data.id,
+        orderId: this.id,
         list: this.list.map((item) => {
           return {
             itemSkuId: item.itemId,
@@ -113,7 +124,7 @@ export default {
             title: item.title || '',
             content: item.content || '未填写评价',
             score: item.rating,
-            images: this.piclist,
+            images: item.images.map((c) => c.url),
             nickname: store.state.user.logged.nickname,
             avatar: store.state.user.logged.avatar,
           }

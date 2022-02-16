@@ -14,6 +14,7 @@
           :row-count="3"
           single-size="70"
           multiple-size="70"
+          single-mode="aspectFill"
         ></u-album>
       </view>
     </view>

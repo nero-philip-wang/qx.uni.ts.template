@@ -11,7 +11,7 @@
     </div>
 
     <div class="bg-white">
-      <u-tabs :list="tabs" line-color="#e30e15" @change="(item) => (argvs.direction = item.value)"></u-tabs>
+      <u-tabs :list="tabs" line-color="#e30e15" @change="(item) => (argvs.direction = item.value)"  :scrollable="false"></u-tabs>
       <listview v-model="list" height="calc(100vh - 232rpx - 88rpx)" loadmore-enabled :argvs="argvs" :request="getrecord">
         <div v-for="c in list" :key="c.id" class="item flex place-items-center ml-32">
           <u-avatar v-if="c.direction" bg-color="#FFF7E6" color="#FFC069" icon="red-packet-fill" size="56rpx"></u-avatar>
