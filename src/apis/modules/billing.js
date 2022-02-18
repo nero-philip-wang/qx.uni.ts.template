@@ -1,21 +1,8 @@
 import store from '@/store'
 import request from '../request'
 
-export const setConsignee = (consignee) => {
-  store.commit('SET_CONSIGNEE', consignee)
-}
-
-export const setItems = (items) => {
-  store.commit(
-    'SET_ITEMS',
-    items.map((c) => ({
-      ...c,
-      itemId: c.id,
-    }))
-  )
-}
-
 export const settle = ({ buyerNickName, consignee, source, buyerRemark, items, selectedCoupons }) => {
+  debugger
   return request('mall/billing/settle', 'post', {
     buyerNickName,
     deliveryType: 8,

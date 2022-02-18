@@ -172,22 +172,6 @@ export default {
   onPageScroll(e) {
     this.scrollTop = e.scrollTop
   },
-  // #ifdef MP-WEIXIN
-  onShareAppMessage(res) {
-    return {
-      title: this.data.title,
-      path: `/pages/item/detail?id=${this.data.id}&sid=${this.userId}&t=${this.tenantId}&area=${this.area}`,
-      imageUrl: this.data.covers[0],
-    }
-  },
-  onShareTimeline(res) {
-    return {
-      title: this.data.title,
-      query: `id=${this.data.id}&sid=${this.userId}&t=${this.tenantId}&area=${this.area}`,
-      imageUrl: this.data.covers[0],
-    }
-  },
-  // #endif
   methods: {
     previewImage(idx) {
       uni.previewImage({
@@ -204,11 +188,17 @@ export default {
         }, 1000)
         return
       }
+      // 设置分享
+      uni.$u.liteShare.title = res.title
+      uni.$u.liteShare.page = '/pages/item/detail'
+      uni.$u.liteShare.pageQuery = 'id=' + res.id
+      uni.$u.liteShare.image = this.data.covers[0]
+
       // 加工规格
       res.specifications.forEach((item) => {
         item.values = item.values.map((c) => ({ ...c, checked: false }))
       })
-      if (res.covers.length > 1) res.covers.splice(res.covers.length - 1, 1)
+      // if (res.covers.length > 1) res.covers.splice(res.covers.length - 1, 1)
       this.data = Object.assign({}, res)
       this.$nextTick(() => {
         this.calcAnchor() // 计算锚点参数

@@ -85,6 +85,7 @@ const store = new Vuex.Store({
       return state.user.logged.token
     },
     tabbars: (state) => state.tabbar,
+    sid: (state) => state.user.sId,
   },
   mutations: {
     SAVE_AREA(state, list) {
@@ -122,6 +123,9 @@ const store = new Vuex.Store({
     },
     SET_SESSIONINFO(state, info) {
       state.sessionInfo = info
+    },
+    SET_SOURCE(state, sId) {
+      state.user.sId = sId
     },
     SET_HISTORY(state, keyword) {
       var list = state.searchHistory

@@ -3,7 +3,7 @@ import App from './App'
 import store from './store' // store
 import * as filters from './filters' // 全局过滤器
 import uView from 'uview-ui' // uView
-// import mpShare from './utils/share/index'
+import share from '@/utils/share/lite'
 import goto from './utils/goto' // goto
 
 Vue.prototype.$goto = goto // goto
@@ -21,7 +21,7 @@ Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key])
 })
 Vue.use(uView) // uView
-// Vue.mixin(mpShare)
+Vue.mixin(share)
 
 Vue.config.productionTip = false
 App.mpType = 'app'

@@ -96,7 +96,6 @@ export default {
   },
   computed: {
     member() {
-      console.log(store.state)
       return store.getters.isLogged
         ? store.state.user.logged
         : {
