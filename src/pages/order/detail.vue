@@ -94,7 +94,7 @@
       </div>
     </div>
     <bottomBar>
-      <orderBar :order="data" />
+      <orderBar :order="data" show-negative />
     </bottomBar>
   </div>
 </template>
@@ -135,32 +135,21 @@ export default {
   methods: {
     async loadData() {
       const data = await get(this.id)
-      this.loaded = true
-      // if(res.status === 0){
-      // 	this.$util.msg('订单不存在');
-      // 	setTimeout(()=>{
-      // 		uni.navigateBack();
-      // 	}, 1000)
-      // 	return;
-      // }
-      // const data = res.data;
+      data.items = data.items.map((c) => ({ ...c, id: c.itemSpuId }))
 
-      //   if (data.express_info && data.express_info.data && data.express_info.data.length > 0) {
-      //     this.expressInfo = data.express_info.data[0]
-      //   }
+      //  处理发货人
       if (data.deliveryLog.length) {
         var last = data.deliveryLog[data.deliveryLog.length - 1]
         data.provider = { id: last.providerId, tilte: last.provider }
       }
 
+      this.loaded = true
       this.data = data
 
+      //  处理发货人
       if (data.provider) {
         this.data.provider = await getEmployee(data.provider.id)
       }
-
-      //   console.log(JSON.parse(JSON.stringify(data)))
-      //   this.addr = data.address
     },
     copy(str) {
       uni.setClipboardData({

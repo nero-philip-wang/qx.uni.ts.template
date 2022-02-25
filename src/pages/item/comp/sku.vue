@@ -17,7 +17,7 @@
           </div>
         </div>
       </div>
-      <scroll-div class="c-wrap" scroll-y="true">
+      <scroll-view class="c-wrap pt-40" scroll-y="true">
         <!-- 规格选择 -->
         <!-- <div class="sku-list fill"> -->
         <div v-for="(item, index) in spu.specifications" :key="index" class="flex align-center">
@@ -40,7 +40,7 @@
           <div class="flex-grow"></div>
           <u-number-box v-model="buyNumber" :min="1" :max="Math.min(currentSku.stockQuantity || 999, 999)"></u-number-box>
         </div>
-      </scroll-div>
+      </scroll-view>
       <!-- 确认区域 -->
       <div class="pr-16 py-32">
         <div v-if="type === 'cart' || type === 'buy'" class="pl-32 pr-16 flex">
@@ -191,10 +191,10 @@ export default {
   }
   &.active {
     color: $uni-color-primary;
-    background-color: rgba($uni-color-primary, 0.03);
+    background-color: rgba($uni-color-primary, 0.1);
 
     &:after {
-      border-color: rgba($uni-color-primary, 0.5);
+      border-color: rgba($uni-color-primary, 0.6);
     }
   }
   &.disabled {

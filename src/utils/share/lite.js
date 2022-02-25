@@ -34,7 +34,7 @@ const common = {
     }
   },
   // #endif
-  onHide() {
+  onUnload() {
     uni.$u.liteShare = { ...defaultShare }
   },
   methods: {

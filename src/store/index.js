@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import config from '@/config'
 Vue.use(Vuex)
 
 // // https://webpack.js.org/guides/dependency-management/#requirecontext
@@ -38,20 +39,20 @@ const store = new Vuex.Store({
         pagePath: '/pages/index/index',
       },
       {
-        iconPath: 'star',
-        selectedIconPath: 'star-fill',
+        iconPath: 'grid',
+        selectedIconPath: 'grid-fill',
         text: '分类',
         pagePath: '/pages/cata/index',
       },
       {
-        iconPath: 'star',
-        selectedIconPath: 'star-fill',
+        iconPath: 'shopping-cart',
+        selectedIconPath: 'shopping-cart-fill',
         text: '购物车',
         pagePath: '/pages/cart/index',
       },
       {
-        iconPath: 'star',
-        selectedIconPath: 'star-fill',
+        iconPath: 'account',
+        selectedIconPath: 'account-fill',
         text: '我的',
         pagePath: '/pages/my/index',
       },
@@ -69,9 +70,9 @@ const store = new Vuex.Store({
       /** 未登录信息 */
       logging: {},
       /** 商户id */
-      tId: 1000,
+      tId: config.defaultTenant.id,
       /** 商户名称 */
-      tTitle: '海口',
+      tTitle: config.defaultTenant.title,
       /** 分销人id */
       sId: null,
     },

@@ -2,7 +2,6 @@ import store from '@/store'
 import request from '../request'
 
 export const settle = ({ buyerNickName, consignee, source, buyerRemark, items, selectedCoupons }) => {
-  debugger
   return request('mall/billing/settle', 'post', {
     buyerNickName,
     deliveryType: 8,

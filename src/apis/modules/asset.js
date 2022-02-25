@@ -6,4 +6,4 @@ export const getrecord = (data) => request('mall/assets/detail', 'get', data)
 
 export const cashout = (amount) => request('mall/assets/cashout', 'post', amount)
 
-export const hasrebate = (status) => request('mall/assets/hasrebate', 'get')
+export const hasrebate = (status) => request('mall/assets/hasrebate', 'get', {}, { autoLogin: false })

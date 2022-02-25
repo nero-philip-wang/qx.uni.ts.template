@@ -5,11 +5,12 @@ import * as filters from './filters' // 全局过滤器
 import uView from 'uview-ui' // uView
 import share from '@/utils/share/lite'
 import goto from './utils/goto' // goto
+import config from './config/index'
 
 Vue.prototype.$goto = goto // goto
 Vue.prototype.$store = store // store
 
-const primaryColor = '#34bc98'
+const primaryColor = config.primaryColor
 uni.$u.props.checkbox.activeColor = primaryColor
 uni.$u.props.tabbar.activeColor = primaryColor
 uni.$u.props.tabs.lineColor = primaryColor

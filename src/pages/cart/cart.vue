@@ -121,7 +121,7 @@ export default {
         .filter((c) => c.checked)
         .map((c) => ({
           ...c,
-          itemId: c.id,
+          // itemId: c.itemId,
           spu: { type: c.type },
         }))
       this.$goto('/pages/order/create?type=cart')

@@ -59,6 +59,7 @@ export default {
       var sum = 0
       order.items.forEach((element) => {
         sum += element.quantity
+        element.price = element.totalAmount
       })
       return sum
     },

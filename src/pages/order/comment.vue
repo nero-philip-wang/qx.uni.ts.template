@@ -113,8 +113,6 @@ export default {
     },
 
     async confirm() {
-      console.log(this.list)
-      debugger
       const data = {
         orderId: this.id,
         list: this.list.map((item) => {

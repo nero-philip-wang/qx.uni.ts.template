@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="bg-white mt-16 p-32">
+    <div v-if="noarea" class="bg-white mt-16 p-32">
       <div class="open"> 即将开通服务的城市</div>
       <div class="flex flex-wrap">
         <span v-for="c in noarea" :key="c.id" class="mr-24 m-12">
@@ -29,7 +29,8 @@ export default {
   data() {
     return {
       tenants: [],
-      noarea: ['三亚', '南京', '武汉', '北京', '苏州', '广州'],
+      noarea: null,
+      // noarea: ['三亚', '南京', '武汉', '北京', '苏州', '广州'],
     }
   },
   async created() {

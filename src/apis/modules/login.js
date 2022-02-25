@@ -1,4 +1,4 @@
-import tenant from '@/config/current'
+import tenant from '@/config'
 import store from '@/store'
 import { arequest, goLogin } from '../request'
 var loading = false

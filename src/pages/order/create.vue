@@ -65,7 +65,7 @@
     </div>
     <div class="my-16 bg-white rounded-sm overflow-hidden py-16 px-24">
       <span class="text-bold">订单备注：</span>
-      <textarea v-model="inputs.buyerRemark" confirm-type="done" auto-height placeholder="有什么要求您尽管说~" class="remark my-16" />
+      <textarea v-model="buyerRemark" confirm-type="done" auto-height placeholder="有什么要求您尽管说~" class="remark my-16" />
     </div>
 
     <!-- 底部栏 -->
@@ -126,9 +126,9 @@ export default {
         consignee: {},
         items: [],
         selectedCoupons: [],
-        buyerRemark: '',
         source: '',
       },
+      buyerRemark: '',
     }
   },
   computed: {
@@ -185,7 +185,7 @@ export default {
     async createOrder() {
       if (this.order && this.order.id && this.order.items) {
         try {
-          await create({ ...this.order, buyerRemark: `${this.selectDate || ''} ${this.inputs.buyerRemark || ''}` })
+          await create({ ...this.order, buyerRemark: `${this.selectDate || ''} ${this.buyerRemark || ''}` })
           this.gopay(this.order)
           easyState.items = []
         } catch (error) {

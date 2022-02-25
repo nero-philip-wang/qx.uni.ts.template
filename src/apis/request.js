@@ -1,4 +1,4 @@
-import tenant from '../config/current'
+import tenant from '../config'
 import store from '@/store'
 import md5 from 'md5'
 import { tryLogin } from './modules/login'

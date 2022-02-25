@@ -1,6 +1,12 @@
 <template>
   <u-tabbar :value="value" border @change="change">
-    <u-tabbar-item v-for="(c, idx) in tabbars" :key="c.text" :text="c.text" icon="home" :name="idx"></u-tabbar-item>
+    <u-tabbar-item
+      v-for="(c, idx) in tabbars"
+      :key="c.text"
+      :text="c.text"
+      :icon="value == idx ? c.selectedIconPath : c.iconPath"
+      :name="idx"
+    ></u-tabbar-item>
   </u-tabbar>
 </template>
 <script>

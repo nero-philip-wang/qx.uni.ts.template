@@ -221,6 +221,16 @@ export default {
     },
     // 加入购物车
     async addToCart(selected) {
+      // 万一什么都没选中
+      if (!selected) {
+        return
+      }
+      // 判断用户登录状态
+      if (!this.isLogged) {
+        this.$goto('pages/login/login')
+        return
+      }
+
       var item = { ...selected }
       item.itemId = selected.id
       item.itemSpuId = this.data.id

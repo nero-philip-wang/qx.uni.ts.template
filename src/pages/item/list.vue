@@ -10,6 +10,7 @@
       height="calc(100vh - 64rpx - 32rpx - 24rpx)"
       :request="getItem"
       class="flex-grow mt-16"
+      manual
     >
       <div v-for="c in list" :key="c.id" class="bg-white rounded-sm overflow-hidden my-16 mx-12">
         <item is-item :value="c"></item>
