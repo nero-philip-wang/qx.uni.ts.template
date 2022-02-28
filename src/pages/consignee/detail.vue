@@ -128,8 +128,8 @@ export default {
             this.data.position = { x: res.longitude, y: res.latitude }
             this.data.address = `${res.address} ${res.name}`
           } catch (error) {
-            // throw error
             this.data.address = ' '
+            throw error
           }
         },
       })
@@ -137,9 +137,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-/deep/ .u-line {
-  border-color: #ddd;
-}
-</style>

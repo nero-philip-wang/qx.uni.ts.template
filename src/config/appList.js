@@ -11,7 +11,7 @@ const config = {
       id: 1002,
       title: '全国',
     },
-    key: '828b3db95f936f00ed29f11a2e328234',
+    key: '76f90da550f676901180217cc6a1dee0',
     hasLive: false,
     primaryColor: '#34bc98',
   },

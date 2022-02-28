@@ -12,7 +12,7 @@ export const del = (id) => {
   return request('mall/consignees/' + id, 'delete')
 }
 
-const pcaurl = 'http://s.re4.top/asset/pca-code.json'
+const pcaurl = 'https://s.re4.top/asset/pca-code.json'
 export const pca = () => {
   return new Promise((resolve, reject) => {
     uni.request({
