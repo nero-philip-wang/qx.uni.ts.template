@@ -41,6 +41,11 @@
             <div class="text-sm">分享</div>
           </button>
         </div>
+        <!-- 促销 -->
+        <div class="flex px-32 pt-8">
+          <span v-if="data.moq" class="tag"> {{ data.moq }}件起订 </span>
+          <span v-if="data.pcsPerCtn" class="tag"> {{ data.pcsPerCtn }}件一组 </span>
+        </div>
       </div>
 
       <div class="bg-white mt-16">
@@ -351,6 +356,17 @@ export default {
   .anchor {
     position: absolute;
     top: -136rpx;
+  }
+
+  .tag {
+    background-color: rgba($u-primary, 0.1);
+    border-radius: 5rpx;
+    font-size: 24rpx;
+    height: 48rpx;
+    line-height: 48rpx;
+    padding: 0 24rpx;
+    margin-right: 24rpx;
+    color: $u-primary;
   }
 }
 </style>

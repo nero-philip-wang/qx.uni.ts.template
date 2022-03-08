@@ -158,6 +158,7 @@ export default {
   onShow() {
     this.inputs.consignee = Object.assign({}, easyState.address)
     this.inputs.items = [...easyState.items]
+    console.log(easyState.items)
 
     var hasItem = this.inputs.items && this.inputs.items.length
     // 非空购物车就结算
@@ -170,15 +171,18 @@ export default {
     async trySettle() {
       var needDate = !(this.inputs.items && this.inputs.items[0].spu.type == 3) || this.selectDate
       if (this.inputs.consignee && this.inputs.consignee.mobile && needDate) {
-        try {
-          this.order = await settle({
-            ...this.inputs,
-          })
-          console.log(this.order, '结算成功')
-        } catch (error) {
-          this.order = {}
-          console.log(error, '结算失败')
-        }
+        this.$u.debounce(this.settle, 200)
+      }
+    },
+    async settle() {
+      try {
+        this.order = await settle({
+          ...this.inputs,
+        })
+        console.log(this.order, '结算成功')
+      } catch (error) {
+        this.order = {}
+        console.log(error, '结算失败')
       }
     },
     // 创建订单

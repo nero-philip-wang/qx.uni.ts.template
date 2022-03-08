@@ -38,7 +38,12 @@
         <div class="flex align-center pr-32">
           <div class="ml-40 py-16 text-black-1b text-base text-bold">数量</div>
           <div class="flex-grow"></div>
-          <u-number-box v-model="buyNumber" :min="1" :max="Math.min(currentSku.stockQuantity || 999, 999)"></u-number-box>
+          <u-number-box
+            v-model="buyNumber"
+            :min="quantityMin"
+            :max="Math.min(currentSku.stockQuantity || 999, 999)"
+            :step="Math.max(1, infoData.pcsPerCtn)"
+          ></u-number-box>
         </div>
       </scroll-view>
       <!-- 确认区域 -->
@@ -102,6 +107,14 @@ export default {
       currentSku: {},
     }
   },
+  computed: {
+    quantityMin() {
+      var item = this.infoData
+      if (!item.pcsPerCtn) return Math.max(1, item.moq)
+      else if (item.moq <= item.pcsPerCtn) return item.pcsPerCtn
+      else return parseInt(item.moq / item.pcsPerCtn + 1) * item.pcsPerCtn
+    },
+  },
   watch: {
     buyNumber(value) {
       this.$emit('update:quantity', value)
@@ -112,6 +125,7 @@ export default {
         v.specifications.forEach((c) => (c.values[0].checked = true))
         this.spu = Object.assign({}, { ...v })
         this.renderChecked()
+        if (this.buyNumber < this.quantityMin) this.buyNumber = this.quantityMin
       },
     },
   },

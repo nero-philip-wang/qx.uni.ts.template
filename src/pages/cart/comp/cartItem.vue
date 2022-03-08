@@ -26,14 +26,18 @@
       <!-- 价格数量 -->
       <div class="flex lineh-full mt-8">
         <span class="text-sm text-price text-bold ml-8"> ¥</span>
-        <span class="text-lg text-price text-bold ml-4">{{ value.minRetailPrice || value.price | yuan }}</span>
+        <span class="text-lg text-price text-bold ml-4">{{ value.minRetailPrice || value.price || value.retailPrice | yuan }}</span>
         <span class="flex-grow"></span>
         <div v-if="editable" class="b-1 rounded-sm overflow-hidden" @click.stop.prevent>
           <u-number-box
             v-model="value.quantity"
             button-size="48rpx"
             bg-color="#fff"
-            @change="({ value }) => $emit('update:quantity', value)"
+            :min="quantityMin"
+            :max="Math.min(value.stockQuantity || 999, 999)"
+            :step="Math.max(1, value.pcsPerCtn)"
+            disabled-input
+            @change="({ value }) => emitValue(value)"
           >
             <div slot="minus" class="minus br-1 p-8">
               <u-icon name="minus" size="32rpx"></u-icon>
@@ -97,6 +101,12 @@ export default {
     id() {
       return this.value.id || this.value.itemId
     },
+    quantityMin() {
+      var item = this.value
+      if (!item.pcsPerCtn) return Math.max(1, item.moq)
+      else if (item.moq <= item.pcsPerCtn) return item.pcsPerCtn
+      else return parseInt(item.moq / item.pcsPerCtn + 1) * item.pcsPerCtn
+    },
   },
   watch: {
     checked: {
@@ -113,6 +123,14 @@ export default {
     clickItem() {
       if (this.disabledLink) return
       this.$goto('/pages/item/detail?id=' + this.id)
+    },
+    emitValue(v) {
+      var item = this.value
+      if (item.pcsPerCtn) v = parseInt(v / item.pcsPerCtn) * item.pcsPerCtn
+      this.$emit('update:quantity', v)
+      this.$nextTick(() => {
+        this.value.quantity = v
+      })
     },
   },
 }
