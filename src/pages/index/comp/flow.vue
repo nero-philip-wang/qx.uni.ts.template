@@ -11,7 +11,7 @@
       class="mb-24 overflow-hidden bg-white rounded"
       :class="{ 'lineh-0': !item.title }"
     >
-      <image class="image" mode="aspectFill" :src="item.src" :style="{ height: params.height }"></image>
+      <image class="image" mode="aspectFill" :src="item.src" :style="{ height: autoAddUnit(params.height) }"></image>
       <div v-if="item.title" class="flex my-8 mx-16">
         <div class="left">
           <div class="text-base truncate"> {{ item.title }} </div>
@@ -37,7 +37,11 @@ export default {
     return {}
   },
   computed: {},
-  methods: {},
+  methods: {
+    autoAddUnit(height) {
+      return isNaN(parseInt(height)) ? height : height + 'rpx'
+    },
+  },
 }
 </script>
 

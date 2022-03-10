@@ -1,6 +1,6 @@
 <template>
   <div>
-    <u-swiper img-mode="aspectFill" :list="params.list.map((c) => c.src)" :height="params.height"></u-swiper>
+    <u-swiper img-mode="aspectFill" :list="params.list.map((c) => c.src)" :height="autoAddUnit(params.height)"></u-swiper>
   </div>
 </template>
 <script>
@@ -14,6 +14,10 @@ export default {
   data() {
     return {}
   },
-  methods: {},
+  methods: {
+    autoAddUnit(height) {
+      return isNaN(parseInt(height)) ? height : height + 'rpx'
+    },
+  },
 }
 </script>
