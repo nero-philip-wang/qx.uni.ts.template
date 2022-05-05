@@ -15,8 +15,8 @@ module.exports = {
       new BundleAnalyzerPlugin(),
       new CopyWebpackPlugin([
         {
-          from: path.join(__dirname, './cloudbase'),
-          to: path.join(__dirname, 'dist', process.env.NODE_ENV === 'production' ? 'build' : 'dev', process.env.UNI_PLATFORM, 'cloudbase'),
+          // from: path.join(__dirname, './cloudbase'),
+          // to: path.join(__dirname, 'dist', process.env.NODE_ENV === 'production' ? 'build' : 'dev', process.env.UNI_PLATFORM, 'cloudbase'),
         },
       ]),
     ],

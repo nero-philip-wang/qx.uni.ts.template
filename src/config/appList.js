@@ -12,10 +12,10 @@ const config = {
   wx129b199af409f294: {
     appId: 'wx129b199af409f294',
     defaultTenant: {
-      id: 1,
-      title: '南京',
+      id: 1000,
+      title: '海口',
     },
-    key: 'wxyehailun21312',
+    key: '1180217cc6a1dee076f90da550f67690',
     hasLive: false,
     primaryColor: '#1eb1ad',
   },
