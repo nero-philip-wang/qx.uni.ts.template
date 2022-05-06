@@ -1,6 +1,6 @@
 <template>
   <page-container ref="popup" :show="show" position="bottom" @afterleave="$emit('update:show', false)">
-    <div class="bg-white">
+    <div class="bg-white z-100">
       <!-- 头部反馈区 -->
       <div class="flex mx-32 mt-32 mb-16">
         <image

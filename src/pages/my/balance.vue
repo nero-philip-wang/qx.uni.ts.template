@@ -131,12 +131,12 @@ export default {
 }
 
 .item.active {
-  background: rgba(227, 14, 21, 0.04);
-  border: 2px solid #e30e15;
-  color: #e30e15;
+  background: rgba($u-primary, 0.04);
+  border: 2px solid $u-primary;
+  color: $u-primary;
   .text-sm {
-    border-top: 2px solid #e30e15;
-    color: #e30e15;
+    border-top: 2px solid $u-primary;
+    color: $u-primary;
   }
 }
 </style>

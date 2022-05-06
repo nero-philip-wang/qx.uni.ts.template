@@ -16,9 +16,10 @@
       <!-- 价格 名称 -->
       <div class="bg-white pb-32">
         <div class="bg-white px-32 pt-40 flex flex-end">
-          <span class="text-price text-bold mr-32">
+          <span class="text-bold mr-32" :class="lv.discount ? 'text-vip' : 'text-price'">
+            <span v-if="lv.discount" class="text-sm">会员价</span>
             <span class="text-base">￥</span>
-            <span class="text-xl"> {{ data.minRetailPrice | yuan }}</span>
+            <span v-if="lv.discount" class="text-xl"> {{ (data.minRetailPrice * lv.discount) | yuan }}</span>
           </span>
           <span v-if="data.markingPrice > data.minRetailPrice" class="text-gray overline text-base">
             ￥{{ data.markingPrice | yuan }}
@@ -29,7 +30,12 @@
             <span class="text-primary text-bold">266 </span>
           </span>
         </div>
-        <div class="bg-white px-32 pt-24 flex align-center">
+        <div class="noticebar mx-28 mt-8 p-12 rounded overflow-hidden flex" @click="$goto('/')">
+          <u-icon name="integral" color="#f9ae3d" size="32rpx"></u-icon>
+          <span class="ml-8 text-sm flex-grow"> 开通会员低至8折，当前等级：{{ lv.title || '普通会员' }} </span>
+          <u-icon name="arrow-right" color="#f9ae3d" size="32rpx"></u-icon>
+        </div>
+        <div class="bg-white px-32 flex align-center">
           <div style="width:600rpx" class="mr-16">
             <div class="text-bold text-base truncate">{{ data.title }}</div>
             <div class="text-sm text-gray mt-8">
@@ -156,7 +162,8 @@ export default {
   },
   computed: {
     ...mapState({
-      userId: (state) => state.user.userInfo && state.user.userInfo.id,
+      userId: (state) => state.user.logged && state.user.logged.id,
+      lv: (state) => (state.user.logged && state.user.logged.level) || {},
       tenantId: (state) => state.user.tenantId,
       area: (state) => state.user.tenantArea,
     }),
@@ -367,6 +374,11 @@ export default {
     padding: 0 24rpx;
     margin-right: 24rpx;
     color: $u-primary;
+  }
+
+  .noticebar {
+    background: #fdf6ec;
+    color: #f9ae3d;
   }
 }
 </style>

@@ -11,16 +11,20 @@
       <div style="height:200rpx" class="pt-64">
         <!-- 头像 -->
         <div class="mx-40 text-white flex" @click="!isLogged && $goto('/pages/login/login')">
-          <div class="mx-32">
+          <div class="mx-32 relative">
             <u-avatar :src="member.avatar" size="110rpx"></u-avatar>
+            <image v-if="member.level && member.level.icon" :src="member.level.icon" class="absolute rounded-full memberlevel"></image>
           </div>
           <div class="flex-grow flex-col justify-center">
             <div class="text-white text-xl">{{ member.nickname }}</div>
-            <div class="text-white text-sm">{{ member.desc || '' }}</div>
+            <div class="mt-4 text-white text-sm">{{ (member.level && member.level.title) || '普通会员' }}</div>
+          </div>
+          <div class=" flex-col justify-center">
+            <div class="right text-sm">会员权益</div>
           </div>
         </div>
 
-        <div class="bg-primary absolute"></div>
+        <div class="bg-primary absolute bgcard"></div>
       </div>
 
       <!-- 资产 -->
@@ -52,12 +56,14 @@
 <script>
 import Card from './comp/card.vue'
 import store from '@/store'
+import easyState from '@/store/easyState'
 import { all } from '@/apis/modules/asset'
 import { count } from '@/apis/modules/order'
 import Enumerable from 'linq'
 import { toYuan } from '@/utils/index'
 import banner from '../index/comp/banner.vue'
 import { section } from '../index/comp/meta'
+import { loginByCode } from '@/apis/modules/login'
 
 var list1 = section()
 list1.height = '160rpx'
@@ -114,29 +120,54 @@ export default {
   onLoad() {
     this.refresh()
   },
+  onShow() {
+    this.RefreshMember()
+  },
   methods: {
     async refresh() {
       this.showTrigger = true
-      var assets = await all()
-      this.structofAsset.items[0].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 23)?.balance ?? '未开通')
-      this.structofAsset.items[2].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 21)?.balance ?? '未开通')
-      var number = await count()
-      this.structofOrder.items[0].badge = number.waitForPaying
-      this.structofOrder.items[1].badge = number.waitForWarehouseout
-      this.structofOrder.items[2].badge = number.waitForReceiving
-      this.structofOrder.items[3].badge = number.over
+      try {
+        var assets = await all()
+        this.structofAsset.items[0].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 23)?.balance ?? '未开通')
+        this.structofAsset.items[2].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 21)?.balance ?? '未开通')
+      } catch (error) {}
+      try {
+        var number = await count()
+        this.structofOrder.items[0].badge = number.waitForPaying
+        this.structofOrder.items[1].badge = number.waitForWarehouseout
+        this.structofOrder.items[2].badge = number.waitForReceiving
+        this.structofOrder.items[3].badge = number.over
+      } catch (error) {}
       this.showTrigger = false
+    },
+    async RefreshMember() {
+      if (easyState.needRefreshMember) {
+        var user = await loginByCode(true)
+        easyState.needRefreshMember = false
+      }
     },
   },
 }
 </script>
-<style scoped>
-.bg-primary {
+<style scoped lang="scss">
+.bgcard {
   height: 330rpx;
   width: 140%;
   top: 0;
   left: -20%;
   z-index: -1;
   border-radius: 0 0 50% 50%;
+}
+.memberlevel {
+  width: 42rpx;
+  height: 42rpx;
+  right: -10rpx;
+  bottom: 4rpx;
+}
+.right {
+  background-color: $u-primary-disabled;
+  padding: 12rpx 24rpx;
+  border-radius: 50rpx 0 0 50rpx;
+  margin-right: -40rpx;
 }
 </style>

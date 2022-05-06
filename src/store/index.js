@@ -66,6 +66,7 @@ const store = new Vuex.Store({
         userId: null,
         nickname: null,
         avatar: null,
+        level: {},
       },
       /** 未登录信息 */
       logging: {},
@@ -92,7 +93,7 @@ const store = new Vuex.Store({
     SAVE_AREA(state, list) {
       state.area = list
     },
-    SET_USERINFO(state, { token, openId, id, userId, nickname, avatar }) {
+    SET_USERINFO(state, { token, openId, id, userId, nickname, avatar, level }) {
       state.user.logged = {
         token,
         openId,
@@ -100,6 +101,7 @@ const store = new Vuex.Store({
         userId,
         nickname,
         avatar,
+        level,
       }
     },
     RESET_USERINFO(state) {
@@ -110,6 +112,7 @@ const store = new Vuex.Store({
         title: null,
         avatar: null,
         openId: null,
+        level: {},
       }
     },
     SET_TOKEN(state, token) {

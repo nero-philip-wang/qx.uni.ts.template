@@ -7,7 +7,7 @@ const config = {
     },
     key: '76f90da550f676901180217cc6a1dee0',
     hasLive: false,
-    primaryColor: '#34bc98',
+    primaryColor: '#1eb1ad',
   },
   wx129b199af409f294: {
     appId: 'wx129b199af409f294',
@@ -17,7 +17,7 @@ const config = {
     },
     key: '1180217cc6a1dee076f90da550f67690',
     hasLive: false,
-    primaryColor: '#1eb1ad',
+    primaryColor: '#34bc98',
   },
 }
 module.exports = config
