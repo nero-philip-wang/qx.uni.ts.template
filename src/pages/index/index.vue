@@ -19,6 +19,7 @@
         <diamond v-if="p.name == 'diamond'" :params="p" />
         <horizontalList v-if="p.name == 'horizontalList'" :params="p" />
         <flow v-if="p.name == 'flow'" :params="p" />
+        <fixed v-if="p.name == 'fixed'" :params="p" />
       </div>
     </div>
     <div v-else class="m-24 p-16 bg-white rounded">
@@ -32,6 +33,8 @@ import banner from './comp/banner.vue'
 import diamond from './comp/diamond.vue'
 import horizontalList from './comp/horizontalList.vue'
 import flow from './comp/flow.vue'
+import fixed from './comp/fixed.vue'
+import { section } from './comp/meta'
 import store from '@/store/'
 import { page } from '@/apis/modules/home'
 
@@ -41,10 +44,12 @@ export default {
     diamond,
     horizontalList,
     flow,
+    fixed,
   },
   data() {
     return {
       page: [],
+      list: section(),
     }
   },
   computed: {

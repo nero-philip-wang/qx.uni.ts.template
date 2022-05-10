@@ -33,8 +33,8 @@ const store = new Vuex.Store({
     area: [],
     tabbar: [
       {
-        iconPath: 'star',
-        selectedIconPath: 'star-fill',
+        iconPath: 'home',
+        selectedIconPath: 'home-fill',
         text: '首页',
         pagePath: '/pages/index/index',
       },

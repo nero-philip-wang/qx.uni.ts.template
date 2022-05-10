@@ -4,7 +4,7 @@ export function section() {
     title: '标题',
     subtitle: '副标题',
     moreTip: '查看更多',
-    height: '240rpx',
+    height: '96',
     bg: '',
     bgImage: '',
     list: [
@@ -27,7 +27,7 @@ export function section() {
         title: '标题',
         subtitle: '副标题',
         price: 26521,
-        href: '',
+        href: 'kf',
       },
     ],
   }

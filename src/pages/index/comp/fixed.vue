@@ -1,27 +1,27 @@
 <template>
-  <div>
-    <div v-if="params.title" class="mx-16 my-8 flex">
-      <span>{{ params.title }}</span>
-      <span class="text-sm flex-grow ml-16 pt-8 text-gray">{{ params.subtitle }}</span>
-      <span class="text-sm pt-8 text-gray">{{ params.moreTip }} ></span>
-    </div>
+  <div class="fixed">
     <div
       v-for="(item, index) in params.list"
       :key="index"
-      class="mb-24 overflow-hidden bg-white rounded"
+      class="mb-24 overflow-hidden"
       :class="{ 'lineh-0': !item.title }"
+      @click="$goto(item.href)"
     >
-      <image class="image" mode="aspectFill" :src="item.src" :style="{ height: autoAddUnit(params.height) }"></image>
-      <div v-if="item.title" class="flex my-8 mx-16">
-        <div class="left">
-          <div class="text-base truncate"> {{ item.title }} </div>
-          <div class="text-sm text-gray truncate"> {{ item.subtitle }}</div>
-        </div>
-        <div class="text-price ml-16 text-right">
-          <span> {{ item.price | yuan }}</span>
-          <span class="text-sm">元</span>
-        </div>
-      </div>
+      <button v-if="item.href == 'kf'" class="u-reset-button" open-type="contact" send-message-title="首页" show-message-card>
+        <image
+          class="image rounded"
+          mode="aspectFill"
+          :src="item.src"
+          :style="{ height: autoAddUnit(params.height), width: autoAddUnit(params.height) }"
+        ></image>
+      </button>
+      <image
+        v-else
+        class="image rounded"
+        mode="aspectFill"
+        :src="item.src"
+        :style="{ height: autoAddUnit(params.height), width: autoAddUnit(params.height) }"
+      ></image>
     </div>
   </div>
 </template>
@@ -39,6 +39,7 @@ export default {
   computed: {},
   methods: {
     autoAddUnit(height) {
+      if (!height) height = '96'
       return isNaN(parseInt(height)) ? height : height + 'rpx'
     },
   },
@@ -46,13 +47,9 @@ export default {
 </script>
 
 <style scoped>
-.image {
-  width: 100%;
-}
-.left {
-  width: 520rpx;
-}
-.text-price {
-  width: 200rpx;
+.fixed {
+  position: fixed;
+  right: 32rpx;
+  bottom: 256rpx;
 }
 </style>
