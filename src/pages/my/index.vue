@@ -19,7 +19,7 @@
             <div class="text-white text-xl">{{ member.nickname }}</div>
             <div class="mt-4 text-white text-sm">{{ (member.level && member.level.title) || '普通会员' }}</div>
           </div>
-          <div class=" flex-col justify-center">
+          <div class=" flex-col justify-center" @click="showMemberLv = true">
             <div class="right text-sm">会员权益</div>
           </div>
         </div>
@@ -50,11 +50,13 @@
       </div>
     </scroll-view>
     <qx-tabbar :value="3" />
+    <Memberlv :show.sync="showMemberLv" />
   </div>
 </template>
 
 <script>
 import Card from './comp/card.vue'
+import Memberlv from './comp/memberlv.vue'
 import store from '@/store'
 import easyState from '@/store/easyState'
 import { all } from '@/apis/modules/asset'
@@ -69,9 +71,10 @@ var list1 = section()
 list1.height = '160rpx'
 
 export default {
-  components: { Card, banner },
+  components: { Card, banner, Memberlv },
   data() {
     return {
+      showMemberLv: false,
       showTrigger: false,
       structofOrder: {
         title: '我的订单',

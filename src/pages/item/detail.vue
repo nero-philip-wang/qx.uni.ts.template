@@ -30,7 +30,7 @@
             <span class="text-primary text-bold">266 </span>
           </span>
         </div>
-        <div class="noticebar mx-28 mt-8 p-12 rounded overflow-hidden flex" @click="$goto('/')">
+        <div class="noticebar mx-28 mt-8 p-12 rounded overflow-hidden flex" @click="showMemberLv = true">
           <u-icon name="integral" color="#f9ae3d" size="32rpx"></u-icon>
           <span class="ml-8 text-sm flex-grow"> 开通会员低至8折，当前等级：{{ lv.title || '普通会员' }} </span>
           <u-icon name="arrow-right" color="#f9ae3d" size="32rpx"></u-icon>
@@ -121,6 +121,8 @@
       @addToCart="addToCart"
       @buyNow="buyNow"
     ></sku>
+    <!-- 会员权益 -->
+    <Memberlv :show.sync="showMemberLv" />
   </view>
 </template>
 
@@ -136,6 +138,7 @@ import { hasrebate } from '@/apis/modules/asset'
 import { count, add } from '@/apis/modules/cart'
 import { mapMutations, mapState, mapGetters } from 'vuex'
 import easyState from '@/store/easyState'
+import Memberlv from '@/pages/my/comp/memberlv.vue'
 
 export default {
   components: {
@@ -143,6 +146,7 @@ export default {
     navbar,
     comment,
     tabbar,
+    Memberlv,
   },
   data() {
     return {
@@ -158,6 +162,7 @@ export default {
       showSku: false,
       count: 0,
       hasRebate: false,
+      showMemberLv: false,
     }
   },
   computed: {
