@@ -1,13 +1,21 @@
 <template>
   <view>
-    <view class="u-line-1" @click="show = true">{{ addressTitle }}</view>
-    <u-picker v-model="show" mode="mutil-column-auto" :list="areaswithLevel" :default-value="defaultvalue" @confirm="confirm"></u-picker>
+    <view class="u-line-1" :class="{ 'text-gray': !value }" @click="show = true">{{ (value && addressTitle) || '请选择地址' }}</view>
+    <QxPicker
+      v-model="show"
+      mode="mutil-column-auto"
+      :list="areaswithLevel"
+      :default-value="defaultvalue"
+      @selected="onSelected"
+    ></QxPicker>
   </view>
 </template>
 <script>
 import { getarea } from '@/utils/address'
+import QxPicker from './Picker.vue'
 
 export default {
+  components: { QxPicker },
   props: {
     value: { type: [Number, null], default: null },
     titles: { type: Array, default: () => [] },
@@ -16,7 +24,7 @@ export default {
   data() {
     return {
       show: false,
-      addressTitle: '请选择地址',
+      addressTitle: '',
       areas: [],
     }
   },
@@ -49,7 +57,7 @@ export default {
     this.areas = await getarea()
   },
   methods: {
-    confirm(selected) {
+    onSelected(selected) {
       var code = parseInt(selected[this.level - 1].value)
       var titles = selected.map((c) => c.label)
       this.$emit('input', parseInt(code))

@@ -7,6 +7,9 @@
       <u-form-item label="手机号" border-bottom prop="mobile">
         <u--input v-model="data.mobile" border="none" placeholder="请输入收货人11位手机号"></u--input>
       </u-form-item>
+      <u-form-item v-if="showSelection" label="地区" border-bottom prop="postCode">
+        <CityPicker v-model="data.postCode" @update:titles="changeTitles" />
+      </u-form-item>
       <u-form-item label="地址" border-bottom prop="address" @click="chooseAddress">
         <u--textarea
           v-model="data.address"
@@ -37,6 +40,7 @@
 
 <script>
 import { get, create, update, pca } from '@/apis/modules/consignee'
+import CityPicker from '@/components/common/CityPicker.vue'
 // import file from './pca-code.json'
 var file = []
 
@@ -69,8 +73,15 @@ var rules = {
     message: '请输入门牌号',
     trigger: ['blur', 'change'],
   },
+  postCode: {
+    type: 'number',
+    required: true,
+    message: '请选择省市县',
+    trigger: ['blur', 'change'],
+  },
 }
 export default {
+  components: { CityPicker },
   data() {
     return {
       id: null,
@@ -80,8 +91,11 @@ export default {
         mobile: '',
         address: '',
         room: '',
+        postCode: null,
       },
       rules,
+      areaName: '',
+      showSelection: false,
     }
   },
   computed: {},
@@ -108,6 +122,9 @@ export default {
         uni.showToast({ title: '请填写表单信息', icon: 'error' })
       }
     },
+    changeTitles(titles) {
+      this.data.address = `${titles.join(' ')} ${this.areaName}`
+    },
     // 选择地址
     chooseAddress() {
       uni.chooseLocation({
@@ -116,6 +133,9 @@ export default {
           p.forEach((element) => {
             res.address = res.address.replace(new RegExp(`(${element})`, 'g'), '$1 ')
           })
+          this.data.position = { x: res.longitude, y: res.latitude }
+          this.data.address = `${res.address} ${res.name}`
+          this.areaName = res.name
 
           try {
             var node = file
@@ -125,10 +145,9 @@ export default {
               else node = node.filter((c) => c.label == pca[i])[0].value
             }
             this.data.postCode = node
-            this.data.position = { x: res.longitude, y: res.latitude }
-            this.data.address = `${res.address} ${res.name}`
           } catch (error) {
-            this.data.address = ' '
+            this.data.postCode = null
+            this.showSelection = true
             throw error
           }
         },
