@@ -5,7 +5,7 @@
         <div class="pb-12">可用余额</div>
         <div style="font-size:56rpx">{{ balance | yuan }}</div>
       </div>
-      <div class="pr-48 py-12 text-sm underline">查看明细</div>
+      <div class="pr-48 py-12 text-sm underline" @click="$goto('pages/my/balanceLog')">查看明细</div>
     </div>
 
     <div v-if="banner" class="mx-32 rounded overflow-hidden">

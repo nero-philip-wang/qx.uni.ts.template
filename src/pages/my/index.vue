@@ -131,8 +131,8 @@ export default {
       this.showTrigger = true
       try {
         var assets = await all()
-        this.structofAsset.items[0].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 23)?.balance ?? '未开通')
-        this.structofAsset.items[2].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 21)?.balance ?? '未开通')
+        this.structofAsset.items[0].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 21)?.balance ?? '未开通')
+        this.structofAsset.items[2].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 23)?.balance ?? '未开通')
       } catch (error) {}
       try {
         var number = await count()

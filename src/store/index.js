@@ -76,6 +76,7 @@ const store = new Vuex.Store({
       tTitle: config.defaultTenant.title,
       /** 分销人id */
       sId: null,
+      account: null,
     },
     searchHistory: [],
   }),
@@ -90,6 +91,9 @@ const store = new Vuex.Store({
     sid: (state) => state.user.sId,
   },
   mutations: {
+    SET_WWACCOUNT(state, account) {
+      state.user.account = account
+    },
     SAVE_AREA(state, list) {
       state.area = list
     },

@@ -1,23 +1,8 @@
 <template>
   <div class="">
-    <div class="card mt-32 mx-32 bg-primary rounded flex place-items-center text-white bottom_no_rounder" style="height:200rpx;">
-      <div class="flex-grow pl-48">
-        <div class="pb-12">余额</div>
-        <div style="font-size:56rpx">{{ balance | yuan }}</div>
-      </div>
-      <div class="pr-48 py-12">
-        <u-button
-          shape="circle"
-          text="提 现"
-          :custom-style="{ padding: '16rpx 40rpx', height: 'inherit' }"
-          @click="$goto('pages/my/walletWithdraw?max=' + balance)"
-        ></u-button>
-      </div>
-    </div>
-
     <div class="bg-white">
       <u-tabs :list="tabs" :scrollable="false" @change="(item) => (argvs.direction = item.value)"></u-tabs>
-      <listview v-model="list" height="calc(100vh - 232rpx - 88rpx)" loadmore-enabled :argvs="argvs" :request="getrecord">
+      <listview v-model="list" height="calc(100vh - 88rpx)" loadmore-enabled :argvs="argvs" :request="getrecord">
         <div v-for="c in list" :key="c.id" class="item flex place-items-center ml-32">
           <u-avatar v-if="c.direction" bg-color="#FFF7E6" color="#FFC069" icon="red-packet-fill" size="56rpx"></u-avatar>
           <u-avatar v-else icon="bag-fill" bg-color="#EDFAE0" color="#95DD64" size="56rpx"></u-avatar>
@@ -26,7 +11,7 @@
             <div class="text-sm text-gray">{{ c.creationTime | timef }}</div>
           </div>
           <div class="text-right mr-32">
-            <div class="text-base">{{ c.value > 0 ? '+' : '' }}{{ c.value | yuan }}</div>
+            <div class="text-base"> {{ c.value > 0 ? '+' : '' }}{{ c.value | yuan }}</div>
             <div v-if="c.status == 2" class="text-sm text-gray">余额 {{ c.balance | yuan }}</div>
             <div v-else class="text-sm text-gray"> {{ c | statustext }}</div>
           </div>
@@ -38,7 +23,7 @@
 <script>
 import { all, getrecord } from '@/apis/modules/asset'
 import listview from '@/components/listview'
-const type = 23
+const type = 21
 
 export default {
   components: { listview },
@@ -46,7 +31,7 @@ export default {
     statustext: (code) => {
       switch (code.status) {
         case 0:
-          return code.direction ? (code.type == 1 ? '预计收益' : '待支付') : '待审核'
+          return code.direction ? '待支付' : '待审核'
         case 1:
           return '已审核'
         case 2:
@@ -60,8 +45,8 @@ export default {
     return {
       tabs: [
         { name: '全部', value: null },
-        { name: '已获取', value: 1 },
-        { name: '已消耗', value: 0 },
+        { name: '充值', value: 1 },
+        { name: '消费', value: 0 },
       ],
       balance: 0,
       list: [],
