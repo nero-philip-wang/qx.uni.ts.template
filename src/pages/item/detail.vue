@@ -5,12 +5,13 @@
     <div id="main" class="relative">
       <!-- 轮播图 -->
       <u-swiper
-        :list="data.covers"
+        :list="posts"
         indicator
         indicator-mode="line"
         circular
         img-mode="aspectFill"
         height="750rpx"
+        :autoplay="!data.video"
         @click="previewImage"
       ></u-swiper>
       <!-- 价格 名称 -->
@@ -166,6 +167,11 @@ export default {
     }
   },
   computed: {
+    posts() {
+      return this.data.video
+        ? [{ url: this.data.video, poster: this.data.cover, type: 'video' }, ...this.data.covers.map((c) => ({ url: c }))]
+        : this.data.covers
+    },
     ...mapState({
       userId: (state) => state.user.logged && state.user.logged.id,
       lv: (state) => (state.user.logged && state.user.logged.level) || {},
@@ -191,10 +197,17 @@ export default {
   },
   methods: {
     previewImage(idx) {
-      uni.previewImage({
-        current: this.data.covers[idx],
-        urls: this.data.covers,
-      })
+      if (!this.data.video) {
+        uni.previewImage({
+          current: this.data.covers[idx],
+          urls: this.data.covers,
+        })
+      } else if (idx > 0) {
+        uni.previewImage({
+          current: this.data.covers[idx - 1],
+          urls: this.data.covers,
+        })
+      }
     },
     async loadData() {
       const res = await getitem(this.id)
