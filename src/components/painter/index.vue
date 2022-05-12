@@ -6,7 +6,7 @@
       :style="board"
       :board="board"
       is-render-image
-      type="webgl"
+      type="2d"
       :sleep="80"
       @success="success"
     />
@@ -41,3 +41,9 @@ export default {
   },
 }
 </script>
+<style scoped>
+.fill {
+  height: 100%;
+  width: 100%;
+}
+</style>

@@ -43,10 +43,10 @@
               {{ data.description || '' }}
             </div>
           </div>
-          <button open-type="share" class="u-reset-button">
+          <div @click="share">
             <u-icon name="share-square" size="64rpx"></u-icon>
             <div class="text-sm">分享</div>
-          </button>
+          </div>
         </div>
         <!-- 促销 -->
         <div class="flex px-32 pt-8">
@@ -63,11 +63,9 @@
           <u-cell :value="data.freightTemplateId ? data.freightTemplate.title : '免运费'">
             <span slot="title" class="text-gray">运费</span>
           </u-cell>
-          <u-cell v-if="hasRebate" is-link>
+          <u-cell v-if="hasRebate" is-link @click="share">
             <span slot="title" class="text-gray">返利</span>
-            <button slot="value" open-type="share" class="u-reset-button">
-              <span> 分享立赚 {{ ((data.rebate && data.rebate.details.rate) * data.minRetailPrice) | yuan }} 元 </span>
-            </button>
+            <span> 分享立赚 {{ ((data.rebate && data.rebate.details.rate) * data.minRetailPrice) | yuan }} 元 </span>
           </u-cell>
           <!-- <u-cell is-link>
           <span slot="title" class="text-gray">优惠券</span>
@@ -124,6 +122,27 @@
     ></sku>
     <!-- 会员权益 -->
     <Memberlv :show.sync="showMemberLv" />
+
+    <u-popup :show="showShare" mode="bottom" bg-color="transparent" close-on-click-overlay @close="showShare = false">
+      <div @click="showShare = false">
+        <div :style="{ width: board.width, height: board.height || '700rpx', margin: '0 auto' }">
+          <qx-painter v-if="board" :board="board" />
+        </div>
+        <div class="mt-80 py-32 bg-white" @click.stop.prevent>
+          <u-grid :border="false" col="2">
+            <u-grid-item>
+              <u-icon name="weixin-fill" size="80rpx" color="#07B906"></u-icon>
+              <text class="text-base">{{ '分享到聊天' }}</text>
+            </u-grid-item>
+
+            <u-grid-item>
+              <u-icon name="moments-circel-fill" size="80rpx" color="#07B906"></u-icon>
+              <text class="text-base">{{ '保存图文' }}</text>
+            </u-grid-item>
+          </u-grid>
+        </div>
+      </div>
+    </u-popup>
   </view>
 </template>
 
@@ -132,6 +151,7 @@ import navbar from './comp/navbar' // 页面头
 import comment from './comp/comment' // 页面头
 import tabbar from './comp/tabbar' // 页面头
 import sku from './comp/sku' // 页面头
+import Memberlv from '@/pages/my/comp/memberlv.vue'
 
 import { get as getitem, getRating } from '@/apis/modules/item'
 import { setItems } from '@/apis/modules/billing'
@@ -139,7 +159,8 @@ import { hasrebate } from '@/apis/modules/asset'
 import { count, add } from '@/apis/modules/cart'
 import { mapMutations, mapState, mapGetters } from 'vuex'
 import easyState from '@/store/easyState'
-import Memberlv from '@/pages/my/comp/memberlv.vue'
+import getPoster from './getPoster'
+import { toYuan } from '@/utils/index'
 
 export default {
   components: {
@@ -164,6 +185,8 @@ export default {
       count: 0,
       hasRebate: false,
       showMemberLv: false,
+      showShare: false,
+      board: null,
     }
   },
   computed: {
@@ -248,6 +271,17 @@ export default {
     },
     async loadRebate() {
       this.hasRebate = await hasrebate()
+    },
+    share() {
+      this.showShare = true
+      setTimeout(() => {
+        this.board = getPoster({
+          title: this.data.title,
+          cover: this.data.cover,
+          price: toYuan(this.data.minRetailPrice),
+          mPrice: toYuan(this.data.markingPrice),
+        })
+      }, 300)
     },
     // 加入购物车
     async addToCart(selected) {

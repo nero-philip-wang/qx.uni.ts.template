@@ -1,10 +1,13 @@
-const screen = uni.getSystemInfoSync().windowWidth / 750;
+const networkReg = /^(http|\/\/)/
+export function sleep(delay) {
+	return new Promise(resolve => setTimeout(resolve, delay)) 
+}
 // 缓存图片
 let cache = {}
 export function isNumber(value) {
 	return /^-?\d+(\.\d+)?$/.test(value);
 }
-export function toPx(value, baseSize) {
+export function toPx(value, baseSize, isDecimal = false) {
 	// 如果是数字
 	if (typeof value === 'number') {
 		return value
@@ -15,24 +18,24 @@ export function toPx(value, baseSize) {
 	}
 	// 如果有单位
 	if (typeof value === 'string') {
-		const reg = /^-?[0-9]+([.]{1}[0-9]+){0,1}(em|rpx|px|%)$/g
+		const reg = /^-?([0-9]+)?([.]{1}[0-9]+){0,1}(em|rpx|px|%)$/g
 		const results = reg.exec(value);
 		if (!value || !results) {
 			return 0;
 		}
-		const unit = results[2];
+		const unit = results[3];
 		value = parseFloat(value);
 		let res = 0;
 		if (unit === 'rpx') {
-			res = Math.floor(value * (screen || 0.5) * 1);
+			res = uni.upx2px(value);
 		} else if (unit === 'px') {
-			res = Math.floor(value * 1);
+			res = value * 1;
 		} else if (unit === '%') {
-			res = Math.floor(value * toPx(baseSize) / 100);
+			res = value * toPx(baseSize) / 100;
 		} else if (unit === 'em') {
-			res = Math.ceil(value * toPx(baseSize || 14));
+			res =value * toPx(baseSize || 14);
 		}
-		return res;
+		return isDecimal ? res.toFixed(2) * 1 : Math.round(res);
 	}
 }
 
@@ -59,15 +62,6 @@ export function compareVersion(v1, v2) {
   }
   return 0
 }
-
-/** 从 0x20 开始到 0x80 的字符宽度数据 */
-export const CHAR_WIDTH_SCALE_MAP = [0.296, 0.313, 0.436, 0.638, 0.586, 0.89, 0.87, 0.256, 0.334, 0.334, 0.455, 0.742,
-	0.241, 0.433, 0.241, 0.427, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.241, 0.241, 0.742,
-	0.742, 0.742, 0.483, 1.031, 0.704, 0.627, 0.669, 0.762, 0.55, 0.531, 0.744, 0.773, 0.294, 0.396, 0.635, 0.513, 0.977,
-	0.813, 0.815, 0.612, 0.815, 0.653, 0.577, 0.573, 0.747, 0.676, 1.018, 0.645, 0.604, 0.62, 0.334, 0.416, 0.334, 0.742,
-	0.448, 0.295, 0.553, 0.639, 0.501, 0.64, 0.567, 0.347, 0.64, 0.616, 0.266, 0.267, 0.544, 0.266, 0.937, 0.616, 0.636,
-	0.639, 0.64, 0.382, 0.463, 0.373, 0.616, 0.525, 0.79, 0.507, 0.529, 0.492, 0.334, 0.269, 0.334, 0.742, 0.296
-];
 // #ifdef MP
 const prefix = () => {
 	// #ifdef MP-TOUTIAO
@@ -89,16 +83,16 @@ const prefix = () => {
 	return qh
 	// #endif
 }
+// #endif
 
 const base64ToArrayBuffer = (data) => {
+	// #ifndef MP-WEIXIN || APP-PLUS
 	/**
-	 * base64ToArrayBuffer
 	 * Base64Binary.decode(base64_string);  
 	 * Base64Binary.decodeArrayBuffer(base64_string); 
 	 */
 	const Base64Binary = {
 	  _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-	  
 	  /* will return a  Uint8Array type */
 	  decodeArrayBuffer(input) {
 	    const bytes = (input.length/4) * 3;
@@ -106,7 +100,6 @@ const base64ToArrayBuffer = (data) => {
 	    this.decode(input, ab);
 	    return ab;
 	  },
-	 
 	  removePaddingChars(input) {
 	    const lkey = this._keyStr.indexOf(input.charAt(input.length - 1));
 	    if(lkey == 64){
@@ -114,7 +107,6 @@ const base64ToArrayBuffer = (data) => {
 	    }
 	    return input;
 	  },
-	 
 	  decode(input, arrayBuffer) {
 	    //get last chars to see if are valid
 	    input = this.removePaddingChars(input);
@@ -153,9 +145,13 @@ const base64ToArrayBuffer = (data) => {
 	    return uarray;  
 	  }
 	 }
-	return (uni.base64ToArrayBuffer && uni.base64ToArrayBuffer(data)) || Base64Binary.decodeArrayBuffer(data)
+	return Base64Binary.decodeArrayBuffer(data)
+	// #endif
+	// #ifdef MP-WEIXIN || APP-PLUS
+	return uni.base64ToArrayBuffer(data)
+	// #endif
 }
-// #endif
+
 
 /**
  * base64转路径
@@ -167,7 +163,6 @@ export function base64ToPath(base64) {
 	return new Promise((resolve, reject) => {
 		// #ifdef MP
 		const fs = uni.getFileSystemManager()
-		
 		//自定义文件名
 		if (!format) {
 			console.error('ERROR_BASE64SRC_PARSE')
@@ -210,7 +205,6 @@ export function base64ToPath(base64) {
 		const bitmap = new plus.nativeObj.Bitmap('bitmap' + Date.now())
 		bitmap.loadBase64Data(base64, () => {
 			if (!format) {
-				console.error('ERROR_BASE64SRC_PARSE')
 				reject(new Error('ERROR_BASE64SRC_PARSE'))
 			}
 			const time = new Date().getTime();
@@ -239,7 +233,6 @@ export function base64ToPath(base64) {
  * 路径转base64
  * @param {Object} string
  */
-
 export function pathToBase64(path) {
 	return new Promise((resolve, reject) => {
 		// #ifdef H5
@@ -276,7 +269,7 @@ export function pathToBase64(path) {
 			};
 		}
 		const isFileReader = typeof FileReader === 'function'
-		if(/^(http|\/\/)/.test(path) && isFileReader ) {
+		if(networkReg.test(path) && isFileReader ) {
 			window.URL = window.URL || window.webkitURL;
 			const xhr = new XMLHttpRequest();
 			xhr.open("get", path, true);
@@ -291,7 +284,7 @@ export function pathToBase64(path) {
 			}
 			xhr.onreadystatechange = function() {
 				if(this.status === 0) {
-					_canvas()
+					console.error('图片跨域了，得后端处理咯')
 				}
 			}
 			xhr.send();
@@ -322,9 +315,7 @@ export function pathToBase64(path) {
 		plus.io.resolveLocalFileSystemURL(getLocalFilePath(path), (entry) => {
 		    entry.file((file) => {
 		        const fileReader = new plus.io.FileReader()
-		        fileReader.onload = (data) => {
-		            resolve(data.target.result)
-		        }
+		        fileReader.onload = (data) => { resolve(data.target.result)}
 		        fileReader.onerror = (error) => {
 					console.error('pathToBase64 error:', JSON.stringify(error))
 		            reject(error)
@@ -365,45 +356,48 @@ const getLocalFilePath = (path)=> {
 }
 // #endif
 
-export function getImageInfo(img, isH5PathToBase64) {
-		return new Promise(async (resolve, reject) => {
-			const base64Reg = /^data:image\/(\w+);base64/
-			const localReg = /^\.|^\/(?=[^\/])/;
-			const networkReg = /^(http|\/\/)/
-			// #ifdef H5
-			if(networkReg.test(img) && isH5PathToBase64) {
-				img = await pathToBase64(img)
-			}
-			// #endif
-			// #ifndef MP-ALIPAY 
-			if(base64Reg.test(img)) {
-				if(!cache[img]) {
-					const imgName = img
-					img = await base64ToPath(img)
-					cache[imgName] = img
-				} else {
-					img = cache[img]
-				}
-			}
-			// #endif
-			if(cache[img] && cache[img].errMsg) {
-				resolve(cache[img])
+export function getImageInfo(img, isH5PathToBase64, isReset = false) {
+	return new Promise(async (resolve, reject) => {
+		const base64Reg = /^data:image\/(\w+);base64/
+		const localReg = /^\.|^\/(?=[^\/])/;
+		
+		// #ifdef H5
+		if(networkReg.test(img) && isH5PathToBase64) {
+			img = await pathToBase64(img)
+		}
+		// #endif
+		// #ifndef MP-ALIPAY 
+		if(base64Reg.test(img)) {
+			if(!cache[img]) {
+				const imgName = img
+				img = await base64ToPath(img)
+				cache[imgName] = img
 			} else {
-				uni.getImageInfo({
-					src: img,
-					success: (image) => {
-						// #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
-						image.path = localReg.test(img) ?  `/${image.path}` : image.path;
-						// #endif
-						// image.path = /^(http|\/\/|\/|wxfile|data:image\/(\w+);base64|file|bdfile|ttfile|blob)/.test(image.path) ? image.path : `/${image.path}`;
-						cache[img] = image
-						resolve(cache[img])
-					},
-					fail(err) {
-						resolve({path: img})
-						console.error(`getImageInfo:fail ${img} failed ${JSON.stringify(err)}`);
-					}
-				})
+				img = cache[img]
 			}
-		})
-	}
+		}
+		// #endif
+		if(cache[img] && cache[img].errMsg && !isReset) {
+			resolve(cache[img])
+		} else {
+			uni.getImageInfo({
+				src: img,
+				success: (image) => {
+					// #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
+					image.path = localReg.test(img) ?  `/${image.path}` : image.path;
+					// #endif
+					// #ifdef H5
+					image.path = image.path.replace(/^\./, window.location.origin)
+					// #endif
+					image.url = img
+					cache[img] = image
+					resolve(cache[img])
+				},
+				fail(err) {
+					resolve({path: img})
+					console.error(`getImageInfo:fail ${img} failed ${JSON.stringify(err)}`);
+				}
+			})
+		}
+	})
+}
