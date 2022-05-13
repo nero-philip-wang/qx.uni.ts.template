@@ -22,6 +22,15 @@ const common = {
       imageUrl: image,
     }
   },
+  getParams() {
+    var { page, pageQuery } = uni.$u.liteShare
+    var userId = (store.state.user.logged && store.state.user.logged.id) || ''
+    var tenantId = store.state.user.tId
+    var area = store.state.user.tTitle
+    return {
+      page: `${page}?${pageQuery}${pageQuery ? '&' : ''}sid=${userId}&t=${tenantId}&area=${area}`,
+    }
+  },
   onShareTimeline() {
     var { title, page, pageQuery, image } = uni.$u.liteShare
     var userId = (store.state.user.logged && store.state.user.logged.id) || ''

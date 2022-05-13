@@ -5,25 +5,36 @@
 </template>
 <script>
 import share from '@/utils/share/index'
+import { getSence } from '@/apis/modules/home'
 const defaultPage = '/pages/index/index'
+
 export default {
   data() {
     return {
       href: '',
+      loading: false,
     }
   },
   /**
    * 所有跳转场景的落地页
    */
-  onLoad(options) {
-    // debugger
-    var info = share.getInfo()
-    this.href = info.path
+  async onLoad(options) {
+    // var info = share.getInfo()
+    // this.href = info.path
+    var sceneId = options.scene && options.scene.split('%')[0]
+    try {
+      this.loading = true
+      var scene = await getSence(sceneId)
+      this.$goto(scene)
+    } catch (error) {
+    } finally {
+      this.loading = false
+    }
   },
   onShow() {
     this.$nextTick(() => {
       if (this.href) this.$goto(this.href)
-      else this.$goto(defaultPage)
+      else if (!this.loading) this.$goto(defaultPage)
       this.href = ''
     })
   },

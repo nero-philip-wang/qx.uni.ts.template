@@ -43,7 +43,7 @@
               {{ data.description || '' }}
             </div>
           </div>
-          <div @click="share">
+          <div @click="showShare = true">
             <u-icon name="share-square" size="64rpx"></u-icon>
             <div class="text-sm">分享</div>
           </div>
@@ -63,7 +63,7 @@
           <u-cell :value="data.freightTemplateId ? data.freightTemplate.title : '免运费'">
             <span slot="title" class="text-gray">运费</span>
           </u-cell>
-          <u-cell v-if="hasRebate" is-link @click="share">
+          <u-cell v-if="hasRebate" is-link @click="showShare = true">
             <span slot="title" class="text-gray">返利</span>
             <span> 分享立赚 {{ ((data.rebate && data.rebate.details.rate) * data.minRetailPrice) | yuan }} 元 </span>
           </u-cell>
@@ -104,6 +104,7 @@
       <div class="lineh-0">
         <image v-for="item in data.content" :key="item" lazy-load :src="item" mode="widthFix" style="width:100%" />
       </div>
+      <qx-painter v-if="board" :board="board" @success="sharePicCreated" />
     </div>
 
     <!-- 底部操作菜单 -->
@@ -122,27 +123,7 @@
     ></sku>
     <!-- 会员权益 -->
     <Memberlv :show.sync="showMemberLv" />
-
-    <u-popup :show="showShare" mode="bottom" bg-color="transparent" close-on-click-overlay @close="showShare = false">
-      <div @click="showShare = false">
-        <div :style="{ width: board.width, height: board.height || '700rpx', margin: '0 auto' }">
-          <qx-painter v-if="board" :board="board" />
-        </div>
-        <div class="mt-80 py-32 bg-white" @click.stop.prevent>
-          <u-grid :border="false" col="2">
-            <u-grid-item>
-              <u-icon name="weixin-fill" size="80rpx" color="#07B906"></u-icon>
-              <text class="text-base">{{ '分享到聊天' }}</text>
-            </u-grid-item>
-
-            <u-grid-item>
-              <u-icon name="moments-circel-fill" size="80rpx" color="#07B906"></u-icon>
-              <text class="text-base">{{ '保存图文' }}</text>
-            </u-grid-item>
-          </u-grid>
-        </div>
-      </div>
-    </u-popup>
+    <poster :show.sync="showShare" :board="board" :spu="data" />
   </view>
 </template>
 
@@ -151,6 +132,7 @@ import navbar from './comp/navbar' // 页面头
 import comment from './comp/comment' // 页面头
 import tabbar from './comp/tabbar' // 页面头
 import sku from './comp/sku' // 页面头
+import poster from './comp/poster.vue' // 页面头
 import Memberlv from '@/pages/my/comp/memberlv.vue'
 
 import { get as getitem, getRating } from '@/apis/modules/item'
@@ -159,8 +141,8 @@ import { hasrebate } from '@/apis/modules/asset'
 import { count, add } from '@/apis/modules/cart'
 import { mapMutations, mapState, mapGetters } from 'vuex'
 import easyState from '@/store/easyState'
-import getPoster from './getPoster'
-import { toYuan } from '@/utils/index'
+import getSharePic from './comp/getSharePic'
+import shareLite from '@/utils/share/lite'
 
 export default {
   components: {
@@ -169,7 +151,9 @@ export default {
     comment,
     tabbar,
     Memberlv,
+    poster,
   },
+  mixins: [shareLite],
   data() {
     return {
       scrollTop: 0,
@@ -246,6 +230,12 @@ export default {
       uni.$u.liteShare.page = '/pages/item/detail'
       uni.$u.liteShare.pageQuery = 'id=' + res.id
       uni.$u.liteShare.image = this.data.covers[0]
+      this.board = getSharePic({
+        title: res.title,
+        cover: res.cover,
+        price: res.minRetailPrice,
+        mPrice: res.marketPrice,
+      })
 
       // 加工规格
       res.specifications.forEach((item) => {
@@ -272,16 +262,9 @@ export default {
     async loadRebate() {
       this.hasRebate = await hasrebate()
     },
-    share() {
-      this.showShare = true
-      setTimeout(() => {
-        this.board = getPoster({
-          title: this.data.title,
-          cover: this.data.cover,
-          price: toYuan(this.data.minRetailPrice),
-          mPrice: toYuan(this.data.markingPrice),
-        })
-      }, 300)
+    sharePicCreated(src) {
+      uni.$u.liteShare.image = src
+      this.board = null
     },
     // 加入购物车
     async addToCart(selected) {

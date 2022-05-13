@@ -17,3 +17,5 @@ export const hasNewAward = () => request('mall/activities', 'get', { enabled: tr
 export const tenant = () => request('mall/tenants', 'get')
 
 export const page = () => request('mall/micropages', 'get')
+
+export const getSence = (id) => request('mall/share/sence/' + id, 'get')

@@ -23,7 +23,7 @@ export default ({ title, price, mPrice, cover, qr }) => {
           top: '135rpx',
           width: '450rpx',
           height: '450rpx',
-          radius: '5rpx',
+          radius: '10rpx',
         },
       },
       {

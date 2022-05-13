@@ -1,8 +1,8 @@
 <template>
   <view :style="'width: ' + board.width + ';height: ' + board.height">
-    <image v-if="hascreated" :src="src" class="fill" show-menu-by-longpress />
+    <!-- <image v-if="hascreated" :src="src" class="fill" show-menu-by-longpress /> -->
     <qx-lime-painter
-      v-if="!hascreated && board && board.views"
+      v-if="true || (!hascreated && board && board.views)"
       :style="board"
       :board="board"
       is-render-image
@@ -36,6 +36,7 @@ export default {
       setTimeout(() => {
         this.src = src
         this.hascreated = true
+        this.$emit('success', src)
       }, 100)
     },
   },
