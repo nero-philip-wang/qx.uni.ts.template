@@ -1,7 +1,14 @@
 <template>
   <u-popup :show="show" mode="bottom" round="15rpx" @close="$emit('update:show', false)">
     <div class="z-100 px-32 py-48">
-      <div class="flex align-center mb-32">
+      <div v-for="c in list" :key="c.id" class="flex align-center mb-32">
+        <u-avatar :src="c.icon"></u-avatar>
+        <div class="ml-12">
+          <div class=" text-base">{{ c.title }}</div>
+          <div class="text-sm text-gray"> {{ c.description }}</div>
+        </div>
+      </div>
+      <!-- <div class="flex align-center mb-32">
         <u-avatar src="https://s.re4.top/upload/unimall/img/ABDCN3CK7BQ=.png"></u-avatar>
         <div class="ml-12">
           <div class=" text-base">白金会员</div>
@@ -14,14 +21,7 @@
           <div class=" text-base">白金会员</div>
           <div class="text-sm text-gray"> 所有商品享受8.5折优惠，五星保洁师服务</div>
         </div>
-      </div>
-      <div class="flex align-center mb-32">
-        <u-avatar src="https://s.re4.top/upload/unimall/img/ABDCN3CK7BQ=.png"></u-avatar>
-        <div class="ml-12">
-          <div class=" text-base">白金会员</div>
-          <div class="text-sm text-gray"> 所有商品享受8.5折优惠，五星保洁师服务</div>
-        </div>
-      </div>
+      </div> -->
       <u-button type="primary" plain :custom-style="{ height: '72rpx', borderRadius: '0' }" @click="buy">
         充值送会员
       </u-button>
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { listMemberLevel } from '@/apis/modules/home'
+
 export default {
   props: {
     show: {
@@ -38,7 +40,12 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      list: [],
+    }
+  },
+  async created() {
+    this.list = await listMemberLevel()
   },
   methods: {
     buy() {

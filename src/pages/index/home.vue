@@ -1,10 +1,9 @@
 <template>
-  <view>
-    页面跳转中……
-  </view>
+  <div class="h-page flex align-center text-center text-gray text-base">
+    <div class="flex-grow "> 请稍后，页面跳转中…</div>
+  </div>
 </template>
 <script>
-import share from '@/utils/share/index'
 import { getSence } from '@/apis/modules/home'
 const defaultPage = '/pages/index/index'
 

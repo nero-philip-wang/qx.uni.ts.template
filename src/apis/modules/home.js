@@ -19,3 +19,5 @@ export const tenant = () => request('mall/tenants', 'get')
 export const page = () => request('mall/micropages', 'get')
 
 export const getSence = (id) => request('mall/share/sence/' + id, 'get')
+
+export const listMemberLevel = (id) => request('mall/users/memberLevel', 'get')

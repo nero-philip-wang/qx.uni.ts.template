@@ -1,6 +1,6 @@
 import request from '../request'
 
-export const search = ({ skip, take } = { skip: 0, take: 20 }) => request('mall/consignees', 'get', skip, take)
+export const search = ({ skip, take } = { skip: 0, take: 20 }) => request('mall/consignees', 'get', { skip, take })
 
 export const get = (id) => request('mall/consignees/' + id, 'get')
 

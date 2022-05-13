@@ -94,7 +94,7 @@ export const request = async (
     ShopId: store.state.user.shopId || store.state.user.tenantId,
     Authorization: token,
   }
-
+  // 删除空参数
   for (var key in params) {
     if (params[key] === undefined || params[key] === null) {
       delete params[key]
@@ -108,6 +108,8 @@ export const request = async (
     switch (statusCode) {
       case 401:
       case 403:
+        // 清除过期登录信息
+        store.commit('RESET_USERINFO')
         if (autoLogin) {
           await goLogin()
           return
