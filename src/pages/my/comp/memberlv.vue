@@ -8,23 +8,11 @@
           <div class="text-sm text-gray"> {{ c.description }}</div>
         </div>
       </div>
-      <!-- <div class="flex align-center mb-32">
-        <u-avatar src="https://s.re4.top/upload/unimall/img/ABDCN3CK7BQ=.png"></u-avatar>
-        <div class="ml-12">
-          <div class=" text-base">白金会员</div>
-          <div class="text-sm text-gray"> 所有商品享受8.5折优惠，五星保洁师服务</div>
-        </div>
-      </div>
-      <div class="flex align-center mb-32">
-        <u-avatar src="https://s.re4.top/upload/unimall/img/ABDCN3CK7BQ=.png"></u-avatar>
-        <div class="ml-12">
-          <div class=" text-base">白金会员</div>
-          <div class="text-sm text-gray"> 所有商品享受8.5折优惠，五星保洁师服务</div>
-        </div>
-      </div> -->
-      <u-button type="primary" plain :custom-style="{ height: '72rpx', borderRadius: '0' }" @click="buy">
+
+      <u-button v-if="list && list.length" type="primary" plain :custom-style="{ height: '72rpx', borderRadius: '0' }" @click="buy">
         充值送会员
       </u-button>
+      <u-empty v-else mode="search" text="暂无会员活动"> </u-empty>
     </div>
   </u-popup>
 </template>

@@ -61,7 +61,7 @@ import store from '@/store'
 import easyState from '@/store/easyState'
 import { all } from '@/apis/modules/asset'
 import { count } from '@/apis/modules/order'
-import Enumerable from 'linq'
+import from from '@/utils/linq'
 import { toYuan } from '@/utils/index'
 import banner from '../index/comp/banner.vue'
 import { section } from '../index/comp/meta'
@@ -131,8 +131,8 @@ export default {
       this.showTrigger = true
       try {
         var assets = await all()
-        this.structofAsset.items[0].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 21)?.balance ?? '未开通')
-        this.structofAsset.items[2].value = toYuan(Enumerable.from(assets).firstOrDefault((c) => c.type == 23)?.balance ?? '未开通')
+        this.structofAsset.items[0].value = toYuan(from(assets).firstOrDefault((c) => c.type == 21)?.balance ?? '未开通')
+        this.structofAsset.items[2].value = toYuan(from(assets).firstOrDefault((c) => c.type == 23)?.balance ?? '未开通')
       } catch (error) {}
       try {
         var number = await count()

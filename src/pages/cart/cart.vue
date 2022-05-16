@@ -43,7 +43,8 @@
 </template>
 <script>
 import CartItem from './comp/cartItem.vue'
-import Enumerable from 'linq'
+// import Enumerable from 'linq'
+import from from '@/utils/linq'
 import { get, updateQuantity, del, count } from '@/apis/modules/cart'
 import listview from '@/components/listview'
 import state from '@/store/easyState'
@@ -72,7 +73,7 @@ export default {
   computed: {
     checked: {
       get() {
-        return Enumerable.from(this.items).all((c) => c.checked) ? [''] : []
+        return from(this.items).all((c) => c.checked) ? [''] : []
       },
       set(v) {
         this.items.forEach((c) => {
@@ -81,7 +82,7 @@ export default {
       },
     },
     itemAmount() {
-      return Enumerable.from(this.items)
+      return from(this.items)
         .where((c) => c.checked)
         .sum((c) => (c.price || 0) * c.quantity)
     },
