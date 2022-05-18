@@ -4,6 +4,7 @@ import { tryLogin } from './apis/modules/login'
 // import share from '@/utils/share/index'
 import { mapMutations } from 'vuex'
 import store from '@/store/index'
+import { getPoster } from '@/apis/modules/home'
 
 export default {
   data() {
@@ -15,6 +16,7 @@ export default {
     try {
       await tryLogin()
     } catch (error) {}
+    await getPoster()
     // var info = wx.getLaunchOptionsSync()
     // if (info.path.indexOf('pages/index/home') == -1) share.getInfo()
   },

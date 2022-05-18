@@ -36,7 +36,8 @@ import flow from './comp/flow.vue'
 import fixed from './comp/fixed.vue'
 import { section } from './comp/meta'
 import store from '@/store/'
-import { page } from '@/apis/modules/home'
+import { page, getPoster } from '@/apis/modules/home'
+import shareLite from '@/utils/share/lite'
 
 export default {
   components: {
@@ -46,6 +47,7 @@ export default {
     flow,
     fixed,
   },
+  mixins: [shareLite],
   data() {
     return {
       page: [],
@@ -59,7 +61,12 @@ export default {
   },
   async mounted() {
     var res = await page()
-    this.page = res.content && JSON.parse(res.content)
+    this.page = res && res.content && JSON.parse(res.content)
+    setTimeout(async () => {
+      var posters = await getPoster()
+      uni.$u.liteShare.page = '/pages/index/index'
+      if (posters.indexShare) uni.$u.liteShare.image = posters.indexShare
+    }, 600)
   },
   beforeCreate() {
     uni.hideTabBar()

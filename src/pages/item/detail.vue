@@ -21,6 +21,7 @@
             <span v-if="lv.discount" class="text-sm">会员价</span>
             <span class="text-base">￥</span>
             <span v-if="lv.discount" class="text-xl"> {{ (data.minRetailPrice * lv.discount) | yuan }}</span>
+            <span v-else class="text-xl"> {{ data.minRetailPrice | yuan }}</span>
           </span>
           <span v-if="data.markingPrice > data.minRetailPrice" class="text-gray overline text-base">
             ￥{{ data.markingPrice | yuan }}
@@ -226,16 +227,18 @@ export default {
         return
       }
       // 设置分享
-      uni.$u.liteShare.title = res.title
-      uni.$u.liteShare.page = '/pages/item/detail'
-      uni.$u.liteShare.pageQuery = 'id=' + res.id
-      uni.$u.liteShare.image = this.data.covers[0]
-      this.board = getSharePic({
-        title: res.title,
-        cover: res.cover,
-        price: res.minRetailPrice,
-        mPrice: res.marketPrice,
-      })
+      setTimeout(async () => {
+        uni.$u.liteShare.title = res.title
+        uni.$u.liteShare.page = '/pages/item/detail'
+        uni.$u.liteShare.pageQuery = 'id=' + res.id
+        uni.$u.liteShare.image = this.data.covers[0]
+        this.board = await getSharePic({
+          title: res.title,
+          cover: res.cover,
+          price: res.minRetailPrice,
+          mPrice: res.marketPrice,
+        })
+      }, 100)
 
       // 加工规格
       res.specifications.forEach((item) => {

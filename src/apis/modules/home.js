@@ -21,3 +21,12 @@ export const page = () => request('mall/micropages', 'get')
 export const getSence = (id) => request('mall/share/sence/' + id, 'get')
 
 export const listMemberLevel = (id) => request('mall/users/memberLevel', 'get')
+
+var posters = null
+export const getPoster = async (id) => {
+  if (posters) return posters
+  else {
+    posters = await request('mall/share/poster', 'get')
+    return posters
+  }
+}

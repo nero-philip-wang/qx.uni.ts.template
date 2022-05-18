@@ -1,13 +1,19 @@
 import config from '@/config/index'
+import { getPoster } from '@/apis/modules/home'
 
-export default ({ title, price, mPrice, cover, qr }) => {
+export default async ({ title, price, mPrice, cover, qr }) => {
+  var bg = 'https://s.re4.top/asset/sharebg.jpg'
+  try {
+    var res = await getPoster()
+    bg = res.itemPoster || bg
+  } catch (error) {}
   return {
     width: '580rpx',
     height: '860rpx',
     views: [
       {
         type: 'image',
-        url: 'https://s.re4.top/asset/postbg.jpg',
+        url: bg,
         css: {
           left: '0rpx',
           top: '0rpx',

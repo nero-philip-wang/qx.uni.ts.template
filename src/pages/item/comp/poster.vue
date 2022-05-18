@@ -46,12 +46,12 @@ export default {
     }
   },
   watch: {
-    show(value) {
+    async show(value) {
       if (value) {
         var p = stools.getParams()
         var page = 'pages/index/home'
         var scene = encodeURIComponent(p.page)
-        this.board = getPoster({
+        this.board = await getPoster({
           title: this.spu.title,
           cover: this.spu.cover,
           price: toYuan(this.spu.minRetailPrice),
