@@ -19,5 +19,15 @@ const config = {
     hasLive: false,
     primaryColor: '#34bc98',
   },
+  wx9992547d16d5f9de: {
+    appId: 'wx9992547d16d5f9de',
+    defaultTenant: {
+      id: 1008,
+      title: '南京',
+    },
+    key: '57e028428a5c5d0f89eb6b7594a8039c',
+    hasLive: false,
+    primaryColor: '#34bc98',
+  },
 }
 module.exports = config
