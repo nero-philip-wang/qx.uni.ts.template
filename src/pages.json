@@ -140,6 +140,31 @@
       }
     }
   ],
+  "subPackages": [
+    {
+      "root": "pagesA",
+      "pages": [
+        {
+          "path": "saler/home",
+          "style": {
+            "navigationBarTitleText": "分销员"
+          }
+        },
+        {
+          "path": "saler/fans",
+          "style": {
+            "navigationBarTitleText": "我的粉丝"
+          }
+        },
+        {
+          "path": "saler/order",
+          "style": {
+            "navigationBarTitleText": "分销订单"
+          }
+        }
+      ]
+    }
+  ],
   "tabBar": {
     "list": [
       {

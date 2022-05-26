@@ -38,14 +38,15 @@
 
       <div class="m-24 bg-white rounded">
         <u-cell-group :border="false">
-          <u-cell icon="car" icon-color="#5fcda2" title="地址管理" is-link @click="$goto('pages/consignee/list')"></u-cell>
+          <u-cell icon="car" :icon-style="{ color: '#5fcda2' }" title="地址管理" is-link @click="$goto('pages/consignee/list')"></u-cell>
           <button open-type="contact" class="u-reset-button w-full text-left">
-            <u-cell icon="kefu-ermai" icon-color="#ee883b" title="联系客服" is-link></u-cell>
+            <u-cell icon="kefu-ermai" :icon-style="{ color: '#5dca2f' }" title="联系客服" is-link></u-cell>
           </button>
           <button open-type="contact" class="u-reset-button w-full text-left" send-message-title="售后咨询">
-            <u-cell icon="bag" icon-color="#ee883b" title="售后咨询" is-link></u-cell>
+            <u-cell icon="bag" :icon-style="{ color: '#ee883b' }" title="售后咨询" is-link></u-cell>
           </button>
-          <u-cell icon="car" icon-color="#5fcda2" title="退出登录" is-link @click="logout"></u-cell>
+          <u-cell icon="man-add" :icon-style="{ color: '#cd5f5f' }" title="分销员计划" is-link @click="$goto('pagesA/saler/home')"></u-cell>
+          <u-cell icon="reload" title="退出登录" is-link @click="logout"></u-cell>
         </u-cell-group>
       </div>
     </scroll-view>
