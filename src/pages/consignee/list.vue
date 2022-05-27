@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div v-if="list.length === 0" class="m-32">
-      <u-empty mode="address"></u-empty>
+      <u-empty icon="http://cdn.uviewui.com/uview/empty/address.png"></u-empty>
     </div>
     <div v-else>
       <div v-for="(item, index) in list" :key="index" class="rounded bg-white m-20 px-32 pt-32 text-base" @click="onSelect(item)">

@@ -1,5 +1,5 @@
 {
-  "name": "小小蟹母婴",
+  "name": "朵可臻选",
   "appid": "__UNI__3BEB19B",
   "description": "",
   "versionName": "1.0.0",
@@ -52,7 +52,7 @@
   },
   "quickapp": {},
   "mp-weixin": {
-    "appid": "wx9992547d16d5f9de",
+    "appid": "wx129b199af409f294",
     "usingComponents": true,
     "setting": {
       "urlCheck": false,

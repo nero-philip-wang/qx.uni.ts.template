@@ -151,6 +151,12 @@
           }
         },
         {
+          "path": "saler/index",
+          "style": {
+            "navigationBarTitleText": "分销员"
+          }
+        },
+        {
           "path": "saler/fans",
           "style": {
             "navigationBarTitleText": "我的粉丝"

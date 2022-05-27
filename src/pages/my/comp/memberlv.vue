@@ -12,7 +12,7 @@
       <u-button v-if="list && list.length" type="primary" plain :custom-style="{ height: '72rpx', borderRadius: '0' }" @click="buy">
         充值送会员
       </u-button>
-      <u-empty v-else mode="search" text="暂无会员活动"> </u-empty>
+      <u-empty v-else icon="http://cdn.uviewui.com/uview/empty/search.png" text="暂无会员活动"> </u-empty>
     </div>
   </u-popup>
 </template>

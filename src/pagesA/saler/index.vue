@@ -1,0 +1,115 @@
+<template>
+  <div>
+    <div style="height:200rpx" class="pt-64">
+      <!-- 头像 -->
+      <div class="mx-40 text-white flex">
+        <div class="mx-32 relative">
+          <u-avatar :src="member.avatar" size="110rpx"></u-avatar>
+        </div>
+        <div class="flex-grow flex-col justify-center">
+          <div class="text-white text-xl">{{ member.nickname }}</div>
+          <div class="mt-4 text-white text-sm">{{ (member.level && member.level.title) || '分销员' }}</div>
+        </div>
+        <div class="flex-col justify-center place-items-center right" @click="showQr">
+          <div class="qxfont">&#xe626;</div>
+          <div class="text-xs">我的邀请码</div>
+        </div>
+      </div>
+
+      <div class="absolute bgcard"></div>
+    </div>
+
+    <!-- 资产 -->
+    <Card :title="structofAsset.title" :more="structofAsset.more" :more-href="structofAsset.moreHref" :items="structofAsset.items" />
+
+    <div class="mx-32 my-8 flex" @click="$goto('/pagesA/saler/order')">
+      <span class="text-base">近期分销订单</span>
+      <span class="text-sm flex-grow ml-16 pt-8 text-gray">{{ params.subtitle }}</span>
+      <span class="text-sm pt-8 text-gray">查看全部 ></span>
+    </div>
+    <div v-if="list && list.length">
+      <Order v-for="x in list" :key="x"> </Order>
+    </div>
+    <u-empty v-else icon="http://cdn.uviewui.com/uview/empty/data.png" text="快去分享更多吧"></u-empty>
+  </div>
+</template>
+
+<script>
+import Card from './comp/card.vue'
+import Order from './comp/order.vue'
+import store from '@/store'
+import { home } from '@/apis/modules/distribution'
+import { toYuan } from '@/utils/index'
+
+export default {
+  components: { Card, Order },
+  data() {
+    return {
+      summary: {
+        fansCount: 0,
+        todayCount: 0,
+        walletBalance: null,
+      },
+      list: [],
+    }
+  },
+  computed: {
+    member() {
+      return store.getters.isLogged
+        ? store.state.user.logged
+        : {
+            nickname: '未登录',
+            desc: '',
+            avatar: '-',
+          }
+    },
+    isLogged() {
+      return store.getters.isLogged
+    },
+    structofAsset() {
+      return {
+        title: '我的数据',
+        moreHref: '',
+        items: [
+          { title: '钱包', value: toYuan(this.summary.walletBalance), href: '/pages/my/wallet' },
+          { title: '粉丝', value: this.summary.fansCount, href: '/pagesA/saler/fans' },
+          { title: '今日订单', value: this.summary.todayCount, href: '/pagesA/saler/order' },
+        ],
+      }
+    },
+  },
+  async created() {
+    await this.refresh()
+  },
+  methods: {
+    async refresh() {
+      var res = await home()
+      this.summary = res
+      this.list = res.rebateList
+        .filter((c) => c.orderId)
+        .map((c) => ({
+          ...c,
+          order: res.orders.find((x) => x.id == c.orderId),
+        }))
+    },
+    showQr() {
+      uni.previewImage({ urls: ['https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/6acec660-4f31-11eb-a16f-5b3e54966275.jpg'] })
+    },
+  },
+}
+</script>
+<style scoped lang="scss">
+.bgcard {
+  height: 330rpx;
+  width: 140%;
+  top: 0;
+  left: -20%;
+  z-index: -1;
+  border-radius: 0 0 50% 50%;
+  background: linear-gradient(136deg, #ec3d3d 0%, #ff7459 100%);
+}
+
+.right .qxfont {
+  font-size: 32rpx;
+}
+</style>

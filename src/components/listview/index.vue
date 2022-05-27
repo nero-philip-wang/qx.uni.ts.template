@@ -9,7 +9,7 @@
   >
     <slot v-if="value && value.length" :data="value"></slot>
     <div v-else-if="!hasNext" class="my-32">
-      <u-empty mode="data" text="没有更多数据"></u-empty>
+      <u-empty icon="http://cdn.uviewui.com/uview/empty/data.png" text="没有更多数据"></u-empty>
     </div>
     <div v-if="(value && value.length) || hasNext" class="my-24">
       <u-loadmore v-if="loadmoreEnabled" :status="hasNext ? loading : nomore" />
