@@ -66,7 +66,7 @@ import from from '@/utils/linq'
 import { toYuan } from '@/utils/index'
 import banner from '../index/comp/banner.vue'
 import { section } from '../index/comp/meta'
-import { loginByCode } from '@/apis/modules/login'
+import { getMember } from '@/apis/modules/home'
 
 var list1 = section()
 list1.height = '160rpx'
@@ -146,7 +146,7 @@ export default {
     },
     async RefreshMember() {
       if (easyState.needRefreshMember) {
-        var user = await loginByCode(true)
+        await getMember(true)
         easyState.needRefreshMember = false
       }
     },

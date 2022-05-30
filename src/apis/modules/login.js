@@ -63,6 +63,7 @@ export const loginByCode = (force = false) => {
                     token: 'Bearer ' + reponse.token,
                     openId: reponse.openId,
                   })
+                  if (member.bindingMemberId && !store.state.user.sId) store.commit('SET_SOURCE', member.bindingMemberId)
                   resolve(member)
                 } else {
                   // 如果是首次登录，保存sessionkey等信息

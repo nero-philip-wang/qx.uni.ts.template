@@ -28,7 +28,7 @@
       <span class="text-sm pt-8 text-gray">查看全部 ></span>
     </div>
     <div v-if="list && list.length">
-      <Order v-for="x in list" :key="x"> </Order>
+      <Order v-for="x in list" :key="x.id" :value="x"> </Order>
     </div>
     <u-empty v-else icon="http://cdn.uviewui.com/uview/empty/data.png" text="快去分享更多吧"></u-empty>
   </div>
@@ -91,6 +91,7 @@ export default {
           ...c,
           order: res.orders.find((x) => x.id == c.orderId),
         }))
+      console.log(this.list)
     },
     showQr() {
       uni.previewImage({ urls: ['https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/6acec660-4f31-11eb-a16f-5b3e54966275.jpg'] })

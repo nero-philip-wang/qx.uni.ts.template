@@ -69,16 +69,18 @@ export default {
   },
   methods: {
     async confirm() {
-      if (this.amountFen > 0) {
+      if (!this.amountFen || this.amountFen <= 0) {
+        uni.showToast({ title: '请输入提现金额', icon: 'none' })
+      } else if (!this.account || this.account.length < 5) {
+        uni.showToast({ title: '请输入提现账户', icon: 'none' })
+      } else {
         store.commit('SET_WWACCOUNT', this.account)
-        await cashout(this.amountFen)
+        await cashout({ amount: this.amountFen, account: this.account })
         uni.showToast({ title: '申请提现成功，请耐心等待后台人员审核', icon: 'none' })
         setTimeout(() => {
           this.$goto(-1)
         }, 200)
-      } else if (!this.account || this.account.length < 5) {
-        uni.showToast({ title: '请输入提现账户', icon: 'none' })
-      } else uni.showToast({ title: '请输入提现金额', icon: 'none' })
+      }
     },
     check(e) {
       this.$nextTick(() => {

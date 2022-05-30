@@ -1,4 +1,5 @@
 import request from '../request'
+import store from '@/store'
 
 export const banner = () => {
   return request('mall/banners', 'get')
@@ -20,13 +21,23 @@ export const page = () => request('mall/micropages', 'get')
 
 export const getSence = (id) => request('mall/share/sence/' + id, 'get')
 
-export const listMemberLevel = (id) => request('mall/users/memberLevel', 'get')
+export const listMemberLevel = () => request('mall/users/memberLevel', 'get')
 
 var posters = null
-export const getPoster = async (id) => {
+export const getPoster = async () => {
   if (posters) return posters
   else {
     posters = await request('mall/share/poster', 'get')
     return posters
   }
+}
+
+export const getMember = async () => {
+  var m = await request('mall/users/detail', 'get', {}, { autoLogin: false })
+  store.commit('SET_USERINFO', {
+    ...m,
+    token: store.state.user.logged.token,
+    openId: store.state.user.logged.openId,
+  })
+  return m
 }

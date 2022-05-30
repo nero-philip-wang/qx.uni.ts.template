@@ -1,7 +1,7 @@
 <script>
 import utils from './utils'
 import { tryLogin } from './apis/modules/login'
-// import share from '@/utils/share/index'
+import { getMember } from './apis/modules/home'
 import { mapMutations } from 'vuex'
 import store from '@/store/index'
 import { getPoster } from '@/apis/modules/home'
@@ -10,21 +10,43 @@ export default {
   data() {
     return {}
   },
-  async onLaunch() {
+  async onLaunch({ query }) {
+    // 异步处理的方法
+    setTimeout(async () => {
+      // 检查更新
+      utils.updateApp()
+      // 获取海报配置
+      await getPoster()
+    }, 10)
+
+    // 同步处理的方法
     uni.hideTabBar()
-    utils.updateApp()
+    // 设置分享来源
+    console.log(query, '分享来源')
+    if (query.sid) this.SET_SOURCE(query.sid)
+    else this.SET_SOURCE(null)
+    if (query.t) {
+      this.SET_TENANT({ t: query.t, area: query.area })
+    } else {
+      this.checkTenant(query.t)
+    }
+    //  尝试登陆并更新用户信息
     try {
-      await tryLogin()
+      var t = await tryLogin()
+      if (t) {
+        var m = await getMember()
+        if (!query.sid && m.bindingMemberId && Date.parse(m.bindingExpire) > Date.now()) {
+          this.SET_SOURCE(m.bindingMemberId)
+        }
+      }
     } catch (error) {}
-    await getPoster()
-    // var info = wx.getLaunchOptionsSync()
-    // if (info.path.indexOf('pages/index/home') == -1) share.getInfo()
   },
   methods: {
     ...mapMutations(['SET_SOURCE', 'SET_TENANT']),
     async checkTenant(t) {
+      var noalert = ['全国', '默认']
       setTimeout(() => {
-        if (!store.state.user.logged.token && !t) {
+        if (!store.state.user.logged.token && !t && noalert.includes(store.state.user.tTitle)) {
           // 未登录
           uni.showModal({
             title: '提示',
@@ -40,18 +62,6 @@ export default {
       }, 1200)
     },
   },
-  onShow({ query }) {
-    // 设置分享来源
-    console.log(query, '分享来源')
-    if (query.sid) this.SET_SOURCE(query.sid)
-    else this.SET_SOURCE(null)
-    if (query.t) {
-      this.SET_TENANT({ t: query.t, area: query.area })
-    } else {
-      this.checkTenant(query.t)
-    }
-  },
-  onHide: function() {},
 }
 </script>
 

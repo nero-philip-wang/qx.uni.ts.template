@@ -21,7 +21,7 @@
         </div>
       </scroll-view>
 
-      <div class="ml-4 flex-grow text-gray text-sm text-left">等32件</div>
+      <div class="ml-4 flex-grow text-gray text-sm text-left">等{{ value.order.items.length || 0 }}件</div>
       <div class="ml-12">
         <div>订单总额</div>
         <div class="text-price">￥{{ value.order.orderAmount | yuan }}</div>
