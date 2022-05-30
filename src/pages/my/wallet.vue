@@ -46,12 +46,12 @@ export default {
     statustext: (code) => {
       switch (code.status) {
         case 0:
-          return code.direction ? (code.type == 1 ? '预计收益' : '待支付') : '待审核'
+          return code.direction ? (code.type == type ? '预计收益' : '待支付') : '待审核'
         case 1:
           return '已审核'
         case 2:
           return '已到账'
-        case 3:
+        case -1:
           return '已取消'
       }
     },

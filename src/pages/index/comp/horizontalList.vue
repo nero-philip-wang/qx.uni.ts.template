@@ -6,7 +6,7 @@
       <span class="text-sm pt-8 text-gray">{{ params.moreTip }} ></span>
     </div>
     <u-scroll-list>
-      <div v-for="(item, index) in params.list" :key="index" class="item my-8 text-center">
+      <div v-for="(item, index) in params.list" :key="index" class="item my-8 text-center" @click="$goto(item.href)">
         <image class="icon rounded-sm" mode="aspectFill" :src="item.src"></image>
         <div class="title text-sm text-left truncate"> {{ item.title }} </div>
       </div>

@@ -10,6 +10,7 @@
       :key="index"
       class="mb-24 overflow-hidden bg-white rounded"
       :class="{ 'lineh-0': !item.title }"
+       @click="$goto(item.href)"
     >
       <image class="image" mode="aspectFill" :src="item.src" :style="{ height: autoAddUnit(params.height) }"></image>
       <div v-if="item.title" class="flex my-8 mx-16">

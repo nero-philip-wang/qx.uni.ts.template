@@ -1,6 +1,6 @@
 <template>
   <div class="py-16 flex flex-wrap">
-    <div v-for="(item, index) in params.list" :key="index" class="my-8 text-center" :style="{ minWidth }">
+    <div v-for="(item, index) in params.list" :key="index" class="my-8 text-center" :style="{ minWidth }" @click="$goto(item.href)">
       <image class="icon rounded-sm" mode="aspectFill" :src="item.src"></image>
       <div class="text-sm"> {{ item.title }} </div>
     </div>

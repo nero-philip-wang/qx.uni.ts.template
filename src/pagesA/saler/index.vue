@@ -10,7 +10,7 @@
           <div class="text-white text-xl">{{ member.nickname }}</div>
           <div class="mt-4 text-white text-sm">{{ (member.level && member.level.title) || '分销员' }}</div>
         </div>
-        <div class="flex-col justify-center place-items-center right" @click="showQr">
+        <div v-show="false" class="flex-col justify-center place-items-center right" @click="showQr">
           <div class="qxfont">&#xe626;</div>
           <div class="text-xs">我的邀请码</div>
         </div>

@@ -36,7 +36,7 @@ export default {
           return '已审核'
         case 2:
           return '已到账'
-        case 3:
+        case -1:
           return '已取消'
       }
     },

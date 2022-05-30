@@ -1,21 +1,28 @@
 <template>
   <div>
     <button class="u-reset-button" open-type="contact">
-      <image
-        src="https://i-1-lanrentuku.52tup.com/2020/12/4/3ca4119d-ff5d-4d4f-9ad6-8bb036ef8229.png?imageView2/2/w/1024/"
-        class="w-full"
-        mode="widthFix"
-      ></image>
+      <image :src="post" class="w-full" mode="widthFix"></image>
     </button>
   </div>
 </template>
 
 <script>
+import store from '@/store'
+import { getPoster } from '@/apis/modules/home'
+
 export default {
-  created() {
-    setTimeout(() => {
-      this.$goto('/pagesA/saler/index')
-    }, 200)
+  data() {
+    return {
+      post: '',
+    }
+  },
+  async created() {
+    if (store.getters.isLogged && store.state.user.logged.bindingMemberId == store.state.user.logged.id) {
+      this.$goto('/pagesA/saler/index', { way: 'replace' })
+    } else {
+      var posters = await getPoster()
+      this.post = posters.distributerPost
+    }
   },
 }
 </script>
