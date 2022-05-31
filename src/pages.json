@@ -167,6 +167,12 @@
           "style": {
             "navigationBarTitleText": "分销订单"
           }
+        },
+        {
+          "path": "act/inviteNew",
+          "style": {
+            "navigationBarTitleText": "邀请有礼"
+          }
         }
       ]
     }

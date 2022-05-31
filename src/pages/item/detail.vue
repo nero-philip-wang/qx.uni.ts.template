@@ -64,7 +64,7 @@
           <u-cell :value="data.freightTemplateId ? data.freightTemplate.title : '免运费'">
             <span slot="title" class="text-gray">运费</span>
           </u-cell>
-          <u-cell v-if="hasRebate" is-link @click="showShare = true">
+          <u-cell v-if="isDistributer" is-link @click="showShare = true">
             <span slot="title" class="text-gray">返利</span>
             <span> 分享立赚 {{ ((data.rebate && data.rebate.details.rate) * data.minRetailPrice) | yuan }} 元 </span>
           </u-cell>
@@ -168,7 +168,6 @@ export default {
       id: null,
       showSku: false,
       count: 0,
-      hasRebate: false,
       showMemberLv: false,
       showShare: false,
       board: null,
@@ -186,7 +185,7 @@ export default {
       tenantId: (state) => state.user.tenantId,
       area: (state) => state.user.tenantArea,
     }),
-    ...mapGetters(['isLogged']),
+    ...mapGetters(['isLogged', 'isDistributer']),
     showCart() {
       return this.data.type != 3
     },
@@ -198,7 +197,6 @@ export default {
     this.loadData()
     this.loadRating() // 加载评价
     this.loadCart()
-    this.loadRebate()
   },
   onPageScroll(e) {
     this.scrollTop = e.scrollTop
@@ -261,9 +259,6 @@ export default {
     },
     async loadCart() {
       this.count = await count()
-    },
-    async loadRebate() {
-      this.hasRebate = await hasrebate()
     },
     sharePicCreated(src) {
       uni.$u.liteShare.image = src

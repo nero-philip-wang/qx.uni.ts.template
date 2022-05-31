@@ -14,9 +14,6 @@ const navFunc = { push: uni.navigateTo, replace: uni.redirectTo, reLaunch: uni.r
  * @param {*} way :[push,replace,reLaunch]
  */
 function goto(url, { way, appid } = { way: 'push', appid: null }) {
-  const isTabBar = tabUrlList.some((item) => {
-    return (url + '').toLocaleLowerCase().indexOf(item) > -1
-  })
   const nav = navFunc[way]
 
   // 如果不是数字
@@ -25,6 +22,9 @@ function goto(url, { way, appid } = { way: 'push', appid: null }) {
     // 如果是http的链接
     if (url.indexOf('http://') > -1 || url.indexOf('https://') > -1) url = webview + encodeURIComponent(url)
   }
+  const isTabBar = tabUrlList.some((item) => {
+    return (url + '').toLocaleLowerCase().indexOf(item) > -1
+  })
 
   // 跳转小程序
   if (appid) {

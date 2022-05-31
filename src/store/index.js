@@ -91,6 +91,8 @@ const store = new Vuex.Store({
     },
     tabbars: (state) => state.tabbar,
     sid: (state) => state.user.sId,
+    isDistributer: (state) =>
+      state.user.logged.token && state.user.logged.id && store.state.user.logged.bindingMemberId == store.state.user.logged.id, // 到期时间
   },
   mutations: {
     SET_WWACCOUNT(state, account) {

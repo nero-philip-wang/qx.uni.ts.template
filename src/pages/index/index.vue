@@ -25,6 +25,20 @@
     <div v-else class="m-24 p-16 bg-white rounded">
       <u-skeleton rows="15" title loading></u-skeleton>
     </div>
+
+    <!-- 新人礼 -->
+    <u-popup mode="center" :custom-style="{ lineHeight: 0, width: '70%' }" :show="hasAward" closeable @close="hasAward = false">
+      <image
+        style="width: 100%"
+        :src="hasAward.image"
+        mode="widthFix"
+        @click="
+          $goto('pages/login/login')
+          hasAward = false
+        "
+      />
+    </u-popup>
+
     <qx-tabbar />
   </div>
 </template>
@@ -36,7 +50,7 @@ import flow from './comp/flow.vue'
 import fixed from './comp/fixed.vue'
 import { section } from './comp/meta'
 import store from '@/store/'
-import { page, getPoster } from '@/apis/modules/home'
+import { page, getPoster, hasNewAward } from '@/apis/modules/home'
 import shareLite from '@/utils/share/lite'
 
 export default {
@@ -52,6 +66,7 @@ export default {
     return {
       page: [],
       list: section(),
+      hasAward: null,
     }
   },
   computed: {
@@ -67,6 +82,11 @@ export default {
       uni.$u.liteShare.page = '/pages/index/index'
       if (posters.indexShare) uni.$u.liteShare.image = posters.indexShare
     }, 600)
+
+    if (!store.getters.isLogged) {
+      const award = await hasNewAward()
+      this.hasAward = award && award[0]
+    }
   },
   beforeCreate() {
     uni.hideTabBar()

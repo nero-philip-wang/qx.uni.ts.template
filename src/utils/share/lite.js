@@ -16,9 +16,10 @@ const common = {
     var userId = (store.state.user.logged && store.state.user.logged.id) || ''
     var tenantId = store.state.user.tId
     var area = store.state.user.tTitle
+
     return {
       title: title,
-      page: `${page}?${pageQuery}${pageQuery ? '&' : ''}sid=${userId}&t=${tenantId}&area=${area}`,
+      path: `${page}?${pageQuery}${pageQuery ? '&' : ''}sid=${userId}&t=${tenantId}&area=${area}`,
       imageUrl: image,
     }
   },

@@ -5,7 +5,7 @@
         <image :src="data.avatar" mode="" style="width: 64rpx;height: 64rpx;"></image>
       </view>
       <view class="album__content">
-        <u--text mode="name" :text="data.nickname" type="primary" bold size="17" format="encrypt"></u--text>
+        <u--text mode="name" :text="data.nickname || '*'" type="primary" bold size="17" format="encrypt"></u--text>
         <u--text margin="0 0 8px 0" :text="data.content"></u--text>
         <u-album
           v-if="data.images && data.images.length"
