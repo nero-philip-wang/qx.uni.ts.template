@@ -34,10 +34,12 @@ export const getPoster = async () => {
 
 export const getMember = async () => {
   var m = await request('mall/users/detail', 'get', {}, { autoLogin: false })
-  store.commit('SET_USERINFO', {
-    ...m,
-    token: store.state.user.logged.token,
-    openId: store.state.user.logged.openId,
-  })
+  if (m) {
+    store.commit('SET_USERINFO', {
+      ...m,
+      token: store.state.user.logged.token,
+      openId: store.state.user.logged.openId,
+    })
+  }
   return m
 }

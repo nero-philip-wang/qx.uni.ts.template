@@ -120,7 +120,9 @@ export default {
       showTime: false, // 显示时间弹窗
       selectDate: null, // 商户时间
       showCoupon: false, // 显示优惠券弹窗
-      order: {}, // 结算订单
+      order: {
+        coupons: [],
+      }, // 结算订单
       inputs: {
         // 结算输入信息
         consignee: {},

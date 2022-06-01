@@ -3,14 +3,14 @@
     <div v-if="params.title" class="mx-16 my-8 flex">
       <span>{{ params.title }}</span>
       <span class="text-sm flex-grow ml-16 pt-8 text-gray">{{ params.subtitle }}</span>
-      <span class="text-sm pt-8 text-gray">{{ params.moreTip }} ></span>
+      <span class="text-sm pt-8 text-gray" @click="$goto(params.moreHref)">{{ params.moreTip }} ></span>
     </div>
     <div
       v-for="(item, index) in params.list"
       :key="index"
       class="mb-24 overflow-hidden bg-white rounded"
       :class="{ 'lineh-0': !item.title }"
-       @click="$goto(item.href)"
+      @click="$goto(item.href)"
     >
       <image class="image" mode="aspectFill" :src="item.src" :style="{ height: autoAddUnit(params.height) }"></image>
       <div v-if="item.title" class="flex my-8 mx-16">

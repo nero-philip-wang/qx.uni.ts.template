@@ -7,11 +7,11 @@
       <coupon v-for="(item, index) in selected" :key="index" :item="item" checkable :checked.sync="item.checked" @update:checked="change">
       </coupon>
       <coupon
-        v-for="(item, index) in list.filter((c) => !c.checked)"
+        v-for="(item, index) in list"
         :key="index"
         :item="item"
         checkable
-        :checked.sync="item.checked"
+        :checked.sync="list[index].checked"
         @update:checked="change"
       >
       </coupon>
@@ -50,7 +50,7 @@ export default {
         result.forEach((element) => {
           element.checked = false
         })
-        return result
+        return result.filter((c) => !c.checked)
       } else return []
     },
   },

@@ -3,7 +3,7 @@
     <div class="mx-32 pb-8 flex">
       <span>{{ params.title }}</span>
       <span class="text-sm flex-grow ml-16 pt-8 text-gray">{{ params.subtitle }}</span>
-      <span class="text-sm pt-8 text-gray">{{ params.moreTip }} ></span>
+      <span class="text-sm pt-8 text-gray" @click="$goto(params.moreHref)">{{ params.moreTip }} ></span>
     </div>
     <u-scroll-list>
       <div v-for="(item, index) in params.list" :key="index" class="item my-8 text-center" @click="$goto(item.href)">
