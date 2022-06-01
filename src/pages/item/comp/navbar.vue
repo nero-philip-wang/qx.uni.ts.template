@@ -1,8 +1,12 @@
 <template>
   <div>
     <u-navbar fixed auto-back placeholder>
-      <u-tabs slot="center"  :scrollable="false" :current="current" :list="list" @change="trigger"></u-tabs>
+      <u-tabs slot="center" :scrollable="false" :current="current" :list="list" @change="trigger"></u-tabs>
     </u-navbar>
+    <div class="fixed" style="z-index:1000">
+      {{ scrollTop }}
+      {{ anchorList[0] + ' ' + anchorList[1] + ' ' + anchorList[2] }}</div
+    >
   </div>
 </template>
 
@@ -41,6 +45,8 @@ export default {
   watch: {
     scrollTop(v) {
       const func = () => {
+        // 结果 scrollTop 有小数的问题
+        v = Math.round(v + 0.1)
         this.current = v >= this.anchorList[2] ? 2 : v >= this.anchorList[1] ? 1 : 0
         this.scrolling = false
       }
@@ -53,7 +59,7 @@ export default {
       this.current = item.index
       uni.pageScrollTo({
         scrollTop: this.anchorList[item.index],
-        duration: 300,
+        duration: 0,
       })
       this.scrolling = true
     },

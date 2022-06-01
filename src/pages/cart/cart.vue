@@ -104,7 +104,7 @@ export default {
       this.$u.debounce(async () => {
         await updateQuantity(item.key, item.quantity)
         this.total = state.cartCount
-      }, 500)
+      }, 300)
     },
     async del(item, idx) {
       try {
