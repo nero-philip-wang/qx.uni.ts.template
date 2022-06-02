@@ -1,4 +1,3 @@
-import config from '@/config/index'
 import QQMapWX from '@/utils/qqmap-wx-jssdk'
 var qqmapsdk = new QQMapWX({
   key: 'WO6BZ-XNAC5-VKCI3-QPFQO-EJCC3-WOFZS',
@@ -6,10 +5,6 @@ var qqmapsdk = new QQMapWX({
 
 export function getCity() {
   return new Promise((resolve, reject) => {
-    if (!config.hasGpsOnce) {
-      resolve(null)
-      return
-    }
     uni.getLocation({
       type: 'wgs84',
       success: (res) => {

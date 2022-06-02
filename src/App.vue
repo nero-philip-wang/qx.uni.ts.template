@@ -5,7 +5,7 @@ import { getMember } from './apis/modules/home'
 import { mapMutations } from 'vuex'
 import store from '@/store/index'
 import { getPoster } from '@/apis/modules/home'
-import { getCity } from '@/apis/modules/location'
+import { getCity } from '@/apis/modules/nolocation'
 
 export default {
   data() {
@@ -45,7 +45,10 @@ export default {
   methods: {
     ...mapMutations(['SET_SOURCE', 'SET_TENANT']),
     async checkTenant(t) {
-      var city = await getCity()
+      var city = ''
+      try {
+        city = await getCity()
+      } catch (e) {}
       var noalert = `全国默认${city}`
       setTimeout(() => {
         if (!store.state.user.logged.token && !t && !noalert.includes(store.state.user.tTitle)) {
