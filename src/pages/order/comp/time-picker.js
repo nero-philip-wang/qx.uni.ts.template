@@ -35,7 +35,7 @@ var msOfaDay = 24 * 3600 * 1000
 var msOfaHour = 3600 * 1000 + 1
 
 export default {
-  getNextDays(days = 5, from = 8, to = 21, step = 0.5, advanceHour = 12, specialHour = 19) {
+  getNextDays(days = 5, from = 8, to = 21, step = 0.5, advanceHour = 12, specialHour = 19, lastHour = 0) {
     var now = Date.now()
     var advanceTime = Date.now() + advanceHour * msOfaHour
     var today = new Date()
@@ -56,7 +56,8 @@ export default {
         // 加价
         else if (x >= specialHour) type = 2
 
-        timeofday.push({ title: getTime(time), time, type })
+        if (lastHour) timeofday.push({ title: `${getTime(time)}-${getTime(time + lastHour * msOfaHour)}`, time, type })
+        else timeofday.push({ title: getTime(time), time, type })
       }
       buff.push({ title: getDate(t), children: timeofday })
     }

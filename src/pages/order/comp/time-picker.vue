@@ -34,7 +34,7 @@
 
 <script>
 import pick from '@/pages/order/comp/time-picker'
-var list = pick.getNextDays(7, 8, 20, 4, 22, 21)
+var list = pick.getNextDays(7, 8.5, 16, 6, 22, 20, 4)
 export default {
   props: {
     show: {

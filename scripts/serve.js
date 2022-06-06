@@ -79,7 +79,7 @@ function modApp(appid) {
 }
 
 function build() {
-  var cmd = `start yarn build:mp-weixin`
+  var cmd = `start yarn dev:mp-weixin`
   var exec = require('child_process').exec
   console.log('开始编译')
   exec(cmd, function(error, stdout, stderr) {
@@ -91,7 +91,7 @@ function build() {
 
 function runWx() {
   setTimeout(() => {
-    var cmd = `cli.bat open --project ${process.cwd()}\\dist\\build\\mp-weixin`
+    var cmd = `cli.bat open --project ${process.cwd()}\\dist\\dev\\mp-weixin`
     var exec = require('child_process').exec
     exec(cmd, function(error, stdout, stderr) {
       console.log(stdout)
