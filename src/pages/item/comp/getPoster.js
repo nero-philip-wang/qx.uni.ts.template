@@ -2,7 +2,7 @@ import config from '@/config/index'
 import { getPoster } from '@/apis/modules/home'
 
 export default async ({ title, price, mPrice, cover, qr }) => {
-  var bg = 'https://s.re4.top/asset/sharebg.jpg'
+  var bg = 'https://s.re4.top/asset/postbg.jpg'
   try {
     var res = await getPoster()
     bg = res.itemPoster || bg

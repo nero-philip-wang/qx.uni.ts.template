@@ -27,6 +27,7 @@
 import getPoster from './getPoster'
 import { toYuan } from '@/utils/index'
 import stools from '@/utils/share/lite'
+import app from '@/config/index'
 
 export default {
   props: {
@@ -56,7 +57,7 @@ export default {
           cover: this.spu.cover,
           price: toYuan(this.spu.minRetailPrice),
           mPrice: toYuan(this.spu.markingPrice),
-          qr: `${process.env.VUE_APP_BASE_API}api/v1.0/mall/Share/wxacode?page=${page}&scene=${scene}`,
+          qr: `${process.env.VUE_APP_BASE_API}api/v1.0/mall/Share/wxacode?page=${page}&scene=${scene}&appid=${app.appId}`,
         })
       }
     },

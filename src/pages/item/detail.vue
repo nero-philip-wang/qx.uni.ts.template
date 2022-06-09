@@ -32,11 +32,14 @@
             <span class="text-primary text-bold">266 </span>
           </span>
         </div>
-        <div class="noticebar mx-28 mt-8 p-12 rounded overflow-hidden flex" @click="showMemberLv = true">
-          <u-icon name="integral" color="#f9ae3d" size="32rpx"></u-icon>
-          <span class="ml-8 text-sm flex-grow"> 开通会员低至8折，当前等级：{{ lv.title || '普通会员' }} </span>
-          <u-icon name="arrow-right" color="#f9ae3d" size="32rpx"></u-icon>
-        </div>
+        <!-- 会员权益 -->
+        <Memberlv :show.sync="showMemberLv">
+          <div class="noticebar mx-28 mt-8 p-12 rounded overflow-hidden flex" @click="showMemberLv = true">
+            <u-icon name="integral" color="#f9ae3d" size="32rpx"></u-icon>
+            <span class="ml-8 text-sm flex-grow"> 开通会员低至8折，当前等级：{{ lv.title || '普通会员' }} </span>
+            <u-icon name="arrow-right" color="#f9ae3d" size="32rpx"></u-icon>
+          </div>
+        </Memberlv>
         <div class="bg-white px-32 flex align-center">
           <div style="width:600rpx" class="mr-16">
             <div class="text-bold text-base truncate">{{ data.title }}</div>
@@ -122,8 +125,6 @@
       @addToCart="addToCart"
       @buyNow="buyNow"
     ></sku>
-    <!-- 会员权益 -->
-    <Memberlv :show.sync="showMemberLv" />
     <poster :show.sync="showShare" :board="board" :spu="data" />
   </view>
 </template>
