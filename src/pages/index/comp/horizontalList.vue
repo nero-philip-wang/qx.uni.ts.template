@@ -11,9 +11,9 @@
           class="icon rounded-sm"
           mode="aspectFill"
           :src="item.src"
-          :style="{ height: autoAddUnit(params.height), height: width(params.height) }"
+          :style="{ height: autoAddUnit(params.height), width: autoAddUnit(params.height) }"
         ></image>
-        <div class="title text-sm text-left truncate" :style="{ height: autoAddUnit(params.height) }">
+        <div v-show="item.title" class="title text-sm text-left truncate" :style="{ width: autoAddUnit(params.height) }">
           {{ item.title }}
         </div>
       </div>

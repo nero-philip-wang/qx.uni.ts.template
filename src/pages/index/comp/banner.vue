@@ -6,10 +6,14 @@
       <span class="text-sm pt-8 text-gray" @click="$goto(params.moreHref)">{{ params.moreTip }} ></span>
     </div>
     <u-swiper
+      indicator
+      indicator-mode="dot"
+      :circular="!!params.title"
       img-mode="aspectFill"
       :list="params.list.map((c) => c.src)"
       :height="autoAddUnit(params.height)"
-      :next-margin="params.title ? '30rpx' : undefined"
+      :next-margin="params.title ? '50rpx' : undefined"
+      radius="16rpx"
       @click="goto"
     ></u-swiper>
   </div>
