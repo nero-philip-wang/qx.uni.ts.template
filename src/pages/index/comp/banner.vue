@@ -1,6 +1,17 @@
 <template>
   <div>
-    <u-swiper img-mode="aspectFill" :list="params.list.map((c) => c.src)" :height="autoAddUnit(params.height)" @click="goto"></u-swiper>
+    <div v-if="params.title" class="mx-16 my-8 flex">
+      <span>{{ params.title }}</span>
+      <span class="text-sm flex-grow ml-16 pt-8 text-gray">{{ params.subtitle }}</span>
+      <span class="text-sm pt-8 text-gray" @click="$goto(params.moreHref)">{{ params.moreTip }} ></span>
+    </div>
+    <u-swiper
+      img-mode="aspectFill"
+      :list="params.list.map((c) => c.src)"
+      :height="autoAddUnit(params.height)"
+      :next-margin="params.title ? '30rpx' : undefined"
+      @click="goto"
+    ></u-swiper>
   </div>
 </template>
 <script>

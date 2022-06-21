@@ -7,8 +7,15 @@
     </div>
     <u-scroll-list>
       <div v-for="(item, index) in params.list" :key="index" class="item my-8 text-center" @click="$goto(item.href)">
-        <image class="icon rounded-sm" mode="aspectFill" :src="item.src"></image>
-        <div class="title text-sm text-left truncate"> {{ item.title }} </div>
+        <image
+          class="icon rounded-sm"
+          mode="aspectFill"
+          :src="item.src"
+          :style="{ height: autoAddUnit(params.height), height: width(params.height) }"
+        ></image>
+        <div class="title text-sm text-left truncate" :style="{ height: autoAddUnit(params.height) }">
+          {{ item.title }}
+        </div>
       </div>
     </u-scroll-list>
   </div>
@@ -24,13 +31,17 @@ export default {
   data() {
     return {}
   },
-  methods: {},
+  methods: {
+    autoAddUnit(height) {
+      return isNaN(parseInt(height)) ? height : height + 'rpx'
+    },
+  },
 }
 </script>
 
 <style scoped>
 .item {
-  min-width: 33%;
+  padding-left: 20rpx;
 }
 .icon {
   width: 160rpx;
