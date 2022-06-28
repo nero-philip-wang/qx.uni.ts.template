@@ -1,7 +1,7 @@
 <template>
   <div class="py-16">
     <div class="mx-32 pb-8 flex">
-      <span>{{ params.title }}</span>
+      <span class="text-xl text-bold">{{ params.title }}</span>
       <span class="text-sm flex-grow ml-16 pt-8 text-gray">{{ params.subtitle }}</span>
       <span class="text-sm pt-8 text-gray" @click="$goto(params.moreHref)">{{ params.moreTip }} ></span>
     </div>
