@@ -14,7 +14,7 @@
     </u-navbar>
 
     <div v-if="page.length">
-      <div v-for="(p, idx) in page" :key="idx" :class="p.name == 'flow' || p.name == 'banner' ? 'm-24' : 'm-24 bg-white rounded'">
+      <div v-for="(p, idx) in page" :key="idx" :class="p.name == 'flow' || p.name == 'banner' || p.name == 'horizontalList' ? 'mx-24 mb-32' : 'mx-24 mb-32 bg-white rounded'">
         <banner v-if="p.name == 'banner'" :params="p" />
         <diamond v-if="p.name == 'diamond'" :params="p" />
         <horizontalList v-if="p.name == 'horizontalList'" :params="p" />

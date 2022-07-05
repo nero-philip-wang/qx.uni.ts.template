@@ -1,8 +1,8 @@
 <template>
-  <div class="py-16 flex flex-wrap">
-    <div v-for="(item, index) in params.list" :key="index" class="my-8 text-center" :style="{ minWidth }" @click="$goto(item.href)">
+  <div class="py-20 flex flex-wrap">
+    <div v-for="(item, index) in params.list" :key="index" class="my-20 text-center" :style="{ minWidth }" @click="$goto(item.href)">
       <image class="icon rounded-sm" mode="aspectFill" :src="item.src"></image>
-      <div class="text-sm"> {{ item.title }} </div>
+      <div class="text-base text-bold"> {{ item.title }} </div>
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
   min-width: 25%;
 }
 .icon {
-  width: 90rpx;
-  height: 90rpx;
+  width: 112rpx;
+  height: 112rpx;
 }
 </style>
