@@ -53,7 +53,8 @@ export default async ({ title, price, mPrice, cover, qr }) => {
           width: '250rpx',
           height: '56rpx',
           fontSize: '32rpx',
-          color: config.primaryColor,
+          color: '#f74f0e',
+          fontWeight: 'bolder',
         },
       },
       {

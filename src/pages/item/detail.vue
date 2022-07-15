@@ -29,7 +29,7 @@
           <span class="flex-grow"></span>
           <span class="text-base">
             <span class="mr-8">热度</span>
-            <span class="text-primary text-bold">266 </span>
+            <span class="text-primary text-bold">100 </span>
           </span>
         </div>
         <!-- 会员权益 -->
@@ -69,7 +69,7 @@
           </u-cell>
           <u-cell v-if="isDistributer" is-link @click="showShare = true">
             <span slot="title" class="text-gray">返利</span>
-            <span> 分享立赚 {{ ((data.rebate && data.rebate.details.rate) * data.minRetailPrice) | yuan }} 元 </span>
+            <span slot="value"> 分享立赚 {{ ((data.rebate && data.rebate.details.rate) * data.minRetailPrice) | yuan }} 元 </span>
           </u-cell>
           <!-- <u-cell is-link>
           <span slot="title" class="text-gray">优惠券</span>
@@ -145,6 +145,7 @@ import { mapMutations, mapState, mapGetters } from 'vuex'
 import easyState from '@/store/easyState'
 import getSharePic from './comp/getSharePic'
 import shareLite from '@/utils/share/lite'
+import { toYuan } from '@/utils/index'
 
 export default {
   components: {
@@ -234,8 +235,8 @@ export default {
         this.board = await getSharePic({
           title: res.title,
           cover: res.cover,
-          price: res.minRetailPrice,
-          mPrice: res.marketPrice,
+          price: toYuan(res.minRetailPrice),
+          mPrice: toYuan(res.marketPrice),
         })
       }, 100)
 
