@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slot v-if="list && list.length"></slot>
+    <slot v-if="list && list.length" :discount="minDiscount"></slot>
     <u-popup :show="show" mode="bottom" round="15rpx" @close="$emit('update:show', false)">
       <div class="z-100 px-32 py-48">
         <div v-for="c in list" :key="c.id" class="flex align-center mb-32">
@@ -34,6 +34,16 @@ export default {
     return {
       list: [],
     }
+  },
+  computed: {
+    minDiscount() {
+      var dis = 1
+      if (this.list && this.list.length) this.list.forEach((c) => (dis = Math.min(dis, c.discount)))
+
+      if (isNaN(dis)) dis = 10
+      else dis = (dis * 10).toFixed(1)
+      return dis
+    },
   },
   async created() {
     this.list = await listMemberLevel()

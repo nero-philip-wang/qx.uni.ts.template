@@ -23,9 +23,11 @@
             <span v-if="lv.discount" class="text-xl"> {{ (data.minRetailPrice * lv.discount) | yuan }}</span>
             <span v-else class="text-xl"> {{ data.minRetailPrice | yuan }}</span>
           </span>
-          <span v-if="data.markingPrice > data.minRetailPrice" class="text-gray overline text-base">
+          <span v-if="lv.discount" class="text-gray overline text-base"> ￥{{ data.minRetailPrice | yuan }} </span>
+          <span v-else-if="data.markingPrice > data.minRetailPrice" class="text-gray overline text-base">
             ￥{{ data.markingPrice | yuan }}
           </span>
+
           <span class="flex-grow"></span>
           <span class="text-base">
             <span class="mr-8">热度</span>
@@ -34,11 +36,13 @@
         </div>
         <!-- 会员权益 -->
         <Memberlv :show.sync="showMemberLv">
-          <div class="noticebar mx-28 mt-8 p-12 rounded overflow-hidden flex" @click="showMemberLv = true">
-            <u-icon name="integral" color="#f9ae3d" size="32rpx"></u-icon>
-            <span class="ml-8 text-sm flex-grow"> 开通会员低至8折，当前等级：{{ lv.title || '普通会员' }} </span>
-            <u-icon name="arrow-right" color="#f9ae3d" size="32rpx"></u-icon>
-          </div>
+          <template v-slot="{ discount }">
+            <div class="noticebar mx-28 mt-8 p-12 rounded overflow-hidden flex" @click="showMemberLv = true">
+              <u-icon name="integral" color="#f9ae3d" size="32rpx"></u-icon>
+              <span class="ml-8 text-sm flex-grow"> 开通会员低至{{ discount }}折，当前等级：{{ lv.title || '普通会员' }} </span>
+              <u-icon name="arrow-right" color="#f9ae3d" size="32rpx"></u-icon>
+            </div>
+          </template>
         </Memberlv>
         <div class="bg-white px-32 flex align-center">
           <div style="width:600rpx" class="mr-16">
