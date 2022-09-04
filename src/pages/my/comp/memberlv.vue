@@ -47,6 +47,7 @@ export default {
   },
   async created() {
     this.list = await listMemberLevel()
+    this.$emit('update:list', this.list)
   },
   methods: {
     buy() {

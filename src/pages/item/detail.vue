@@ -23,9 +23,15 @@
             <span v-if="lv.discount" class="text-xl"> {{ (data.minRetailPrice * lv.discount) | yuan }}</span>
             <span v-else class="text-xl"> {{ data.minRetailPrice | yuan }}</span>
           </span>
-          <span v-if="lv.discount" class="text-gray overline text-base"> ￥{{ data.minRetailPrice | yuan }} </span>
-          <span v-else-if="data.markingPrice > data.minRetailPrice" class="text-gray overline text-base">
+          <span v-if="lv.discount" class="text-gray overline text-base mr-32"> ￥{{ data.minRetailPrice | yuan }} </span>
+          <span v-else-if="data.markingPrice > data.minRetailPrice" class="text-gray overline text-base mr-32">
             ￥{{ data.markingPrice | yuan }}
+          </span>
+          <!-- 未开通时的会员价 -->
+          <span v-if="!lv.title && memberlvList && memberlvList.length" class="text-gray text-bold text-base noVipPrice">
+            会员价
+            {{ (data.minRetailPrice * 0.8) | yuan }}
+            <span class="text-xs">起</span>
           </span>
 
           <span class="flex-grow"></span>
@@ -35,15 +41,21 @@
           </span>
         </div>
         <!-- 会员权益 -->
-        <Memberlv :show.sync="showMemberLv">
+        <Memberlv :show.sync="showMemberLv" @update:list="(v) => (memberlvList = v)">
           <template v-slot="{ discount }">
-            <div class="noticebar mx-28 mt-8 p-12 rounded overflow-hidden flex" @click="showMemberLv = true">
+            <div class="noticebar mx-28 my-16 p-12 rounded overflow-hidden flex" @click="showMemberLv = true">
               <u-icon name="integral" color="#f9ae3d" size="32rpx"></u-icon>
-              <span class="ml-8 text-sm flex-grow"> 开通会员低至{{ discount }}折，当前等级：{{ lv.title || '普通会员' }} </span>
+              <span v-if="lv.title" class="ml-8 text-sm flex-grow">
+                <span v-if="discount <= lv.discount + 0.01">升级会员低至{{ discount }}折，</span>
+                当前等级：{{ lv.title || '普通会员' }}享{{ lv.discount | formatDiscount }}折
+              </span>
+              <span v-else class="ml-8 text-sm flex-grow"> 开通钻石会员享8折优惠+金牌保洁师服务 </span>
+              <span v-if="!lv.title" class="mr-4 text-sm">立即开通</span>
               <u-icon name="arrow-right" color="#f9ae3d" size="32rpx"></u-icon>
             </div>
           </template>
         </Memberlv>
+
         <div class="bg-white px-32 flex align-center">
           <div style="width:600rpx" class="mr-16">
             <div class="text-bold text-base truncate">{{ data.title }}</div>
@@ -160,6 +172,13 @@ export default {
     Memberlv,
     poster,
   },
+  filters: {
+    formatDiscount(dis) {
+      if (isNaN(dis)) dis = 10
+      else dis = (dis * 10).toFixed(1)
+      return dis
+    },
+  },
   mixins: [shareLite],
   data() {
     return {
@@ -175,6 +194,7 @@ export default {
       showSku: false,
       count: 0,
       showMemberLv: false,
+      memberlvList: [],
       showShare: false,
       board: null,
     }
@@ -414,10 +434,17 @@ export default {
     margin-right: 24rpx;
     color: $u-primary;
   }
+  .noVipPrice {
+    color: #fac987;
+    padding: 4rpx 60rpx 4rpx 12rpx;
+    border-radius: 6rpx;
+    background: #423733 url(/static/img/vip1.png) center right no-repeat;
+    background-size: 48rpx 48rpx;
+  }
 
   .noticebar {
-    background: #fdf6ec;
-    color: #f9ae3d;
+    background: linear-gradient(#4d4e50, #252429);
+    color: #f7c684;
   }
 }
 </style>

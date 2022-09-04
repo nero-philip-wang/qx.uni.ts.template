@@ -45,7 +45,7 @@
           <button open-type="contact" class="u-reset-button w-full text-left" send-message-title="售后咨询">
             <u-cell icon="bag" :icon-style="{ color: '#ee883b' }" title="售后咨询" is-link></u-cell>
           </button>
-          <u-cell icon="man-add" :icon-style="{ color: '#cd5f5f' }" title="分销员计划" is-link @click="$goto('pagesA/saler/home')"></u-cell>
+          <u-cell icon="man-add" :icon-style="{ color: '#cd5f5f' }" title="店铺管理" is-link @click="$goto('pagesA/saler/home')"></u-cell>
           <!-- <u-cell icon="reload" title="退出登录" is-link @click="logout"></u-cell> -->
         </u-cell-group>
       </div>
