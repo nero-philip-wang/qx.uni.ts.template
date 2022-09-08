@@ -8,7 +8,7 @@
           <div>{{ c.mobile }}</div>
         </div>
         <div class="pr-8 text-sm"> {{ c.creationTime | datef }} 加入 </div>
-        <u-tag v-if="c.activeTime" text="已消费" plain size="mini" shape="circle" type="success"></u-tag>
+        <u-tag v-if="c.firstTradeTime" text="已消费" plain size="mini" shape="circle" type="success"></u-tag>
         <u-tag v-else text="未消费" plain size="mini" shape="circle" type="info"></u-tag>
       </div>
     </listview>

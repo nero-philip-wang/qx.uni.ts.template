@@ -4,8 +4,23 @@
   </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 import { getSence } from '@/apis/modules/home'
 const defaultPage = '/pages/index/index'
+
+var qs = (qs) => {
+  var set = {}
+  if (qs) {
+    var pairs = qs.split(/[?&]/)
+    pairs.forEach((element) => {
+      var pair = element.split('=')
+      if (pair.length > 1) {
+        set[pair[0]] = pair[1]
+      }
+    })
+  }
+  return set
+}
 
 export default {
   data() {
@@ -24,6 +39,8 @@ export default {
     try {
       this.loading = true
       var scene = await getSence(sceneId)
+      // 设置分享
+      this.setQuery(scene)
       this.$goto(scene)
     } catch (error) {
     } finally {
@@ -37,6 +54,19 @@ export default {
       this.href = ''
     })
   },
-  methods: {},
+  methods: {
+    ...mapMutations(['SET_SOURCE', 'SET_TENANT']),
+    setQuery(url) {
+      var query = qs(url)
+      console.log(query, '图片分享')
+      if (query.sid) this.SET_SOURCE(query.sid)
+      else this.SET_SOURCE(null)
+      if (query.t) {
+        this.SET_TENANT({ t: query.t, area: query.area })
+      } else {
+        this.checkTenant(query.t)
+      }
+    },
+  },
 }
 </script>
