@@ -2,7 +2,7 @@
   <div class="flex flex-col h-page">
     <div class="py-60 px-48">
       <u-form-item label="到账账户" label-width="200rpx">
-        <u--input v-model="account" placeholder="请输入支付宝账户" border="none"></u--input>
+        <u--input v-model="account" placeholder="请输入提取账户" border="none"></u--input>
       </u-form-item>
     </div>
     <div class="flex-grow relative bg-white rounded p-48">

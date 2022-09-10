@@ -85,7 +85,9 @@
           </u-cell>
           <u-cell v-if="isDistributer" is-link @click="showShare = true">
             <span slot="title" class="text-gray">返利</span>
-            <span slot="value"> 分享立赚 {{ ((data.rebate && data.rebate.details.rate) * data.minRetailPrice) | yuan }} 元 </span>
+            <span slot="value">
+              分享立赚 {{ ((data.rebate && data.rebate.details.rate) * data.minRetailPrice * distributerRate) | yuan }} 元
+            </span>
           </u-cell>
           <!-- <u-cell is-link>
           <span slot="title" class="text-gray">优惠券</span>
@@ -162,6 +164,7 @@ import easyState from '@/store/easyState'
 import getSharePic from './comp/getSharePic'
 import shareLite from '@/utils/share/lite'
 import { toYuan } from '@/utils/index'
+import { index as distribution } from '@/apis/modules/distribution'
 
 export default {
   components: {
@@ -197,6 +200,7 @@ export default {
       memberlvList: [],
       showShare: false,
       board: null,
+      distributer: null,
     }
   },
   computed: {
@@ -215,6 +219,9 @@ export default {
     showCart() {
       return this.data.type != 3
     },
+    distributerRate() {
+      return (this.distributer && this.distributer.rule && this.distributer.rule.rateOfRebate) || 0
+    },
   },
   onLoad(options) {
     this.id = options.id
@@ -223,6 +230,7 @@ export default {
     this.loadData()
     this.loadRating() // 加载评价
     this.loadCart()
+    this.loadDistribution()
   },
   onPageScroll(e) {
     this.scrollTop = e.scrollTop
@@ -285,6 +293,13 @@ export default {
     },
     async loadCart() {
       this.count = await count()
+    },
+    async loadDistribution() {
+      if (this.isDistributer && !easyState.distributer) {
+        var res = await distribution()
+        easyState.distributer = res
+      }
+      this.distributer = easyState.distributer
     },
     sharePicCreated(src) {
       uni.$u.liteShare.image = src

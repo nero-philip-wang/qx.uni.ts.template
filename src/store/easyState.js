@@ -21,6 +21,7 @@ const store = Object.assign(
     items: [],
     cartCount: 0,
     needRefreshMember: false,
+    distributer: null
   }
 )
 export default store
