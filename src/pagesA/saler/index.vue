@@ -8,7 +8,7 @@
         </div>
         <div class="flex-grow flex-col justify-center">
           <div class="text-white text-xl">{{ member.nickname }}</div>
-          <div class="mt-4 text-white text-sm">{{ (member.level && member.level.title) || '分销员' }}</div>
+          <div class="mt-4 text-white text-sm">{{ summary.member.rule.title || '分销员' }}</div>
         </div>
         <div v-show="false" class="flex-col justify-center place-items-center right" @click="showQr">
           <div class="qxfont">&#xe626;</div>
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       summary: {
+        member: null,
         fansCount: 0,
         todayCount: 0,
         walletBalance: null,
@@ -73,6 +74,7 @@ export default {
         items: [
           { title: '钱包', value: toYuan(this.summary.walletBalance), href: '/pages/my/wallet' },
           { title: '粉丝', value: this.summary.fansCount, href: '/pagesA/saler/fans' },
+          { title: '推客', value: this.summary.tuiCount, href: '/pagesA/saler/tui' },
           { title: '今日订单', value: this.summary.todayCount, href: '/pagesA/saler/order' },
         ],
       }

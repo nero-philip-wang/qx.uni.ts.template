@@ -8,3 +8,4 @@ export const member = (paging) => request('mall/members', 'get', paging)
 
 export const index = () => request('mall/distribution', 'get')
 
+export const distributer = (p) => request('mall/distribution/distributers', 'get', p)
