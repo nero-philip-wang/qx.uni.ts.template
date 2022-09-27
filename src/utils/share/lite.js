@@ -12,10 +12,13 @@ uni.$u.liteShare = { ...defaultShare }
 const common = {
   // #ifdef MP-WEIXIN
   onShareAppMessage() {
+    var hiddenuid = !!uni.getStorageSync('hidden/share')
+
     var { title, page, pageQuery, image } = uni.$u.liteShare
     var userId = (store.state.user.logged && store.state.user.logged.id) || ''
     var tenantId = store.state.user.tId
     var area = store.state.user.tTitle
+    if (hiddenuid) userId = null
 
     return {
       title: title,
@@ -24,19 +27,27 @@ const common = {
     }
   },
   getParams() {
+    var hiddenuid = !!uni.getStorageSync('hidden/share')
+
     var { page, pageQuery } = uni.$u.liteShare
     var userId = (store.state.user.logged && store.state.user.logged.id) || ''
     var tenantId = store.state.user.tId
     var area = store.state.user.tTitle
+    if (hiddenuid) userId = null
+
     return {
       page: `${page}?${pageQuery}${pageQuery ? '&' : ''}sid=${userId}&t=${tenantId}&area=${area}`,
     }
   },
   onShareTimeline() {
+    var hiddenuid = !!uni.getStorageSync('hidden/share')
+
     var { title, page, pageQuery, image } = uni.$u.liteShare
     var userId = (store.state.user.logged && store.state.user.logged.id) || ''
     var tenantId = store.state.user.tId
     var area = store.state.user.tTitle
+    if (hiddenuid) userId = null
+
     return {
       title: title,
       query: `${pageQuery}${pageQuery ? '&' : ''}sid=${userId}&t=${tenantId}&area=${area}`,
@@ -51,7 +62,7 @@ const common = {
     /**
      * 获取分享的小程序码
      */
-    async getWxaCode() {},
+    async getWxaCode() { },
   },
 }
 

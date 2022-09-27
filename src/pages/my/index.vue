@@ -47,6 +47,8 @@
           </button>
           <u-cell icon="man-add" :icon-style="{ color: '#cd5f5f' }" title="店铺管理" is-link @click="$goto('pagesA/saler/home')"></u-cell>
           <!-- <u-cell icon="reload" title="退出登录" is-link @click="logout"></u-cell> -->
+          <u-cell icon="share" :icon-style="{ color: '#ee883b' }" title="分享设置" is-link @click="$goto('pagesA/my/sharesetting')">
+          </u-cell>
         </u-cell-group>
       </div>
     </scroll-view>

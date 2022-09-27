@@ -179,6 +179,12 @@
           "style": {
             "navigationBarTitleText": "邀请有礼"
           }
+        },
+        {
+          "path": "my/sharesetting",
+          "style": {
+            "navigationBarTitleText": "分享设置"
+          }
         }
       ],
       "plugins": {
