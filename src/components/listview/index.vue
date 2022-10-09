@@ -20,7 +20,7 @@
 var loading = 'loading'
 var nomore = 'nomore'
 var paging = {
-  take: 10,
+  take: 13,
   skip: 0,
 }
 
