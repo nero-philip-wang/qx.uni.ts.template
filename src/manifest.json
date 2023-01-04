@@ -53,6 +53,9 @@
   "quickapp": {},
   "mp-weixin": {
     "appid": "wx129b199af409f294",
+    "requiredPrivateInfos": [
+      "chooseLocation"
+    ],
     "usingComponents": true,
     "setting": {
       "urlCheck": false,

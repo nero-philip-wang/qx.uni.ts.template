@@ -10,14 +10,17 @@
       <u-form-item v-if="showSelection" label="地区" border-bottom prop="postCode">
         <CityPicker v-model="data.postCode" @update:titles="changeTitles" />
       </u-form-item>
-      <u-form-item label="地址" border-bottom prop="address" @click="chooseAddress">
+      <u-form-item label="地址" border-bottom prop="address" @click="!failGetPoi && chooseAddress()">
+        <u--input v-if="failGetPoi" v-model="data.address" border="none" placeholder="请输入收货地址"></u--input>
         <u--textarea
+          v-else
           v-model="data.address"
           :focus="focus"
           border="none"
           placeholder="请在地图选择收货地址"
           :disabled="!focus"
           auto-height
+          @click="chooseAddress"
         ></u--textarea>
       </u-form-item>
       <u-form-item label="门牌号" border-bottom prop="room">
@@ -64,7 +67,7 @@ var rules = {
     type: 'string',
     required: true,
     min: 12,
-    message: '请选择详细地址',
+    message: '请选择详细地址,长度应该大于12个字',
     trigger: ['blur', 'change'],
   },
   room: {
@@ -96,6 +99,7 @@ export default {
       rules,
       areaName: '',
       showSelection: false,
+      failGetPoi: false,
     }
   },
   computed: {},
@@ -128,6 +132,10 @@ export default {
     // 选择地址
     chooseAddress() {
       uni.chooseLocation({
+        fail: (err) => {
+          console.log(err)
+          if (err.errMsg.indexOf('cancel') == -1) this.failGetPoi = true
+        },
         success: (res) => {
           const p = ['省', '区', '市', '自治州', '县', '旗', '盟']
           p.forEach((element) => {
