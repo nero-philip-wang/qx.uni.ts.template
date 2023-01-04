@@ -12,6 +12,7 @@ Vue.prototype.$store = store // store
 
 const primaryColor = config.primaryColor
 uni.$u.props.checkbox.activeColor = primaryColor
+uni.$u.props.radio.activeColor = primaryColor
 uni.$u.props.tabbar.activeColor = primaryColor
 uni.$u.props.tabs.lineColor = primaryColor
 uni.$u.props.scrollList.indicatorActiveColor = primaryColor

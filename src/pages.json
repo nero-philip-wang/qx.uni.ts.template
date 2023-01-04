@@ -16,6 +16,12 @@
       }
     },
     {
+      "path": "pages/index/store",
+      "style": {
+        "navigationBarTitleText": "选择店铺"
+      }
+    },
+    {
       "path": "pages/webview/index"
     },
     {
