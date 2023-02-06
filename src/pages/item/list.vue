@@ -31,11 +31,13 @@ export default {
       list: [],
       argvs: {
         keywords: '',
+        catalogCode: null,
       },
     }
   },
   onLoad(options) {
-    this.argvs.keywords = decodeURIComponent(options.keyword)
+    this.argvs.keywords = options.keyword ? decodeURIComponent(options.keyword) : null
+    this.argvs.catalogCode = options.catalogCode ? options.catalogCode : null
   },
   methods: {
     getItem,
