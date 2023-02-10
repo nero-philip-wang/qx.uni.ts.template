@@ -9,6 +9,7 @@ import config from './config/index'
 
 Vue.prototype.$goto = goto // goto
 Vue.prototype.$store = store // store
+Vue.prototype.$cfg = config // config
 
 const primaryColor = config.primaryColor
 uni.$u.props.checkbox.activeColor = primaryColor

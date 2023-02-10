@@ -1,77 +1,98 @@
 <template>
   <div class="page">
-    <div class="bg-white p-24 flex text-base line-h-48 z-10080">
-      <div v-if="enabledTenant" class="flex maxwidth" @click="showTenant = !showTenant">
-        <span class="mr-8">ucosy直营</span>
-        <u-icon :name="showTenant ? 'arrow-down' : 'arrow-right'" size="24rpx"></u-icon>
+    <div class="bg-white px-32 pb-8 flex" style="z-index: 200;">
+      <div class="left flex py-16 pr-32 align-items-center open" @click="showSelector = !showSelector">
+        <u-icon name="map" size="32rpx"></u-icon>
+        <span>ucoy直营</span>
+        <span class="mx-8 text-gray">|</span>
+        <span class="mr-8"> 先锋店</span>
+        <u-icon name="arrow-down-fill" size="26rpx"></u-icon>
       </div>
-
-      <div class="flex ml-24 maxwidth" @click="showCity = !showCity">
-        <span class="mr-8">江苏 · 南京</span>
-        <u-icon :name="showCity ? 'arrow-down' : 'arrow-right'" size="24rpx"></u-icon>
-      </div>
-
-      <div class="flex-grow ml-24 searchwidth">
-        <u-search placeholder="请输入店铺名称" :clearabled="true" :show-action="false" height="48rpx"></u-search>
-      </div>
+      <u-search v-model="keyword" placeholder="搜索店铺" :show-action="false" @focus="showSelector = false"></u-search>
     </div>
 
-    <u-popup :show="showTenant" :overlay-opacity="0" close-on-click-overlay mode="top" bg-color="transparent" @close="showTenant = false">
-      <div class="bb-1 bs" @click="showTenant = false">
-        <div style="height:80rpx" @click="showTenant = false"></div>
-        <div class="bg-white p-32">
-          <div class="flex flex-wrap">
-            <span v-for="c in tenants" :key="c.id" class="m-16">
-              <u-tag :text="c.area" plain type="info" color="#272727" @click="change(c)" />
-            </span>
-          </div>
-        </div>
-      </div>
-    </u-popup>
-
-    <u-popup :show="showCity" :overlay-opacity="0" close-on-click-overlay mode="top" bg-color="transparent" @close="showCity = false">
-      <div class="bb-1 bs">
-        <div style="height:80rpx" @click="showCity = false"></div>
-        <div class="bg-white p-32">
-          <div class="flex flex-wrap">
-            <span v-for="c in tenants" :key="c.id" class="m-16">
-              <u-tag :text="c.area" plain type="info" color="#272727" @click="change(c)" />
-            </span>
-          </div>
-        </div>
-      </div>
-    </u-popup>
-
-    <!-- 我常用的 -->
-    <div class="bg-white">
-      <div class="open flex flex-wrap mt-24 px-28 pt-32 pb-16"><u-icon name="bookmark" size="32rpx"></u-icon> 我常用的</div>
-      <u-cell-group :border="false">
-        <u-cell v-for="i in 2" :key="i" title="夕阳无限好" label="地址：南岳路35-250 2楼35号 \n营业时间：早10-晚10">
-          <div slot="right-icon" class="flex-col align-center ">
-            <u-radio />
-            <div class="mt-8 text-gray text-sm">距您 253m</div>
-          </div>
+    <div class="my-16 bg-white">
+      <u-cell-group>
+        <u-cell size="large" title="扬州足疗店" is-link>
+          <template v-slot:label>
+            <div class="text-gray text-sm">绩溪路35-5265号</div>
+            <div class="text-gray text-sm">营业时间：10店-12店</div>
+          </template>
+          <template v-slot:right-icon>
+            <div class="text-primary text-sm">当前</div>
+          </template>
+        </u-cell>
+        <u-cell size="large" title="扬州足疗店" is-link>
+          <template v-slot:label>
+            <div class="text-gray text-sm">绩溪路35-5265号</div>
+            <div class="text-gray text-sm">营业时间：10店-12店</div>
+          </template>
+          <template v-slot:right-icon>
+            <div class="text-gray text-sm">上次访问</div>
+          </template>
         </u-cell>
       </u-cell-group>
     </div>
-
-    <!-- 门店列表 -->
-    <div class="bg-white">
-      <div class="open flex flex-wrap mt-24 px-28 pt-32 pb-16">
-        <span>门店列表</span>
-        <span class="flex-grow"> </span>
-        <span class="text-sm text-address truncate">当前位置：琅琊路352-522商城4514561565615</span>
-        <span class="text-sm text-primary">重新定位</span>
-      </div>
-      <u-cell-group :border="false">
-        <u-cell v-for="i in 2" :key="i" title="夕阳无限好" label="地址：南岳路35-250 2楼35号 \n营业时间：早10-晚10">
-          <div slot="right-icon" class="flex-col align-center ">
-            <u-radio />
-            <div class="mt-8 text-gray text-sm">距您 253m</div>
-          </div>
+    <!-- <div class="flex ml-32 mr-8 text-gray">
+      <span class="flex-grow">门店列表</span>
+      <span class="text-sm flex align-items-center p-8">
+        <span class="text-primary"></span>
+        <span class="truncate" style="float: right;width: 420rpx;">当前位置：琅琊路352-522asdasdasdas商dasdasd撒大声地</span>
+        <u-icon name="map" size="32rpx" :color="cfg.primaryColor"></u-icon>
+      </span>
+    </div> -->
+    <div class="open flex flex-wrap px-24">
+      <span>门店列表</span>
+      <span class="flex-grow"> </span>
+      <span class="text-sm text-address truncate" style="max-width: 400rpx;">当前位置：琅琊路352-522商城4514561565615</span>
+      <span class="text-sm text-primary">重新定位</span>
+    </div>
+    <div class="my-16 bg-white">
+      <u-cell-group>
+        <u-cell size="large" title="扬州足疗店" is-link>
+          <template v-slot:label>
+            <div class="text-gray text-sm">绩溪路35-5265号</div>
+            <div class="text-gray text-sm">营业时间：10店-12店</div>
+          </template>
+          <template v-slot:right-icon>
+            <div class="text-gray text-sm">距离526m</div>
+          </template>
+        </u-cell>
+        <u-cell size="large" title="扬州足疗店" is-link>
+          <template v-slot:label>
+            <div class="text-gray text-sm">绩溪路35-5265号</div>
+            <div class="text-gray text-sm">营业时间：10店-12店</div>
+          </template>
+          <template v-slot:right-icon>
+            <div class="text-gray text-sm">距离1.2km</div>
+          </template>
         </u-cell>
       </u-cell-group>
     </div>
+    <page-container
+      :show="showSelector"
+      position="top"
+      overlay-style="margin-top:42px"
+      :z-index="100"
+      custom-style="margin-top:42px"
+      @leave="showSelector = false"
+    >
+      <div class="flex-grow flex">
+        <scroll-view scroll-y scroll-with-animation class="cata">
+          <div
+            v-for="(item, i) in tenants"
+            :key="item.code"
+            class="text-base lv1_item"
+            :class="{ active: i == selectedLv1 }"
+            @click="swichMenu(item, i)"
+          >
+            {{ item.title }}
+          </div>
+        </scroll-view>
+
+        <div class="right"> </div>
+      </div>
+    </page-container>
   </div>
 </template>
 
@@ -83,11 +104,16 @@ import { tryLogin, reset } from '@/apis/modules/login'
 export default {
   data() {
     return {
-      enabledTenant: false,
       tenants: [],
-      showTenant: false,
-      showCity: false,
+      noarea: null,
+      showSelector: false,
+      selectedLv1: 0,
     }
+  },
+  computed: {
+    cfg() {
+      return this.$cfg
+    },
   },
   async created() {
     await this.getTenant()
@@ -105,33 +131,39 @@ export default {
       } catch (error) {}
       uni.reLaunch({ url: '/pages/index/index' })
     },
+    async swichMenu(item, i) {
+      this.selectedLv1 = i
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.line-h-48 {
-  line-height: 48rpx;
-}
-.maxwidth {
-  max-width: 200rpx;
-}
-.z-10080 {
-  z-index: 10080;
-}
-.searchwidth {
-  width: 300rpx;
-}
-
-.text-address {
-  max-width: 400rpx;
-}
-
 .open {
   font-size: 28rpx;
-  line-height: 40rpx;
+  line-height: 48rpx;
   color: #464646;
-  height: 40rpx;
-  margin-bottom: 12px;
+}
+.cata {
+  width: 180rpx;
+  height: 40vh;
+  background: #f8f8f7;
+}
+.right {
+  width: 570rpx;
+}
+.lv1_item {
+  height: 100rpx;
+  line-height: 28rpx;
+  color: #1b1b1b;
+  text-align: center;
+  padding: 36rpx 0;
+  border-left: #f5f5f5 solid 8rpx;
+  color: #969799;
+}
+.lv1_item.active {
+  border-left: $u-primary-dark solid 8rpx;
+  background: #ffffff;
+  color: #1b1b1b;
 }
 </style>

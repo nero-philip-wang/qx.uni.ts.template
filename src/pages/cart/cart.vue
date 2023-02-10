@@ -1,7 +1,15 @@
 <template>
   <div class="flex-col h-page">
-    <div class="bg-white">
-      <u-cell :title="`全部商品 (${total})`" :title-style="{ fontSize: '28rpx' }"> </u-cell>
+    <u-navbar safe-area-inset-top placeholder fixed bg-color="#F2F3F7" title="购物车">
+      <div slot="left" class="pl-8 py-16 flex text-base">
+        <span :class="{ active: active == 0 }" class="leftbtn" @click="active = 0">快递</span>
+        <span :class="{ active: active == 1 }" class="rightbtn" @click="active = 1">自提</span>
+      </div>
+    </u-navbar>
+
+    <div class="flex mx-32 py-12 text-black-38 text-sm">
+      <span class="flex-grow">自提：配送到 杨家屯</span>
+      <span class="text-primary">更换门店 </span>
     </div>
     <div class="scroll flex-grow overflow-scroll py-16">
       <listview v-model="items" loadmore-enabled :request="search" height="100%" :argvs="argvs">
@@ -68,6 +76,7 @@ export default {
     return {
       total: 0,
       items: [],
+      active: 1,
     }
   },
   computed: {
@@ -130,3 +139,24 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.leftbtn {
+  padding: 8rpx 32rpx;
+  border-radius: 50rpx 0 0 50rpx;
+  border: $u-primary solid 2rpx;
+  border-right: 0;
+  color: $u-primary;
+}
+.rightbtn {
+  padding: 8rpx 32rpx;
+  border-radius: 0 50rpx 50rpx 0;
+  border: $u-primary solid 2rpx;
+  color: $u-primary;
+}
+.leftbtn.active,
+.rightbtn.active {
+  background-color: $u-primary;
+  color: white;
+}
+</style>
