@@ -2,9 +2,9 @@
   <div>
     <u-navbar safe-area-inset-top placeholder fixed bg-color="#F2F3F7">
       <div slot="left" class="pl-8 py-16 flex text-sm">
-        <span class="icon-c mr-16" @click="$goto('pages/index/tenant')"> &#xe60c; {{ tTitle }}</span>
+        <span class="icon-c mr-16" @click="$goto('pages/index/shop')"> &#xe60c; {{ tTitle }}</span>
         <u-search
-          placeholder="请输入关键字"
+          :placeholder="`在${shopTitle}中搜索`"
           :show-action="false"
           bg-color="#f8f8f8"
           disabled
@@ -14,7 +14,11 @@
     </u-navbar>
 
     <div v-if="page.length">
-      <div v-for="(p, idx) in page" :key="idx" :class="p.name == 'flow' || p.name == 'banner' || p.name == 'horizontalList' ? 'mx-24 mb-32' : 'mx-24 mb-32 bg-white rounded'">
+      <div
+        v-for="(p, idx) in page"
+        :key="idx"
+        :class="p.name == 'flow' || p.name == 'banner' || p.name == 'horizontalList' ? 'mx-24 mb-32' : 'mx-24 mb-32 bg-white rounded'"
+      >
         <banner v-if="p.name == 'banner'" :params="p" />
         <diamond v-if="p.name == 'diamond'" :params="p" />
         <horizontalList v-if="p.name == 'horizontalList'" :params="p" />
@@ -72,6 +76,9 @@ export default {
   computed: {
     tTitle() {
       return store.state.user.tTitle
+    },
+    shopTitle() {
+      return store.state.user.depoTitle
     },
   },
   async mounted() {

@@ -17,6 +17,10 @@ const config = {
     defaultTenant: {
       id: 1000,
       title: '海口',
+      mainDepoId: 1,
+      depoTitle: '冰多多旗舰店',
+    },
+    defaultShop: {
     },
     key: '1180217cc6a1dee076f90da550f67690',
     hasLive: false,

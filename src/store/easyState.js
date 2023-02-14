@@ -19,6 +19,8 @@ const store = Object.assign(
     },
     address: null,
     items: [],
+    deliveryType: 1,
+    pickupShopId: 1,
     cartCount: 0,
     needRefreshMember: false,
     distributer: null

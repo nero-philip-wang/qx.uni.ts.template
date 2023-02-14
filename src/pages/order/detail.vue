@@ -30,13 +30,20 @@
     </div>
 
     <!-- 地址 -->
-    <div v-if="loaded" class="rounded-sm my-16 p-24 bg-white flex">
+    <div v-if="loaded && data.deliveryType == 1" class="rounded-sm my-16 p-24 bg-white flex">
       <u-icon size="40rpx" name="map"></u-icon>
       <div class="ml-24 text-base">
         <div class="addr">{{ data.consignee.address }} </div>
         <div class="text-gray">{{ data.consignee.name }} {{ data.consignee.mobile }}</div>
       </div>
     </div>
+    <!-- 自提二维码 -->
+    <div v-if="loaded && data.deliveryType == 4" class="rounded-sm my-16 p-24 bg-white flex-col align-center justify-between">
+      <qx-qrcode text="698155"> </qx-qrcode>
+      <span class="my-8 text-lg text-bold text-black-38"> 698155</span>
+      <span class="my-8 text-sm text-gray"> 提货时请出示提货码</span>
+    </div>
+
     <!-- 商品 -->
     <div v-if="data.items && data.items.length" class="rounded-sm my-16 bg-white">
       <product-list v-for="item in data.items" :key="item.id" small :value="item"></product-list>

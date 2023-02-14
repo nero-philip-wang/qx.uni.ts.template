@@ -2,13 +2,13 @@
   <div class="flex-col h-page">
     <u-navbar safe-area-inset-top placeholder fixed bg-color="#F2F3F7" title="购物车">
       <div slot="left" class="pl-8 py-16 flex text-base">
-        <span :class="{ active: active == 0 }" class="leftbtn" @click="active = 0">快递</span>
-        <span :class="{ active: active == 1 }" class="rightbtn" @click="active = 1">自提</span>
+        <span :class="{ active: deliveryType == 1 }" class="leftbtn" @click=";(deliveryType = 1), refresh++">快递</span>
+        <span :class="{ active: deliveryType == 4 }" class="rightbtn" @click=";(deliveryType = 4), refresh++">自提</span>
       </div>
     </u-navbar>
 
-    <div class="flex mx-32 py-12 text-black-38 text-sm">
-      <span class="flex-grow">自提：配送到 杨家屯</span>
+    <div v-if="deliveryType == 4" class="flex mx-32 py-12 text-black-38 text-sm">
+      <span class="flex-grow">到 {{ userSetting.depoTitle }} 自提</span>
       <span class="text-primary">更换门店 </span>
     </div>
     <div class="scroll flex-grow overflow-scroll py-16">
@@ -56,6 +56,7 @@ import from from '@/utils/linq'
 import { get, updateQuantity, del, count } from '@/apis/modules/cart'
 import listview from '@/components/listview'
 import state from '@/store/easyState'
+import store from '@/store'
 
 export default {
   components: {
@@ -76,7 +77,7 @@ export default {
     return {
       total: 0,
       items: [],
-      active: 1,
+      deliveryType: 1,
     }
   },
   computed: {
@@ -98,6 +99,9 @@ export default {
     argvs() {
       return { refresh: this.refresh }
     },
+    userSetting() {
+      return store.state.user
+    },
   },
   async created() {
     await count()
@@ -105,7 +109,16 @@ export default {
   },
   methods: {
     async search({ take, skip }) {
-      var list = await get(skip, take)
+      // 是从子组件调用的，this不是本页面的this
+      var that = this.$parent
+      var list = await get(
+        {
+          deliveryType: that.deliveryType,
+          pickupShopId: that.deliveryType == 1 ? that.userSetting.mainDepoId : that.userSetting.depoId,
+        },
+        skip,
+        take
+      )
       list = list.map((c) => ({ ...c, checked: false, key: c.id, id: c.itemSpuId }))
       return list
     },
@@ -134,6 +147,9 @@ export default {
           // itemId: c.itemId,
           spu: { type: c.type },
         }))
+      state.deliveryType = this.deliveryType
+      state.pickupShopId = this.deliveryType == 1 ? this.userSetting.mainDepoId : this.userSetting.depoId
+      state.pickupShopTitle = this.userSetting.depoTitle
       this.$goto('/pages/order/create?type=cart')
     },
   },

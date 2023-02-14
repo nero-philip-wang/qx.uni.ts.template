@@ -16,7 +16,7 @@
       }
     },
     {
-      "path": "pages/index/store",
+      "path": "pages/index/shop",
       "style": {
         "navigationBarTitleText": "选择店铺"
       }

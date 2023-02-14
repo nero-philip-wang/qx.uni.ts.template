@@ -7,7 +7,7 @@ export const count = async (status) => {
   return count
 }
 
-export const get = (skip = 0, take = 10) => request('mall/cart/', 'get', { take, skip }, { autoLogin: false })
+export const get = (p, skip = 0, take = 10) => request('mall/cart/', 'get', { ...p, take, skip }, { autoLogin: false })
 
 export const add = async (item) => {
   var count = await request('mall/cart/', 'post', item, { autoLogin: false })

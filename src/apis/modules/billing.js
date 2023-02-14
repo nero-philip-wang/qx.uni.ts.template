@@ -1,11 +1,12 @@
 import store from '@/store'
 import request from '../request'
 
-export const settle = ({ buyerNickName, consignee, source, buyerRemark, items, selectedCoupons }) => {
+export const settle = ({ buyerNickName, consignee, source, buyerRemark, items, selectedCoupons, deliveryType, pickupShopId }) => {
   return request('mall/billing/settle', 'post', {
     buyerNickName,
-    deliveryType: 8,
-    consignee,
+    deliveryType,
+    consignee: consignee.mobile ? consignee : null,
+    pickupShopId,
     source,
     sourceId: store.getters.sid,
     buyerRemark,

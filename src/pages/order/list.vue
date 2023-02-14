@@ -24,7 +24,9 @@
           <span class="text-price text-bold">￥{{ order.orderAmount | yuan }}</span>
         </div>
         <div v-if="order.status > 0" class="opt px-24 py-16" @click.stop.prevent>
-          <orderBar :order="order" />
+          <orderBar :order="order">
+            <div v-if="order.deliveryType == 4" class="text-sm text-primary mt-12">自提订单</div>
+          </orderBar>
         </div>
       </div>
     </listview>

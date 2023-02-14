@@ -76,8 +76,16 @@ const store = new Vuex.Store({
       tId: config.defaultTenant.id,
       /** 商户名称 */
       tTitle: config.defaultTenant.title,
+      /** 快递仓库id */
+      mainDepoId: config.defaultTenant.mainDepoId,
+      /** 提货店铺id */
+      depoId: config.defaultTenant.mainDepoId,
+      /** 提货店铺id名称 */
+      depoTitle: config.defaultTenant.depoTitle,
       /** 分销人id */
       sId: null,
+      /** 分销店铺 */
+      shopId: null,
       account: null,
     },
     searchHistory: [],
@@ -130,11 +138,20 @@ const store = new Vuex.Store({
     SET_TOKEN(state, token) {
       state.user.logged.token = token
     },
-    SET_TENANT(state, { t, area }) {
+    SET_TENANT(state, { t, area, sid, shopTitle, mainDepoId }) {
       if (state.user.tId != t) {
         state.user.tId = t
         state.user.tTitle = area
+        state.user.mainDepoId = mainDepoId
         store.commit('RESET_USERINFO')
+      }
+      if (sid) {
+        state.user.depoId = sid
+        state.user.depoTitle = shopTitle
+      }
+      else {
+        state.user.depoId = mainDepoId
+        state.user.depoTitle = area
       }
     },
     SET_SESSIONINFO(state, info) {

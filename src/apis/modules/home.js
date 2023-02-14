@@ -43,3 +43,6 @@ export const getMember = async () => {
   }
   return m
 }
+
+export const getCities = () => request('mall/tenants/city', 'get')
+export const getStores = (city) => request('mall/tenants/store', 'get', { city })

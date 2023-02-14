@@ -2,18 +2,28 @@
   <div class="px-24 py-8 text-base">
     <!-- 配送 -->
     <div class="my-16 bg-white rounded-sm overflow-hidden">
-      <!-- 选择地址 -->
-      <div v-if="!inputs.consignee.mobile" class="flex py-32 px-24 addrline" @click="$goto('/pages/consignee/list?choose=1')">
-        <u-icon name="map"></u-icon>
-        <span class="ml-8 text-gray">请选择收货地址</span>
-      </div>
-      <div v-else class="flex py-16 px-24 addrline" @click="$goto('/pages/consignee/list?choose=1')">
-        <u-icon name="map"></u-icon>
-        <div class="ml-8">
-          <div class="mb-8 text-bold">{{ inputs.consignee.address }} </div>
-          <div class="text-gray">{{ inputs.consignee.name }} {{ inputs.consignee.mobile }}</div>
+      <!-- 快递 -->
+      <block v-if="inputs.deliveryType == 1">
+        <!-- 选择地址 -->
+        <div v-if="!inputs.consignee.mobile" class="flex py-32 px-24 addrline" @click="$goto('/pages/consignee/list?choose=1')">
+          <u-icon name="map"></u-icon>
+          <span class="ml-8 text-gray">请选择收货地址</span>
         </div>
-      </div>
+        <div v-else class="flex py-16 px-24 addrline" @click="$goto('/pages/consignee/list?choose=1')">
+          <u-icon name="map"></u-icon>
+          <div class="ml-8">
+            <div class="mb-8 text-bold">{{ inputs.consignee.address }} </div>
+            <div class="text-gray">{{ inputs.consignee.name }} {{ inputs.consignee.mobile }}</div>
+          </div>
+        </div>
+      </block>
+      <!-- 自提 -->
+      <block v-else-if="inputs.deliveryType == 4">
+        <div class="flex py-32 px-24 addrline">
+          <span class="flex-grow">到 {{ inputs.pickupShopTitle }} 自提</span>
+          <span class="text-primary">更换门店 </span>
+        </div>
+      </block>
 
       <!-- 选择时间 -->
       <div v-if="orderNeedTime" class="py-8">
@@ -129,6 +139,7 @@ export default {
         items: [],
         selectedCoupons: [],
         source: '',
+        deliveryType: 1,
       },
       buyerRemark: '',
     }
@@ -160,6 +171,9 @@ export default {
   onShow() {
     this.inputs.consignee = Object.assign({}, easyState.address)
     this.inputs.items = [...easyState.items]
+    this.inputs.deliveryType = easyState.deliveryType
+    this.inputs.pickupShopId = easyState.pickupShopId
+    this.inputs.pickupShopTitle = easyState.pickupShopTitle
     console.log(easyState.items)
 
     var hasItem = this.inputs.items && this.inputs.items.length
@@ -172,7 +186,7 @@ export default {
     // 结算
     async trySettle() {
       var needDate = !(this.inputs.items && this.inputs.items[0].spu.type == 3) || this.selectDate
-      if (this.inputs.consignee && this.inputs.consignee.mobile && needDate) {
+      if (((this.inputs.consignee && this.inputs.consignee.mobile) || this.inputs.deliveryType == 4) && needDate) {
         this.$u.debounce(this.settle, 200)
       }
     },
