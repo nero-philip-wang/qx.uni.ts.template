@@ -1,5 +1,5 @@
 {
-  "name": "叮咚爱家",
+  "name": "链瑷臻选",
   "appid": "__UNI__3BEB19B",
   "description": "",
   "versionName": "1.0.0",
@@ -52,7 +52,7 @@
   },
   "quickapp": {},
   "mp-weixin": {
-    "appid": "wx129b199af409f294",
+    "appid": "wx0391827cea01adfe",
     "requiredPrivateInfos": [
       "chooseLocation"
     ],

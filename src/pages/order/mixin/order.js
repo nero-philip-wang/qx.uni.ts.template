@@ -9,9 +9,9 @@ export default {
         case 1:
           return '待支付'
         case 2:
-          return '待派单'
+          return '待发货'
         case 3:
-          return '待上门'
+          return '待收货'
         case 4:
           return '待评价'
         case 5:

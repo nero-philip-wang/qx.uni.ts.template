@@ -45,7 +45,7 @@ export default {
   mixins: [orderbiz],
   data() {
     return {
-      navs: [{ name: '全部' }, { name: '待付款' }, { name: '待派单' }, { name: '待服务' }, { name: '待评价' }],
+      navs: [{ name: '全部' }, { name: '待付款' }, { name: '待发货' }, { name: '待收货' }, { name: '待评价' }],
       navCurrent: 0, // 当前tab
       list: [], // 订单列表
       argvs: { status: null },

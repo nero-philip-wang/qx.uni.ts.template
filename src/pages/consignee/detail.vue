@@ -72,7 +72,7 @@ var rules = {
   },
   room: {
     type: 'string',
-    required: true,
+    required: false,
     message: '请输入门牌号',
     trigger: ['blur', 'change'],
   },

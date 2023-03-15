@@ -27,7 +27,7 @@
       </div>
     </div>
     <div v-else class="m-24 p-16 bg-white rounded">
-      <u-skeleton rows="15" title loading></u-skeleton>
+      <u-skeleton rows="4" loading rows-height="220rpx" :rows-width="['100%', '100%', '100%', '100%']" :title="false"></u-skeleton>
     </div>
 
     <!-- 新人礼 -->

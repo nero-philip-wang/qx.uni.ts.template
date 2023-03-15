@@ -135,6 +135,7 @@ export default {
     async getTenant() {
       var list = await tenant()
       this.tenants = list
+      debugger
       this.selectedLv1 = list.filter((c) => c.id == store.state.user.tId)[0]
       setTimeout(async () => {
         await this.localGetCities()
