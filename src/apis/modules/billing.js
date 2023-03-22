@@ -7,8 +7,10 @@ export const settle = ({ buyerNickName, consignee, source, buyerRemark, items, s
     deliveryType,
     consignee: consignee.mobile ? consignee : null,
     pickupShopId,
-    source,
-    sourceId: store.getters.sid,
+    source: store.state.share.source,
+    sourceId: store.state.share.mid,
+    assistantId: store.state.share.eid,
+    saleShopId: store.state.share.sid,
     buyerRemark,
     items,
     selectedCoupons,
@@ -20,7 +22,7 @@ export const create = (order) => {
 }
 
 export const getpay = (id) => {
-  return request(`mall/billing/${id}/pay?openId=${store.state.user.logged.openId}`, 'post')
+  return request(`mall/billing/${id}/pay?openId=${store.state.user.openId}`, 'post')
 }
 
 export const apay = (id, data) => {
@@ -28,7 +30,7 @@ export const apay = (id, data) => {
 }
 
 export const minpay = (id, data) => {
-  return request(`mall/billing/${id}/mixpay?openId=${store.state.user.logged.openId}`, 'post', data)
+  return request(`mall/billing/${id}/mixpay?openId=${store.state.user.openId}`, 'post', data)
 }
 
 export const cancel = (id) => {
@@ -36,5 +38,5 @@ export const cancel = (id) => {
 }
 
 export const recharge = ({ amount, actId }) => {
-  return request(`mall/billing/recharge`, 'post', { amount, openId: store.state.user.logged.openId, actId })
+  return request(`mall/billing/recharge`, 'post', { amount, openId: store.state.user.openId, actId })
 }

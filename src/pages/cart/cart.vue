@@ -8,7 +8,7 @@
     </u-navbar>
 
     <div v-if="deliveryType == 4" class="flex mx-32 py-12 text-black-38 text-sm">
-      <span class="flex-grow">到 {{ userSetting.depoTitle }} 自提</span>
+      <span class="flex-grow">到 {{ userSetting.shop }} 自提</span>
       <span class="text-primary">更换门店 </span>
     </div>
     <div class="scroll flex-grow overflow-scroll py-16">
@@ -100,7 +100,7 @@ export default {
       return { refresh: this.refresh }
     },
     userSetting() {
-      return store.state.user
+      return store.state.share
     },
   },
   async created() {
@@ -114,7 +114,7 @@ export default {
       var list = await get(
         {
           deliveryType: that.deliveryType,
-          pickupShopId: that.deliveryType == 1 ? that.userSetting.mainDepoId : that.userSetting.depoId,
+          pickupShopId: that.deliveryType == 1 ? that.userSetting.tid : that.userSetting.sid,
         },
         skip,
         take
@@ -148,8 +148,8 @@ export default {
           spu: { type: c.type },
         }))
       state.deliveryType = this.deliveryType
-      state.pickupShopId = this.deliveryType == 1 ? this.userSetting.mainDepoId : this.userSetting.depoId
-      state.pickupShopTitle = this.userSetting.depoTitle
+      state.pickupShopId = this.deliveryType == 1 ? this.userSetting.tid : this.userSetting.sid
+      state.pickupShopTitle = this.deliveryType == 1 ? this.userSetting.tenant : this.userSetting.shop
       this.$goto('/pages/order/create?type=cart')
     },
   },

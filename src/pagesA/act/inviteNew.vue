@@ -26,7 +26,7 @@
 
 <script>
 import { myInvite } from '@/apis/modules/activity'
-import shareLite from '@/utils/share/lite'
+import shareLite from '@/utils/appLaunch/share'
 
 export default {
   mixins: [shareLite],

@@ -89,8 +89,8 @@
 import { tenant, getCities, getStores } from '@/apis/modules/home'
 import { pca } from '@/apis/modules/consignee'
 import store from '@/store'
-import { tryLogin, reset } from '@/apis/modules/login'
-
+import { tryLogin } from '@/apis/modules/user'
+var reset = () => ({})
 export default {
   data() {
     return {

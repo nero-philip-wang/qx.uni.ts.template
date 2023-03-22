@@ -10,9 +10,8 @@ export const count = async (status) => {
 export const get = (p, skip = 0, take = 10) => request('mall/cart/', 'get', { ...p, take, skip }, { autoLogin: false })
 
 export const add = async (item) => {
-  var count = await request('mall/cart/', 'post', item, { autoLogin: false })
+  var count = await request('mall/cart/', 'post', item)
   state.cartCount = count
-  console.log(state)
 }
 
 export const del = async (id) => {

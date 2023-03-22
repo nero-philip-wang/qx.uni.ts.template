@@ -58,7 +58,7 @@
 
         <div class="bg-white px-32 flex align-center">
           <div style="width:600rpx" class="mr-16">
-            <div class="text-bold text-base truncate">{{ data.title }}</div>
+            <div class="text-bold text-base u-line-2">{{ data.title }}</div>
             <div class="text-sm text-gray mt-8">
               {{ data.description || '' }}
             </div>
@@ -162,7 +162,7 @@ import { count, add } from '@/apis/modules/cart'
 import { mapMutations, mapState, mapGetters } from 'vuex'
 import easyState from '@/store/easyState'
 import getSharePic from './comp/getSharePic'
-import shareLite from '@/utils/share/lite'
+import shareLite from '@/utils/appLaunch/share'
 import { toYuan } from '@/utils/index'
 import { index as distribution } from '@/apis/modules/distribution'
 
@@ -210,10 +210,8 @@ export default {
         : this.data.covers
     },
     ...mapState({
-      userId: (state) => state.user.logged && state.user.logged.id,
-      lv: (state) => (state.user.logged && state.user.logged.level) || {},
-      tenantId: (state) => state.user.tenantId,
-      area: (state) => state.user.tenantArea,
+      userId: (state) => state.user.member && state.user.member.id,
+      lv: (state) => (state.user.member && state.user.member.level) || {},
     }),
     ...mapGetters(['isLogged', 'isDistributer']),
     showCart() {
@@ -258,11 +256,9 @@ export default {
         }, 1000)
         return
       }
-      // 设置分享
+      // 设置分享 wxaCodeUrl
       setTimeout(async () => {
         uni.$u.liteShare.title = res.title
-        uni.$u.liteShare.page = '/pages/item/detail'
-        uni.$u.liteShare.pageQuery = 'id=' + res.id
         uni.$u.liteShare.image = this.data.covers[0]
         this.board = await getSharePic({
           title: res.title,
@@ -292,7 +288,7 @@ export default {
       })
     },
     async loadCart() {
-      this.count = await count()
+      if (this.userId) this.count = await count()
     },
     async loadDistribution() {
       if (this.isDistributer && !easyState.distributer) {

@@ -4,7 +4,7 @@ export const search = ({ status, skip, take }) => request('mall/orders', 'get', 
 
 export const get = (id) => request('mall/orders/' + id, 'get')
 
-export const count = (id) => request('mall/orders/count', 'get')
+export const count = (id) => request('mall/orders/count', 'get', null, { autoLogin: false })
 
 export const receipt = (id) => request(`mall/orders/${id}/receipt`, 'post')
 

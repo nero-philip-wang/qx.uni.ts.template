@@ -109,7 +109,7 @@ export default {
   computed: {
     member() {
       return store.getters.isLogged
-        ? store.state.user.logged
+        ? store.state.user.member
         : {
             nickname: '未登录',
             desc: '',
@@ -148,7 +148,7 @@ export default {
     },
     async RefreshMember() {
       if (easyState.needRefreshMember) {
-        await getMember(true)
+        await getMember()
         easyState.needRefreshMember = false
       }
     },

@@ -22,3 +22,6 @@ function start() {
     }
 }
 ```
+
+- 如果切换了商户，那么立刻重置 token, balance, member
+- 当通过 code 返回登录信息后，立刻 relaunch 到 home 页面，然后 home 跳转到对应页面

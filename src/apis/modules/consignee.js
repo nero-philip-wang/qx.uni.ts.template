@@ -12,19 +12,7 @@ export const del = (id) => {
   return request('mall/consignees/' + id, 'delete')
 }
 
-const pcaurl = 'https://s.re4.top/asset/pca-code.json'
-export const pca = () => {
-  return new Promise((resolve, reject) => {
-    uni.request({
-      url: pcaurl,
-      method: 'get',
-      success: async (rt) => {
-        resolve(rt.data)
-      },
-      fail: (rt) => {
-        reject(rt)
-      },
-      complete: () => {},
-    })
-  })
+export const pca = async () => {
+  var [, result] = await uni.request({ url: 'https://s.re4.top/asset/pca-code.json', method: 'get' })
+  return result && result.data
 }

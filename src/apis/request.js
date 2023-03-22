@@ -1,42 +1,19 @@
 import tenant from '../config'
 import store from '@/store'
+import goto from '@/utils/goto'
 import md5 from 'md5'
-import { tryLogin } from './modules/login'
-
+import qs from 'qs'
 var loadding = false
 
 export const goLogin = function() {
-  return new Promise((resolve) => {
-    const pageList = getCurrentPages()
-
-    const pageThis = pageList[pageList.length <= 1 ? 0 : pageList.length - 1]
-    let pageRoute = pageThis ? pageThis.route : 'pages/index/index'
-    if (pageRoute.indexOf('pages/login/login') != -1) return
-    const pageOptionsKeys = pageThis ? Object.keys(pageThis.options) : []
-    let optionsStr = ''
-    pageOptionsKeys.map(function(item) {
-      optionsStr += '&' + item + '=' + pageThis.options[item]
-    })
-    optionsStr = optionsStr.length > 0 ? '?' + optionsStr.substring(1) : ''
-    pageRoute = encodeURIComponent('/' + pageRoute + optionsStr)
-    uni.navigateTo({
-      url: '/pages/login/login?href=' + pageRoute,
-    })
-    resolve()
-  })
+  goto('/pages/login/login', { way: 'replace' })
 }
 
-export const arequest = async (url, method = 'get', headers = {}, params = {}) => {
+const ajax = async (url, method = 'get', headers = {}, params = {}) => {
   return new Promise((resolve, reject) => {
     if (!url) {
       reject(new Error('请求路径为空'))
     }
-    // 签名
-    const nonce = Math.random()
-    const stamp = Math.round(Date.now() / 1000)
-    const tempStr = `${tenant.appId}${stamp}${nonce}${tenant.key}`
-    const sign = md5(tempStr)
-
     // 延时200ms弹出加载框
     setTimeout(() => {
       if (loadding) {
@@ -45,27 +22,24 @@ export const arequest = async (url, method = 'get', headers = {}, params = {}) =
         })
       }
     }, 200)
-
     // 请求开始
     loadding = true
+    var query = ''
+    if (method == 'get') {
+      query = '?' + qs.stringify(params, { arrayFormat: 'repeat' })
+      params = null
+    }
+
     uni.request({
-      url: process.env.VUE_APP_BASE_API + 'api/v1.0/' + url,
+      url: process.env.VUE_APP_BASE_API + 'api/v1.0/' + url + query,
       data: params,
-      header: {
-        AppId: tenant.appId,
-        Nonce: nonce,
-        Stamp: stamp,
-        Sign: sign,
-        TenantId: store.state.user.tId,
-        'Accept-Language': 'zh-CN',
-        ...headers,
-      },
+      header: headers,
       method: method,
       success: async (rt) => {
-        if (rt.data.code == 500 || rt.data.code == 400) {
-          reject(rt.data)
+        if (rt.statusCode == 200 || rt.statusCode == 404) {
+          resolve(rt.data)
         } else {
-          resolve(rt)
+          reject(rt)
         }
       },
       fail: (rt) => {
@@ -79,20 +53,46 @@ export const arequest = async (url, method = 'get', headers = {}, params = {}) =
   })
 }
 
+const setHeaders = (headers = {}) => {
+  // 签名
+  const nonce = Math.random()
+  const stamp = Math.round(Date.now() / 1000)
+  const tempStr = `${tenant.appId}${stamp}${nonce}${tenant.key}`
+  const sign = md5(tempStr)
+
+  var result = {
+    'Accept-Language': 'zh-CN',
+    AppId: tenant.appId,
+    Nonce: nonce,
+    Stamp: stamp,
+    Sign: sign,
+    ShopId: store.state.share.sid || '',
+    TenantId: store.state.share.tid || '',
+    Authorization: store.state.user.token,
+  }
+  result = Object.assign({}, result, headers)
+
+  return result
+}
+
 export const request = async (
   url,
   method = 'get',
   params = {},
-  { showError, autoLogin } = {
-    showError: true,
-    autoLogin: true,
-  }
+  { needLogin, showError, autoLogin } = { needLogin: false, showError: true, autoLogin: true },
+  headers = {}
 ) => {
-  var token = await tryLogin()
-  var headers = {
-    TenantId: store.state.user.tId,
-    ShopId: store.state.user.shopId || store.state.user.tenantId,
-    Authorization: token,
+  var errMessage = null
+  var token = store.state.user.token
+  // 需要登录但是没有token
+  if (needLogin && !token) {
+    if (autoLogin) {
+      await goLogin()
+      return
+    } else {
+      errMessage = '请先登录'
+      return
+    }
   }
   // 删除空参数
   for (var key in params) {
@@ -100,16 +100,19 @@ export const request = async (
       delete params[key]
     }
   }
+  // 准备headers
+  var headers2 = setHeaders(headers)
 
-  var errMessage = null
   try {
-    var rt = await arequest(url, method, headers, params)
-    const statusCode = rt.statusCode
+    var result = await ajax(url, method, headers2, params)
+    return result.data
+  } catch (error) {
+    const statusCode = error.statusCode
     switch (statusCode) {
       case 401:
       case 403:
         // 清除过期登录信息
-        store.commit('RESET_USERINFO')
+        store.commit('RESET_USER')
         if (autoLogin) {
           await goLogin()
           return
@@ -117,39 +120,25 @@ export const request = async (
           errMessage = '登录信息过期，请重新登录'
           break
         }
-      case 200:
-      case 404:
-        return rt.data.data
       default:
-        wx.reportAnalytics('onerror', {
-          url,
-          params,
-          code: statusCode,
-          msg: errMessage,
-        })
         if (statusCode < 500 && statusCode >= 400) {
-          errMessage = rt.data.msg || rt.data.message || ''
+          errMessage = error.data.msg || error.data.message || ''
         } else {
           errMessage = '活动太火爆了 请稍后重试'
         }
     }
-  } catch (error) {
-    if (error.message == 'ok' || error.message == 'Ok') errMessage = '网络不佳 请重试'
-    else errMessage = '网络不佳 请重试' || error.message
+
+    // if (error.message == 'ok' || error.message == 'Ok') errMessage = '网络不佳 请重试'
+    // else errMessage = '网络不佳 请重试' || error.message
   } finally {
-    if (errMessage) {
-      if (showError) {
-        uni.showModal({
-          title: '',
-          showCancel: false,
-          content: errMessage,
-        })
-        // eslint-disable-next-line no-unsafe-finally
-        throw new Error(errMessage)
-      } else {
-        // eslint-disable-next-line no-unsafe-finally
-        throw new Error(errMessage)
-      }
+    if (errMessage && showError) {
+      uni.showModal({
+        title: '',
+        showCancel: false,
+        content: errMessage,
+      })
+      // eslint-disable-next-line no-unsafe-finally
+      throw new Error(errMessage)
     }
   }
 }

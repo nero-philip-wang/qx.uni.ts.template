@@ -1,29 +1,25 @@
 import request from '../request'
 import store from '@/store'
-
-export const banner = () => {
-  return request('mall/banners', 'get')
-}
-
-export const catalog = () => {
-  return request('mall/catalogs', 'get')
-}
-
-export const item = ({ keywords, catalogCode, status, sort, skip, take }) => {
-  return request('mall/items', 'get', { keywords, catalogCode, status, sort, skip, take })
-}
-
-export const hasNewAward = () => request('mall/activities', 'get', { enabled: true, type: 2, isValid: true, take: 1 }, { autoLogin: false })
-
-export const tenant = () => request('mall/tenants', 'get')
-
-export const page = () => request('mall/micropages', 'get')
-
-export const getSence = (id) => request('mall/share/sence/' + id, 'get')
-
-export const listMemberLevel = () => request('mall/users/memberLevel', 'get')
-
 var posters = null
+
+export const banner = () => request('mall/banners', 'get', null, { needLogin: false, autoLogin: false })
+
+export const catalog = () => request('mall/catalogs', 'get', null, { needLogin: false, autoLogin: false })
+
+export const item = ({ keywords, catalogCode, status, sort, skip, take }) =>
+  request('mall/items', 'get', { keywords, catalogCode, status, sort, skip, take }, { needLogin: false, autoLogin: false })
+
+export const hasNewAward = () =>
+  request('mall/activities', 'get', { enabled: true, type: 2, isValid: true, take: 1 }, { needLogin: false, autoLogin: false })
+
+export const tenant = () => request('mall/tenants', 'get', null, { needLogin: false, autoLogin: false })
+
+export const page = () => request('mall/micropages', 'get', null, { needLogin: false, autoLogin: false })
+
+export const getSence = (id) => request('mall/share/sence/' + id, 'get', {}, { needLogin: false, autoLogin: false })
+
+export const listMemberLevel = () => request('mall/users/memberLevel', 'get', null, { needLogin: false, autoLogin: false })
+
 export const getPoster = async () => {
   if (posters) return posters
   else {
@@ -33,16 +29,10 @@ export const getPoster = async () => {
 }
 
 export const getMember = async () => {
-  var m = await request('mall/users/detail', 'get', {}, { autoLogin: false })
-  if (m) {
-    store.commit('SET_USERINFO', {
-      ...m,
-      token: store.state.user.logged.token,
-      openId: store.state.user.logged.openId,
-    })
-  }
-  return m
+  var result = await request('mall/users/detail', 'get', {}, { needLogin: false, autoLogin: false })
+  store.commit('SET_MEMBER', result)
 }
 
-export const getCities = () => request('mall/tenants/city', 'get')
-export const getStores = (city) => request('mall/tenants/store', 'get', { city })
+export const getCities = () => request('mall/tenants/city', 'get', null, { needLogin: false, autoLogin: false })
+
+export const getStores = (city) => request('mall/tenants/store', 'get', { city }, null, { needLogin: false, autoLogin: false })

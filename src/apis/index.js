@@ -9,4 +9,5 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   modules[moduleName] = value
   return modules
 }, {})
+
 export default modules

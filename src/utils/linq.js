@@ -47,6 +47,15 @@ class Enumerable {
   firstOrDefault(predicate) {
     return this.data.find(predicate)
   }
+
+  distinct() {
+    const obj = {}
+    var data = this.data.filter((item, index) => {
+      const newItem = item + JSON.stringify(item)
+      return obj.hasOwnProperty(newItem) ? false : (obj[newItem] = true)
+    })
+    return new Enumerable(data)
+  }
 }
 
 const constructor = (array) => {

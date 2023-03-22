@@ -14,13 +14,13 @@ const config = {
     primaryColor: '#1eb1ad',
   },
   wx0391827cea01adfe: {
-    title: '链瑷臻选',
+    title: '贝卡臻选',
     appId: 'wx0391827cea01adfe',
-    defaultTenant: {
-      id: 2,
-      title: '全国',
-      mainDepoId: 2,
-      depoTitle: '并多多旗舰店',
+    defaultShop: {
+      sid: 21000,
+      shop: '并多多旗舰店',
+      tid: 2,
+      tenant: '全国',
     },
     key: '76f90da550f676901180217cc6a1dee0',
     hasLive: false,
@@ -36,8 +36,7 @@ const config = {
       mainDepoId: 1,
       depoTitle: '冰多多旗舰店',
     },
-    defaultShop: {
-    },
+    defaultShop: {},
     key: '1180217cc6a1dee076f90da550f67690',
     hasLive: false,
     hasGpsOnce: false,

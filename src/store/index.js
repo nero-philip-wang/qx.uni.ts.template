@@ -1,21 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import config from '@/config'
+import config from '../config'
 Vue.use(Vuex)
-
-// // https://webpack.js.org/guides/dependency-management/#requirecontext
-// const modulesFiles = require.context('./modules', true, /\.js$/)
-
-// // 你不需要 `import app from './modules/app'`,它将自动要求所有vuex模块从模块文件
-// // it will auto require all vuex module from modules file
-// const modules = modulesFiles.keys().reduce((modules, modulePath) => {
-//   // set './app.js' => 'app'
-//   const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')
-//   const value = modulesFiles(modulePath)
-//   modules[moduleName] = value.default
-//   return modules
-// }, {})
 
 const store = new Vuex.Store({
   plugins: [
@@ -25,7 +12,8 @@ const store = new Vuex.Store({
         setItem: (key, value) => uni.setStorageSync(key, value),
         removeItem: (key) => uni.removeStorageSync(key),
       },
-      key: 'uni',
+      key: config.appId,
+      // paths: ['area', 'tabbar', 'share', 'user', 'searchHistory'],
     }),
   ],
   state: () => ({
@@ -57,108 +45,72 @@ const store = new Vuex.Store({
         pagePath: '/pages/my/index',
       },
     ],
+    share: {
+      mid: null /** 分享人的会员 id */,
+      source: '自主进入' /** 入口方式，如小程序码/分享卡片消息 */,
+      eid: null /** 导购员/分销员 id */,
+      sid: config.defaultShop.sid /** 销售店铺 id */,
+      shop: config.defaultShop.shop /** 销售店铺名称 */,
+      tid: config.defaultShop.tid /** 商户 id */,
+      tenant: config.defaultShop.tenant /** 商户名称 */,
+    },
     user: {
-      /** 已登录用户 */
-      logged: {
-        token: null,
-        openId: null,
-        id: null,
-        userId: null,
-        nickname: null,
-        avatar: null,
-        level: {},
-        bindingExpire: null,
-        bindingMemberId: null,
-      },
-      /** 未登录信息 */
-      logging: {},
-      /** 商户id */
-      tId: config.defaultTenant.id,
-      /** 商户名称 */
-      tTitle: config.defaultTenant.title,
-      /** 快递仓库id */
-      mainDepoId: config.defaultTenant.mainDepoId,
-      /** 提货店铺id */
-      depoId: config.defaultTenant.mainDepoId,
-      /** 提货店铺id名称 */
-      depoTitle: config.defaultTenant.depoTitle,
-      /** 分销人id */
-      sId: null,
-      /** 分销店铺 */
-      shopId: null,
-      account: null,
+      member: {},
+      token: null,
+      openId: null,
+      balance: [],
     },
     searchHistory: [],
   }),
   getters: {
     isLogged: (state) => {
-      return state.user.logged.token && state.user.logged.id
+      return state.user.token && state.user.member.id
     },
-    token: (state) => {
-      return state.user.logged.token
-    },
+    balance: (state) => state.user.balance,
+    isDistributer: (state) => state.user.token && state.user.member.id && state.user.member.bindingMemberId == store.state.user.member.id,
     tabbars: (state) => state.tabbar,
-    sid: (state) => state.user.sId,
-    isDistributer: (state) =>
-      state.user.logged.token && state.user.logged.id && store.state.user.logged.bindingMemberId == store.state.user.logged.id, // 到期时间
   },
   mutations: {
-    SET_WWACCOUNT(state, account) {
-      state.user.account = account
-    },
-    SAVE_AREA(state, list) {
-      state.area = list
-    },
-    SET_USERINFO(state, { token, openId, id, userId, nickname, avatar, level, bindingExpire, bindingMemberId }) {
-      state.user.logged = {
-        token,
-        openId,
-        id,
-        userId,
-        nickname,
-        avatar,
-        level,
-        bindingExpire,
-        bindingMemberId,
-      }
-    },
-    RESET_USERINFO(state) {
-      state.user.logged = {
-        token: null,
-        id: null,
-        userId: null,
-        title: null,
-        avatar: null,
-        openId: null,
-        level: {},
-        bindingExpire: null,
-        bindingMemberId: null,
-      }
-    },
     SET_TOKEN(state, token) {
-      state.user.logged.token = token
+      state.user.token = 'Bearer ' + token
     },
-    SET_TENANT(state, { t, area, sid, shopTitle, mainDepoId }) {
-      if (state.user.tId != t) {
-        state.user.tId = t
-        state.user.tTitle = area
-        state.user.mainDepoId = mainDepoId
-        store.commit('RESET_USERINFO')
+    SET_OPENID(state, openId) {
+      state.user.openId = openId
+    },
+    SET_BALANCE(state, balance) {
+      state.user.balance = balance
+    },
+    SET_MEMBER(state, member) {
+      state.user.member = member
+    },
+    RESET_USER(state) {
+      state.user = {
+        member: {},
+        token: null,
+        balance: [],
+      }
+    },
+    SET_SHARE_INFO(state, { mid, eid, sid, shop, tid, tenant, source }) {
+      state.share.source = source ? decodeURIComponent(source) : state.share.source
+      if (tid) {
+        if (tid != state.share.tid) {
+          this.commit('RESET_USER')
+          state.share.mid = null
+          state.share.sid = null
+          state.share.eid = null
+        }
+        state.share.tid = tid
+        state.share.tenant = decodeURIComponent(tenant)
       }
       if (sid) {
-        state.user.depoId = sid
-        state.user.depoTitle = shopTitle
+        if (sid != state.share.sid) {
+          state.share.eid = null
+        }
+        state.share.sid = sid
+        state.share.shop = decodeURIComponent(shop)
       }
-      else {
-        state.user.depoId = mainDepoId
-        state.user.depoTitle = area
-      }
-    },
-    SET_SESSIONINFO(state, info) {
-      state.sessionInfo = info
-    },
-    SET_SOURCE(state, sId) {
-      state.user.sId = sId
+      if (mid) state.share.mid = mid
+      if (eid) state.share.eid = eid
     },
     SET_HISTORY(state, keyword) {
       var list = state.searchHistory
@@ -176,7 +128,6 @@ const store = new Vuex.Store({
       state.searchHistory = []
     },
   },
-  // modules,
 })
 
 export default store

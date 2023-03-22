@@ -55,7 +55,7 @@ import fixed from './comp/fixed.vue'
 import { section } from './comp/meta'
 import store from '@/store/'
 import { page, getPoster, hasNewAward } from '@/apis/modules/home'
-import shareLite from '@/utils/share/lite'
+import shareLite from '@/utils/appLaunch/share'
 
 export default {
   components: {
@@ -75,10 +75,10 @@ export default {
   },
   computed: {
     tTitle() {
-      return store.state.user.tTitle
+      return store.state.share.tenant
     },
     shopTitle() {
-      return store.state.user.depoTitle
+      return store.state.share.shop
     },
   },
   async mounted() {
@@ -86,14 +86,14 @@ export default {
     this.page = res && res.content && JSON.parse(res.content)
     setTimeout(async () => {
       var posters = await getPoster()
-      uni.$u.liteShare.page = '/pages/index/index'
+      // uni.$u.liteShare.page = '/pages/index/index'
       if (posters.indexShare) uni.$u.liteShare.image = posters.indexShare
-    }, 600)
 
-    if (!store.getters.isLogged) {
-      const award = await hasNewAward()
-      this.hasAward = award && award[0]
-    }
+      if (!store.getters.isLogged) {
+        const award = await hasNewAward()
+        this.hasAward = award && award[0]
+      }
+    }, 600)
   },
   beforeCreate() {
     uni.hideTabBar()

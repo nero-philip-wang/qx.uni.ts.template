@@ -23,7 +23,7 @@
 <script>
 import { tenant } from '@/apis/modules/home'
 import store from '@/store'
-import { tryLogin, reset } from '@/apis/modules/login'
+import { tryLogin, reset } from '@/apis/modules/user'
 
 export default {
   data() {

@@ -1,59 +1,70 @@
 <template>
-  <div class="wrapper">
-    <u-avatar :src="wechatUserInfo.avatar" :size="120" @click="getUserInfo"></u-avatar>
-    <div class="text-gray text-xl spread" @click="getUserInfo">
-      {{ wechatUserInfo.nickname }}
+  <div class="h-page flex flex-col align-center px-80" style="padding-top: 40%;">
+    <u-avatar :src="wechatUserInfo.avatar" size="200rpx"></u-avatar>
+    <input
+      v-model="wechatUserInfo.nickname"
+      :focus="step == 2"
+      class="mt-40 text-gray text-xl text-center"
+      type="nickname"
+      placeholder="点击填写昵称"
+    />
+    <div class="mt-80 w-full">
+      <button
+        v-if="step === 1"
+        class="u-reset-button rounded-sm py-20 bg-primary text-white"
+        open-type="chooseAvatar"
+        @chooseavatar="chooseAvatar"
+      >
+        设置头像和昵称
+      </button>
+      <button
+        v-else
+        :disabled="!hasCode"
+        class="u-reset-button rounded-sm py-20 bg-primary text-white"
+        open-type="getPhoneNumber"
+        @getphonenumber="getPhoneNumber"
+        @click="step = 3"
+      >
+        微信一键登录
+      </button>
     </div>
-    <button v-if="step === 1" class="btn u-reset-button" @click="getUserInfo">
-      一键设置头像昵称
-    </button>
-    <button v-else class="btn u-reset-button" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-      微信一键登录
-    </button>
+    <div class="flex-grow">
+      <input :focus="step == 3" class="" />
+    </div>
   </div>
 </template>
 
 <script>
-import { loginByCode, TryBindByMobile } from '@/apis/modules/login'
+import { loginByCode, TryBindByMobile, cache } from '@/apis/modules/user'
+import api from '@/apis'
 
 export default {
   data() {
     return {
       step: 1,
       wechatUserInfo: {
-        avatar: '-',
-        nickname: '点击按钮授权微信头像和昵称',
+        avatar: null,
+        nickname: null,
       },
       newUserInfo: {},
       loadding: true,
+      hasCode: false,
     }
   },
 
   async onShow() {
-    try {
-      var user = await loginByCode(true)
-      console.log(user)
-      this.$goto(-1)
-    } catch (error) {
-      this.newUserInfo = error
-    } finally {
-      this.loadding = false
-    }
+    var result = await loginByCode(true)
+    if (result.token) this.$goto(-1)
+    else this.hasCode = true
   },
   methods: {
-    getUserInfo() {
-      uni.getUserProfile({
-        desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-        success: (res) => {
-          this.wechatUserInfo.avatar = res.userInfo.avatarUrl
-          this.wechatUserInfo.nickname = res.userInfo.nickName
-        },
-        complete: () => {
-          this.step++
-        },
-      })
+    async chooseAvatar(res) {
+      this.wechatUserInfo.avatar = res.detail.avatarUrl
+      var utoken = await api.upload.upload('user/avatar', res.detail.avatarUrl, '.png')
+      this.wechatUserInfo.avatar = utoken
+      this.step = 2
     },
-    getPhoneNumber(res) {
+    async getPhoneNumber(res) {
       if (res.detail.errMsg.indexOf('ok') == -1) {
         uni.showToast({
           title: '请允许绑定手机号完成注册',
@@ -61,56 +72,18 @@ export default {
         })
       } else {
         // 注册新用户
-        var timer = setInterval(async () => {
-          // eslint-disable-next-line no-useless-return
-          if (this.loadding) return
-          else {
-            clearInterval(timer)
-            await this.signup(res.detail)
-          }
-        }, 500)
+        await this.signup({ ...res.detail, ...this.wechatUserInfo })
       }
     },
     async signup(wxdata) {
       try {
-        var user = await TryBindByMobile({
-          ...this.newUserInfo,
-          ...wxdata,
-          ...this.wechatUserInfo,
-        })
-        this.$goto(-1)
+        var result = await TryBindByMobile(wxdata)
+        if (result.token) this.$goto(-1)
+        else console.log('注册失败', result)
       } catch (error) {
-        console.log(error)
+        console.log('注册失败', error)
       }
     },
   },
 }
 </script>
-<style lang="scss" scoped>
-.wrapper {
-  height: 100vh;
-  width: 100%;
-  padding: 10%;
-  padding-top: 20vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.spread {
-  margin-top: 5vh;
-  margin-bottom: 30vh;
-}
-.btn {
-  border-radius: 88rpx;
-  height: 88rpx;
-  line-height: 88rpx;
-  font-size: 32rpx;
-  border: 2rpx solid #fff;
-  background-color: $u-primary !important;
-  color: #fff;
-  letter-spacing: 4rpx;
-  width: 100%;
-}
-</style>

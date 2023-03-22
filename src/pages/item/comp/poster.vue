@@ -26,7 +26,7 @@
 <script>
 import getPoster from './getPoster'
 import { toYuan } from '@/utils/index'
-import stools from '@/utils/share/lite'
+import stools from '@/utils/appLaunch/share'
 import app from '@/config/index'
 
 export default {
@@ -49,15 +49,12 @@ export default {
   watch: {
     async show(value) {
       if (value) {
-        var p = stools.getParams()
-        var page = 'pages/index/home'
-        var scene = encodeURIComponent(p.page)
         this.board = await getPoster({
           title: this.spu.title,
           cover: this.spu.cover,
           price: toYuan(this.spu.minRetailPrice),
           mPrice: toYuan(this.spu.markingPrice),
-          qr: `${process.env.VUE_APP_BASE_API}api/v1.0/mall/Share/wxacode?page=${page}&scene=${scene}&appid=${app.appId}`,
+          qr: stools.methods.wxaCodeUrl(),
         })
       }
     },
