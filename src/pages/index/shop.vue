@@ -3,7 +3,7 @@
     <div class="bg-white px-32 pb-8 flex" style="z-index: 200;">
       <div class="left flex py-16 pr-32 align-items-center open" @click="showSelector = !showSelector">
         <u-icon name="map" size="32rpx"></u-icon>
-        <span class="mx-8">{{ shop }}</span>
+        <span class="mx-8">{{ currentShop.tenant }}</span>
         <!-- <span class="mx-8 text-gray">|</span> -->
         <!-- <span class="mr-8"> 先锋店</span> -->
         <u-icon name="arrow-down-fill" size="26rpx"></u-icon>
@@ -13,24 +13,15 @@
 
     <div class="my-16 bg-white">
       <u-cell-group>
-        <u-cell size="large" :title="currentShop.shopTitle" is-link>
-          <!-- <template v-slot:label>
-            <div class="text-gray text-sm">绩溪路35-5265号</div>
-            <div class="text-gray text-sm">营业时间：10店-12店</div>
-          </template> -->
+        <u-cell size="large" :title="storedShop.subTitle" is-link @click="$goto(-1)">
+          <template v-slot:label>
+            <div class="text-gray text-sm">{{ storedShop.consignee.address }}</div>
+            <div class="text-gray text-sm">营业时间：{{ storedShop.workHour }}</div>
+          </template>
           <template v-slot:right-icon>
-            <div class="text-primary text-sm">当前</div>
+            <div class="ml-16 text-primary text-sm">当前</div>
           </template>
         </u-cell>
-        <!-- <u-cell size="large" title="扬州足疗店" is-link>
-          <template v-slot:label>
-            <div class="text-gray text-sm">绩溪路35-5265号</div>
-            <div class="text-gray text-sm">营业时间：10店-12店</div>
-          </template>
-          <template v-slot:right-icon>
-            <div class="text-gray text-sm">上次访问</div>
-          </template>
-        </u-cell> -->
       </u-cell-group>
     </div>
 
@@ -42,17 +33,18 @@
     </div>
     <div class="my-16 bg-white">
       <u-cell-group>
-        <u-cell v-for="item in storeList" :key="item.id" size="large" :title="item.title" is-link @click="change(item)">
+        <u-cell v-for="item in storeList" :key="item.id" size="large" :title="item.title" is-link @click="confirm(item)">
           <template v-slot:label>
             <div class="text-gray text-sm">{{ item.consignee.address }}</div>
             <div class="text-gray text-sm">营业时间：{{ item.workHour }}</div>
           </template>
           <template v-slot:right-icon>
-            <div class="text-gray text-sm">距离526m</div>
+            <div class="ml-16 text-gray text-sm">距离 {{ item.distanceText }}</div>
           </template>
         </u-cell>
       </u-cell-group>
     </div>
+
     <!-- 选择商户 -->
     <page-container
       :show="showSelector"
@@ -66,17 +58,17 @@
         <scroll-view scroll-y scroll-with-animation class="cata">
           <div
             v-for="(item, i) in tenants"
-            :key="item.code"
+            :key="item.id"
             class="text-base lv1_item"
-            :class="{ active: item.id == selectedLv1.id }"
-            @click="swichMenu(item, i)"
+            :class="{ active: item.id == selectedTenantId }"
+            @click="switchTenant(item, i)"
           >
-            {{ item.title }}
+            {{ item.subTitle }}
           </div>
         </scroll-view>
 
         <div class="right">
-          <div v-for="(item, i) in cityList" :key="item.code" class="ml-12 p-24 text-base text-black-38 bb-1" @click="swichCity(item, i)">
+          <div v-for="(item, i) in cityList" :key="item.code" class="ml-12 p-24 text-base text-black-38 bb-1" @click="switchCity(item, i)">
             {{ item.title }}
           </div>
         </div>
@@ -89,8 +81,8 @@
 import { tenant, getCities, getStores } from '@/apis/modules/home'
 import { pca } from '@/apis/modules/consignee'
 import store from '@/store'
-import { tryLogin } from '@/apis/modules/user'
-var reset = () => ({})
+import api from '@/apis'
+
 export default {
   data() {
     return {
@@ -98,12 +90,13 @@ export default {
       tenants: [],
       noarea: null,
       showSelector: false,
-      selectedLv1: null,
+      selectedTenantId: null,
       addressList: [],
       cityList: [],
-      selectedLv2: -1,
+      selectedCityIdx: -1,
       storeList: [],
       hasConfirm: false,
+      position: null,
     }
   },
   computed: {
@@ -111,82 +104,78 @@ export default {
       return this.$cfg
     },
     shop() {
-      return store.state.user.tTitle
+      return store.state.share.shop
+    },
+    storedShop() {
+      return store.state.user.shop
     },
   },
   async created() {
     // 保存之前的商户信息
-    this.currentShop = {
-      t: store.state.user.tId,
-      area: store.state.user.tTitle,
-      mainDepoId: store.state.user.mainDepoId,
-      sid: store.state.user.depoId,
-      shopTitle: store.state.user.depoTitle,
-    }
-    await this.getTenant()
-    this.addressList = await pca()
-  },
-  onUnload() {
-    if (!this.hasConfirm) {
-      store.commit('SET_TENANT', this.currentShop)
-    }
+    this.currentShop = { ...store.state.share }
+    this.tenants = await tenant()
+    await this.initDefalutSelection()
   },
   methods: {
-    async getTenant() {
-      var list = await tenant()
-      this.tenants = list
-      debugger
-      this.selectedLv1 = list.filter((c) => c.id == store.state.user.tId)[0]
-      setTimeout(async () => {
-        await this.localGetCities()
-      }, 500)
+    async initDefalutSelection() {
+      this.selectedTenantId = store.state.share.tid
+      await this.getTenantCities(this.selectedTenantId)
+      this.position = await api.location.getCity()
+      this.getSortedShops(this.cityList[0]?.value)
     },
-    async backCurrent() {
-      this.hasConfirm = true
-      store.commit('SET_TENANT', this.currentShop)
-      reset()
-      try {
-        await tryLogin()
-      } catch (error) {}
-      uni.reLaunch({ url: '/pages/index/index' })
-    },
-    async change(shop) {
-      this.hasConfirm = true
-      store.commit('SET_TENANT', {
-        t: this.selectedLv1.id,
-        area: this.selectedLv1.title,
-        sid: shop.id,
-        shopTitle: shop.title,
-        mainDepoId: this.selectedLv1.mainDepositoryId,
-      })
-      reset()
-      try {
-        await tryLogin()
-      } catch (error) {}
-      uni.reLaunch({ url: '/pages/index/index' })
-    },
-    async localGetCities() {
-      var list = await getCities()
+    async getTenantCities(tenantId) {
+      var list = await getCities(tenantId)
+      var pcaList = await pca()
       this.cityList = list.map((c) => {
         var provinceCode = Math.floor(c / 100)
-        var province = this.addressList.filter((d) => d.value == provinceCode)[0]
+        var province = pcaList.filter((d) => d.value == provinceCode)[0]
         var city = province.children.filter((d) => d.value == c)[0]
         return { title: province.label + '-' + city.label, value: c }
       })
     },
-    async swichMenu(c, i) {
-      var item = this.tenants[i]
-      if (this.selectedLv1 == i) return
-      this.selectedLv1 = item
-      store.commit('SET_TENANT', { t: item.id, area: item.title, mainDepoId: item.mainDepositoryId })
+    async switchTenant(item, i) {
+      if (this.selectedTenantId == item.id) return
+      this.selectedTenantId = item.id
       this.cityList = []
-      await this.localGetCities()
+      await this.getTenantCities(item.id)
     },
-    async swichCity(item, i) {
-      this.selectedLv2 = i
+    async switchCity(item, i) {
+      item = this.cityList[i]
+      this.selectedCityIdx = i
       this.showSelector = false
       this.storeList = []
-      this.storeList = await getStores(this.cityList[i].value)
+      await this.getSortedShops(item.value)
+    },
+    async getSortedShops(cid) {
+      var result = await getStores(cid)
+      result.forEach((item) => {
+        var d = this.getDistance(item.location.y, item.location.x)
+        item.distance = d[0]
+        item.distanceText = d[1]
+      })
+      this.storeList = result.sort((a, b) => a.distance - b.distance)
+    },
+    // 计算距离，参数分别为第一点的纬度，经度；第二点的纬度，经度
+    getDistance(lat1, lng1) {
+      var lat2, lng2
+      if (this.position) {
+        lat2 = this.position.latitude
+        lng2 = this.position.longitude
+      }
+      var Rad = (d) => (d * Math.PI) / 180.0
+      var radLat1 = Rad(lat1)
+      var radLat2 = Rad(lat2)
+      var a = radLat1 - radLat2
+      var b = Rad(lng1) - Rad(lng2)
+      var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)))
+      s = s * 6378137 // EARTH_RADIUS;
+      var result = s > 100 * 1000 ? '大于100km' : s > 1000 ? (s / 1000).toFixed(1) + 'km' : s.toFixed(0) + 'm'
+      return [s, result]
+    },
+    confirm(item) {
+      store.commit('SET_SHARE_INFO', { sid: item.id, shop: item.subTitle, tid: item.tenantId, tenant: item.tenant.subTitle })
+      store.commit('SET_SHOP', item)
+      this.$goto(-1)
     },
   },
 }

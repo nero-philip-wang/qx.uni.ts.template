@@ -24,7 +24,7 @@ const config = {
     },
     key: '76f90da550f676901180217cc6a1dee0',
     hasLive: false,
-    hasGpsOnce: false,
+    hasGpsOnce: true,
     primaryColor: '#1eb1ad',
   },
   wx129b199af409f294: {

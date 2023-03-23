@@ -1,5 +1,5 @@
 {
-  "name": "链瑷臻选",
+  "name": "贝卡臻选",
   "appid": "__UNI__3BEB19B",
   "description": "",
   "versionName": "1.0.0",
@@ -54,7 +54,7 @@
   "mp-weixin": {
     "appid": "wx0391827cea01adfe",
     "requiredPrivateInfos": [
-      "chooseLocation"
+      "getLocation"
     ],
     "usingComponents": true,
     "setting": {
@@ -64,7 +64,7 @@
     },
     "permission": {
       "scope.userLocation": {
-        "desc": "你的位置信息将用于显示区域库存和附近门店"
+        "desc": "你的位置信息将用于显示附近门店"
       }
     }
   }

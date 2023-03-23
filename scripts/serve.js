@@ -12,15 +12,15 @@ var manifest = require('../src/manifest.json')
 
 /** 文件路径 */
 const manifestPath = './src/manifest.json'
-const appPath = './src/App.vue'
+const locationPath = './src/apis/modules/location'
 const uniscss = './scripts/uni.scss'
 const destscss = './src/uni.scss'
 
 async function main() {
   var appid = await getAppId()
-  modManifest(appid)
-  modCss(appid)
-  modApp(appid)
+  modifyManifest(appid)
+  modityCss(appid)
+  modifyLocation(appid)
   build()
   runWx()
 }
@@ -45,13 +45,13 @@ async function getAppId() {
   return selectedAppid
 }
 
-function modManifest(appid) {
+function modifyManifest(appid) {
   manifest.name = config[appid].title
   manifest['mp-weixin'].appid = appid
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2))
 }
 
-function modCss(appid) {
+function modityCss(appid) {
   var colorHex = config[appid].primaryColor
   var hsb = Colr.fromHex(colorHex).toHsvArray()
 
@@ -63,16 +63,9 @@ function modCss(appid) {
   fs.writeFileSync(destscss, css)
 }
 
-function modApp(appid) {
+function modifyLocation(appid) {
   var hasLocation = config[appid].hasGpsOnce
-  var hasLocationString = '@/apis/modules/location'
-  var noLocationString = '@/apis/modules/nolocation'
-  var targetString = hasLocation ? hasLocationString : noLocationString
-
-  var data = fs.readFileSync(appPath, { encoding: 'utf-8' })
-  data = data.replace(hasLocationString, targetString)
-  data = data.replace(noLocationString, targetString)
-  fs.writeFileSync(appPath, data)
+  if (!hasLocation) fs.writeFileSync(locationPath, 'export const getCity2 = () => null')
 }
 
 function build() {

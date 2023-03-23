@@ -59,6 +59,7 @@ const store = new Vuex.Store({
       token: null,
       openId: null,
       balance: [],
+      shop: {},
     },
     searchHistory: [],
   }),
@@ -82,6 +83,9 @@ const store = new Vuex.Store({
     },
     SET_MEMBER(state, member) {
       state.user.member = member
+    },
+    SET_SHOP(state, shop) {
+      state.user.shop = shop
     },
     RESET_USER(state) {
       state.user = {

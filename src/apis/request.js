@@ -71,7 +71,6 @@ const setHeaders = (headers = {}) => {
     Authorization: store.state.user.token,
   }
   result = Object.assign({}, result, headers)
-
   return result
 }
 

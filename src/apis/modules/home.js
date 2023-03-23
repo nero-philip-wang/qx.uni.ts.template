@@ -33,6 +33,6 @@ export const getMember = async () => {
   store.commit('SET_MEMBER', result)
 }
 
-export const getCities = () => request('mall/tenants/city', 'get', null, { needLogin: false, autoLogin: false })
+export const getCities = (TenantId) => request('mall/tenants/city', 'get', null, { needLogin: false, autoLogin: false }, { TenantId })
 
-export const getStores = (city) => request('mall/tenants/store', 'get', { city }, null, { needLogin: false, autoLogin: false })
+export const getStores = (city) => request('mall/tenants/store', 'get', { city }, { needLogin: false, autoLogin: false })

@@ -7,6 +7,7 @@ import { getPoster, getSence } from '@/apis/modules/home'
 import qs from 'qs'
 
 const SET_SHARE_INFO = (v) => store.commit('SET_SHARE_INFO', v)
+const SET_SHOP = (v) => store.commit('SET_SHOP', v)
 const defaultPage = 'pages/index/index'
 const homePage = 'pages/index/home'
 
@@ -69,7 +70,15 @@ export default {
   },
   /** 获取店铺信息  */
   async getShop() {
+    // 没有token而且没有分享人，那么自动搜索附近店铺
+    if (this.hasSetShareInfo && !store.state.user.token) {
+      var location = await api.location.getCity()
+      if (location) {
+        console.log(location)
+      }
+    }
     var shop = await api.shop.get(store.state.share.sid)
+    SET_SHOP(shop)
     SET_SHARE_INFO({
       sid: shop.id,
       shop: shop.subTitle,

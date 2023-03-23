@@ -12,7 +12,11 @@ export const del = (id) => {
   return request('mall/consignees/' + id, 'delete')
 }
 
+var pcaBuff = null
 export const pca = async () => {
-  var [, result] = await uni.request({ url: 'https://s.re4.top/asset/pca-code.json', method: 'get' })
-  return result && result.data
+  if (!pcaBuff) {
+    var [, result] = await uni.request({ url: 'https://s.re4.top/asset/pca-code.json', method: 'get' })
+    pcaBuff = result && result.data
+  }
+  return pcaBuff
 }
